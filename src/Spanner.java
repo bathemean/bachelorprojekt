@@ -7,7 +7,7 @@ public class Spanner{
     private ListenableUndirectedWeightedGraph<String, DefaultWeightedEdge> graph;
     private Set<String> vertices;
     private Set<DefaultWeightedEdge> edges;
-    
+
     private void __construct(ListenableUndirectedWeightedGraph<String, DefaultWeightedEdge> g){
         this.graph = g;
         this.vertices = g.vertexSet();
@@ -20,7 +20,7 @@ public class Spanner{
      */
     private ListenableUndirectedWeightedGraph<String, DefaultWeightedEdge> greedySpanner(){
 
-        ListenableUndirectedWeightedGraph<String, DefaultWeightedEdge> spanner = NULL;
+        ListenableUndirectedWeightedGraph<String, DefaultWeightedEdge> spanner = this.graph;
         return spanner;
     }
 
