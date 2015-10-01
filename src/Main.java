@@ -11,7 +11,8 @@ public class Main {
 
         ListenableUndirectedWeightedGraph<String, DefaultWeightedEdge> spanner = greedySpanner(stringGraph, 2);
 
-//        System.out.println(spanner.toString());
+        System.out.println("Original: " + stringGraph.toString());
+        System.out.println("Spanner:  " + spanner.toString());
 
     }
 
@@ -62,7 +63,6 @@ public class Main {
         // Populating HasMap with edges and weights
         for (int i = 0; i < edges.length; i++) {
             Integer weight = (int) g.getEdgeWeight(edges[i]);
-            System.out.print(edges[i].getClass() + "\n");
             edgeWeights.put(edges[i], weight);
         }
         HashMap<DefaultWeightedEdge, Integer> edgesSorted = sortHashMapByValuesD(edgeWeights);
@@ -81,6 +81,7 @@ public class Main {
             DijkstraShortestPath dijkstraShortestPath = new DijkstraShortestPath(gPling, v, u);
 
             if ((r * entry.getValue()) < dijkstraShortestPath.getPathLength()) {
+
                 gPling.addEdge(v.toString(), u.toString());
                 gPling.setEdgeWeight(gPling.getEdge(v.toString(), u.toString()), g.getEdgeWeight(evalEdge));
             }
@@ -89,7 +90,7 @@ public class Main {
         ListenableUndirectedWeightedGraph<String, DefaultWeightedEdge> spanner =
                 new ListenableUndirectedWeightedGraph<>(DefaultWeightedEdge.class);
         // iterate and add vertices/edges or possible to add a Set<> of them?
-        return spanner;
+        return gPling;
 
 
     }
