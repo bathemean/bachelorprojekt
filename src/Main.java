@@ -2,10 +2,7 @@ import org.jgrapht.alg.DijkstraShortestPath;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.ListenableUndirectedWeightedGraph;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class Main {
 
@@ -14,7 +11,7 @@ public class Main {
 
         ListenableUndirectedWeightedGraph<String, DefaultWeightedEdge> spanner = greedySpanner(stringGraph, 2);
 
-        System.out.println(spanner.toString());
+//        System.out.println(spanner.toString());
 
     }
 
@@ -52,16 +49,31 @@ public class Main {
     }
 
     public static ListenableUndirectedWeightedGraph<String, DefaultWeightedEdge> greedySpanner(ListenableUndirectedWeightedGraph g, Integer r){
-        Set<String> vertices = g.vertexSet();
-        Set<DefaultWeightedEdge> edges = g.edgeSet();
+        Object[] vertices = g.vertexSet().toArray();
+        Object[] edges = g.edgeSet().toArray();
+
         // This is our G', that represents all the edges added. It contains the same vertices as G(g)
-        Set<DefaultWeightedEdge> gPling;
+        ListenableUndirectedWeightedGraph<String, DefaultWeightedEdge> gPling =
+            new ListenableUndirectedWeightedGraph<>(DefaultWeightedEdge.class);
+
+        HashMap<Object, Integer> edgeWeights = new HashMap<>();
+        // Populating HasMap with edges and weights
+        for (int i = 0; i < edges.length; i++) {
+            Integer weight = (int) g.getEdgeWeight(edges[i]);
+            System.out.print(edges[i].getClass() + "\n");
+            edgeWeights.put(edges[i], weight);
+        }
+        HashMap<DefaultWeightedEdge, Integer> edgesSorted = sortHashMapByValuesD(edgeWeights);
 
         // We need to figure out a structure that can contain (edge, weight) so we can sort them
-        for(Integer i = sortedEdges.size(); i>0; i){
-        //    String startV, endV = sortedEdges.pop[0]?
-            if ((r * g.getEdgeWeight(g.getEdge(startV, endV))) < DijkstraShortestPath(gPling, startV, endV).getWeigt()){
-                gPling.addEdge(startV, endV);
+        Iterator<Map.Entry<DefaultWeightedEdge, Integer>> iterEdges = edgesSorted.entrySet().iterator();
+        while(iterEdges.hasNext()){
+            Map.Entry<DefaultWeightedEdge, Integer> entry = iterEdges.next();
+            DefaultWeightedEdge evalEdge = entry.getKey();
+            DijkstraShortestPath dijkstraShortestPath = new DijkstraShortestPath(gPling, evalEdge);
+
+            if ((r * entry.getValue()) < dijkstraShortestPath()){
+                gPling.addEdge(evalEdge);
             }
         }
 
@@ -71,5 +83,43 @@ public class Main {
         return spanner;
 
 
+    }
+
+    /**
+     * From StackOverflow:
+     * http://stackoverflow.com/questions/8119366/sorting-hashmap-by-values
+     *
+     * @param passedMap
+     * @return
+     */
+    public static LinkedHashMap sortHashMapByValuesD(HashMap passedMap) {
+        List mapKeys = new ArrayList(passedMap.keySet());
+        List mapValues = new ArrayList(passedMap.values());
+        Collections.sort(mapValues);
+//        Collections.sort(mapKeys);
+
+        LinkedHashMap sortedMap = new LinkedHashMap();
+
+        Iterator valueIt = mapValues.iterator();
+        while (valueIt.hasNext()) {
+            Object val = valueIt.next();
+            Iterator keyIt = mapKeys.iterator();
+
+            while (keyIt.hasNext()) {
+                Object key = keyIt.next();
+                String comp1 = passedMap.get(key).toString();
+                String comp2 = val.toString();
+
+                if (comp1.equals(comp2)){
+                    passedMap.remove(key);
+                    mapKeys.remove(key);
+                    sortedMap.put(key, val);
+                    break;
+                }
+
+            }
+
+        }
+        return sortedMap;
     }
 }
