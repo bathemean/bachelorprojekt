@@ -5,9 +5,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Set;
 
-/**
- * Created by christian on 10/1/15.
- */
 public class StoreageTest {
 
     public static void main(String args []){
