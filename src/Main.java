@@ -56,6 +56,8 @@ public class Main {
         ListenableUndirectedWeightedGraph<String, DefaultWeightedEdge> gPling =
             new ListenableUndirectedWeightedGraph<>(DefaultWeightedEdge.class);
 
+        org.jgrapht.Graphs.addAllVertices(gPling, g.vertexSet());
+
         HashMap<Object, Integer> edgeWeights = new HashMap<>();
         // Populating HasMap with edges and weights
         for (int i = 0; i < edges.length; i++) {
@@ -69,11 +71,18 @@ public class Main {
         Iterator<Map.Entry<DefaultWeightedEdge, Integer>> iterEdges = edgesSorted.entrySet().iterator();
         while(iterEdges.hasNext()){
             Map.Entry<DefaultWeightedEdge, Integer> entry = iterEdges.next();
-            DefaultWeightedEdge evalEdge = entry.getKey();
-            DijkstraShortestPath dijkstraShortestPath = new DijkstraShortestPath(gPling, evalEdge);
 
-            if ((r * entry.getValue()) < dijkstraShortestPath()){
-                gPling.addEdge(evalEdge);
+            Object v, u;
+            v = g.getEdgeSource(entry.getKey());
+            u = g.getEdgeTarget(entry.getKey());
+
+            DefaultWeightedEdge evalEdge = entry.getKey();
+
+            DijkstraShortestPath dijkstraShortestPath = new DijkstraShortestPath(gPling, v, u);
+
+            if ((r * entry.getValue()) < dijkstraShortestPath.getPathLength()) {
+                gPling.addEdge(v.toString(), u.toString());
+                gPling.setEdgeWeight(gPling.getEdge(v.toString(), u.toString()), g.getEdgeWeight(evalEdge));
             }
         }
 
