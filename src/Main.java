@@ -1,15 +1,14 @@
 import org.jgrapht.alg.DijkstraShortestPath;
 import org.jgrapht.graph.DefaultWeightedEdge;
-import org.jgrapht.graph.ListenableUndirectedWeightedGraph;
 
 import java.util.*;
 
 public class Main {
 
     public static void main(String args []){
-        ListenableUndirectedWeightedGraph<String, DefaultWeightedEdge> stringGraph = createStringGraph();
+        uwGraph stringGraph = createStringGraph();
 
-        ListenableUndirectedWeightedGraph<String, DefaultWeightedEdge> spanner = GreedySpanner.GreedySpanner(stringGraph, 2);
+        GreedySpanner spanner = new GreedySpanner(stringGraph, 2);
 
         System.out.println("Original: " + stringGraph.toString());
         System.out.println("Spanner:  " + spanner.toString());
@@ -20,10 +19,9 @@ public class Main {
      * Creates a dummy graph.
      * @return the graph.
      */
-    private static ListenableUndirectedWeightedGraph<String, DefaultWeightedEdge> createStringGraph()
+    private static uwGraph createStringGraph()
     {
-        ListenableUndirectedWeightedGraph<String, DefaultWeightedEdge> g =
-                new ListenableUndirectedWeightedGraph<>(DefaultWeightedEdge.class);
+        uwGraph g = new uwGraph(DefaultWeightedEdge.class);
 
         String v1 = "v1";
         String v2 = "v2";
