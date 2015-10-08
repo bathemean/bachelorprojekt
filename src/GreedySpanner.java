@@ -26,10 +26,7 @@ public class GreedySpanner {
         HashMap<DefaultWeightedEdge, Integer> edgesSorted = sortHashMapByValuesD(edgeWeights);
 
         // Iterate over all the edges.
-        Iterator<Map.Entry<DefaultWeightedEdge, Integer>> iterEdges = edgesSorted.entrySet().iterator();
-        while(iterEdges.hasNext()){
-            Map.Entry<DefaultWeightedEdge, Integer> entry = iterEdges.next();
-
+        for (Map.Entry<DefaultWeightedEdge, Integer> entry : edgesSorted.entrySet()) {
             Object v, u;
             v = g.getEdgeSource(entry.getKey());
             u = g.getEdgeTarget(entry.getKey());

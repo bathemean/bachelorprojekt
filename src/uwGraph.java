@@ -1,4 +1,3 @@
-import org.jgrapht.WeightedGraph;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.ListenableUndirectedWeightedGraph;
 
@@ -15,7 +14,7 @@ public class uwGraph extends ListenableUndirectedWeightedGraph<String, DefaultWe
 
     }
 
-    protected uwGraph copyGraph() {
+    protected uwGraph copyGraphNoEdges() {
 
         // This is our G', that represents all the edges added. It contains the same vertices as G(g)
         uwGraph gPling = new uwGraph(DefaultWeightedEdge.class);
@@ -26,6 +25,12 @@ public class uwGraph extends ListenableUndirectedWeightedGraph<String, DefaultWe
 
     }
 
+    protected uwGraph cloneGraph() {
+        uwGraph graphClone = copyGraphNoEdges();
+        // We might be able to just use the line below to do all the magic
+        org.jgrapht.Graphs.addAllEdges(graphClone, this, this.edgeSet());
+        return graphClone;
+    }
     protected HashMap<Object, Integer> getEdgeWeights() {
 
         HashMap<Object, Integer> edgeWeights = new HashMap<>();

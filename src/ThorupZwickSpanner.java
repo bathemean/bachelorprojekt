@@ -6,12 +6,13 @@ import java.util.*;
 
 public class ThorupZwickSpanner {
 
-    int k;
+    private int k;
+    private uwGraph graph;
 
     public ThorupZwickSpanner(uwGraph g, int k) {
 
         this.k = k;
-
+        this.graph = g;
         ArrayList<String> vertices = vertexSetToArray(g.vertexSet());
 
         // Assign vertices into parititions.
@@ -102,23 +103,56 @@ public class ThorupZwickSpanner {
 
     }
 
-    private HashMap<HashMap<ArrayList<String>, Object>, Integer> distances() {
-        return null;
+    /**
+     * Iterates over the A_i's from K-1 down to 0.
+     * Still untested.
+     * @param ai with indice in descending order, expectiong k not to be in.
+     * @return Hashmap with found distance for each vertex in G to A_i,
+     */
+    private LinkedHashMap<Integer, LinkedHashMap<String, Integer>> distances(LinkedHashMap<Integer, ArrayList<String>> ai){
+
+        // Iterate through each A_i
+        LinkedHashMap<Integer, LinkedHashMap<String, Integer>> distancesCollection = new LinkedHashMap<Integer, LinkedHashMap<String, Integer>>();
+        for (Integer i = k-1; i >= 0 ; i--) {
+            uwGraph distanceGraph = this.graph.cloneGraph();
+            String sourceV;
+            sourceV = "sourceV";
+            // Build source edges to find the witnesses fast
+            for (String u : ai.get(i)) {
+                distanceGraph.addEdge(sourceV, u);
+                distanceGraph.setEdgeWeight(distanceGraph.getEdge(sourceV, u), 0);
+            }
+
+            // Find distances and witnesses from A_i to v
+            LinkedHashMap<String, Integer> distancesAi = new LinkedHashMap<String, Integer>();
+            for (String v : this.graph.vertexSet()) {
+                DijkstraShortestPath distance = new DijkstraShortestPath(distanceGraph, sourceV, v);
+                double weight = distance.getPathLength();
+                // Assuming the first edge is the source/dummy edge, we pick the second
+                Object witnessEdge = distance.getPathEdgeList().get(1);
+                // witness to add
+                String witness = "I have no freaking clue";
+                distancesAi.put(witness, (int) weight);
+            }
+
+        }
+
+        return distancesCollection;
     }
 
     private ArrayList<ArrayList<DijkstraShortestPath>> shortestPathsTrees(uwGraph g, HashMap<Integer, ArrayList<String>> partitions) {
 
         ArrayList<ArrayList<DijkstraShortestPath>> shortestPaths = new ArrayList<>();
 
-        for(int i = 0; i < k; i++) {
+        for (int i = 0; i < k; i++) {
             ArrayList<String> subset = new ArrayList<>();
 
             ArrayList<String> cur = partitions.get(i);
-            ArrayList<String> next = partitions.get(i+1);
+            ArrayList<String> next = partitions.get(i + 1);
 
-            for(String c : cur) {
+            for (String c : cur) {
 
-                if(next != null) {
+                if (next != null) {
                     if (!next.contains(c)) {
                         subset.add(c);
                     }
@@ -129,7 +163,7 @@ public class ThorupZwickSpanner {
             }
 
 
-            if(next != null) {
+            if (next != null) {
                 for (String w : subset) {
                     ArrayList<DijkstraShortestPath> sp = new ArrayList<>();
 
@@ -146,5 +180,13 @@ public class ThorupZwickSpanner {
 
         return shortestPaths;
     }
+
+    private /*Something here*/ void trees(){
+
+    }
+    private /*Something here*/ void uniion(){
+
+    }
+
 
 }
