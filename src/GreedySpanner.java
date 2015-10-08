@@ -1,10 +1,12 @@
 import org.jgrapht.alg.DijkstraShortestPath;
 import org.jgrapht.graph.DefaultWeightedEdge;
-import org.jgrapht.graph.ListenableUndirectedWeightedGraph;
 
 import java.util.*;
 
 public class GreedySpanner {
+
+    public GreedySpanner(uwGraph stringGraph, int i) {
+    }
 
     /**
      * The Greedy-Spanner algorithm originally developed by Althofer et. al.
@@ -12,23 +14,15 @@ public class GreedySpanner {
      * @param r multiplication degree of desired spanner.
      * @return a spanner with multiplication degree r.
      */
-    public static ListenableUndirectedWeightedGraph<String, DefaultWeightedEdge> GreedySpanner(ListenableUndirectedWeightedGraph g, Integer r){
+    public uwGraph GreedySpanner(uwGraph g, Integer r){
         Object[] vertices = g.vertexSet().toArray();
         Object[] edges = g.edgeSet().toArray();
 
-        // This is our G', that represents all the edges added. It contains the same vertices as G(g)
-        ListenableUndirectedWeightedGraph<String, DefaultWeightedEdge> gPling =
-                new ListenableUndirectedWeightedGraph<>(DefaultWeightedEdge.class);
+        uwGraph gPling = g.copyGraph();
 
-        org.jgrapht.Graphs.addAllVertices(gPling, g.vertexSet());
+        HashMap<Object, Integer> edgeWeights = g.getEdgeWeights();
 
-        HashMap<Object, Integer> edgeWeights = new HashMap<>();
-        // Populating HasMap with edges and weights
-        for (int i = 0; i < edges.length; i++) {
-            Integer weight = (int) g.getEdgeWeight(edges[i]);
-            edgeWeights.put(edges[i], weight);
-        }
-        // Sort edges by weight, smalles first.
+        // Sort edges by weight, smallest first.
         HashMap<DefaultWeightedEdge, Integer> edgesSorted = sortHashMapByValuesD(edgeWeights);
 
         // Iterate over all the edges.
