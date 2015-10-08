@@ -34,7 +34,7 @@ super.tearDown();
 */ 
 public void testGreedySpanner() throws Exception { 
 
-    assertEquals();
+    //assertEquals();
 
 }
 
@@ -45,7 +45,7 @@ public void testGreedySpanner() throws Exception {
 */ 
 public void testSortHashMapByValuesD() throws Exception {
 
-    LinkedHashMap sorted = new
+    //LinkedHashMap sorted = new
 }
 
 

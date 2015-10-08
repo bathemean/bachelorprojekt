@@ -13,6 +13,9 @@ public class Main {
         System.out.println("Original: " + stringGraph.toString());
         System.out.println("Spanner:  " + spanner.toString());
 
+        ThorupZwickSpanner tzspanner = new ThorupZwickSpanner(stringGraph, 4);
+        System.out.println("TZ Spanner: " + tzspanner.toString());
+
     }
 
     /**
