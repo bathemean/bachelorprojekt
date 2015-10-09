@@ -3,9 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="bd33c16e-5169-41f1-8169-863300ad764f" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/GreedySpanner.java" afterPath="$PROJECT_DIR$/src/GreedySpanner.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ThorupZwickSpanner.java" afterPath="$PROJECT_DIR$/src/ThorupZwickSpanner.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/uwGraph.java" afterPath="$PROJECT_DIR$/src/uwGraph.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="bachelorprojekt.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -82,8 +79,8 @@
       <file leaf-file-name="GreedySpanner.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/GreedySpanner.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.19359146">
-              <caret line="28" column="86" selection-start-line="28" selection-start-column="86" selection-end-line="28" selection-end-column="86" />
+            <state vertical-scroll-proportion="0.9519359">
+              <caret line="63" column="35" selection-start-line="63" selection-start-column="35" selection-end-line="63" selection-end-column="35" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -178,9 +175,9 @@
         <option value="$PROJECT_DIR$/src/Spanner.java" />
         <option value="$PROJECT_DIR$/src/test/GreedySpannerTest.java" />
         <option value="$PROJECT_DIR$/src/Main.java" />
-        <option value="$PROJECT_DIR$/src/GreedySpanner.java" />
         <option value="$PROJECT_DIR$/src/uwGraph.java" />
         <option value="$PROJECT_DIR$/src/ThorupZwickSpanner.java" />
+        <option value="$PROJECT_DIR$/src/GreedySpanner.java" />
       </list>
     </option>
   </component>
@@ -556,12 +553,12 @@
       <workItem from="1444286581067" duration="4300000" />
       <workItem from="1444297279764" duration="10347000" />
       <workItem from="1444327490652" duration="199000" />
-      <workItem from="1444328157219" duration="6679000" />
+      <workItem from="1444328157219" duration="7308000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="48284000" />
+    <option name="totallyTimeSpent" value="48913000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1600" height="875" extended-state="4" />
@@ -1066,8 +1063,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/GreedySpanner.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.19359146">
-          <caret line="28" column="86" selection-start-line="28" selection-start-column="86" selection-end-line="28" selection-end-column="86" />
+        <state vertical-scroll-proportion="0.9519359">
+          <caret line="63" column="35" selection-start-line="63" selection-start-column="35" selection-end-line="63" selection-end-column="35" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

@@ -18,7 +18,7 @@ public class GreedySpanner {
         Object[] vertices = g.vertexSet().toArray();
         Object[] edges = g.edgeSet().toArray();
 
-        uwGraph gPling = g.copyGraph();
+        uwGraph gPling = g.copyGraphNoEdges();
 
         HashMap<Object, Integer> edgeWeights = g.getEdgeWeights();
 
