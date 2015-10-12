@@ -28,4 +28,11 @@ public class Distance {
         return this.distance;
     }
 
+    public String toString() {
+        String str = "Partition: " + this.partition + " Witness: " + this.witness + " Target: " + this.target +
+                " Distance: " + this.distance;
+
+        return str;
+    }
+
 }

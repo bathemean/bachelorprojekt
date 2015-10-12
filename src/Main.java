@@ -7,13 +7,14 @@ public class Main {
 
     public static void main(String args []){
         uwGraph stringGraph = createStringGraph();
+        uwGraph bigStrGraph = createBiggerStringGraph();
 
         GreedySpanner spanner = new GreedySpanner(stringGraph, 2);
 
         System.out.println("Original: " + stringGraph.toString());
         System.out.println("Spanner:  " + spanner.toString());
 
-        ThorupZwickSpanner tzspanner = new ThorupZwickSpanner(stringGraph, 4);
+        ThorupZwickSpanner tzspanner = new ThorupZwickSpanner(bigStrGraph, 4);
         System.out.println("TZ Spanner: " + tzspanner.toString());
 
     }
@@ -54,6 +55,46 @@ public class Main {
         return g;
     }
 
+    /**
+     * Creates a bigger dummy graph.
+     * @return the graph.
+     */
+    private static uwGraph createBiggerStringGraph() {
+        uwGraph g = new uwGraph(DefaultWeightedEdge.class);
+
+
+        ArrayList<String> vertices = new ArrayList<>();
+
+        vertices.add("v0");
+        vertices.add("v1");
+        vertices.add("v2");
+        vertices.add("v3");
+        vertices.add("v4");
+        vertices.add("v5");
+        vertices.add("v6");
+        vertices.add("v7");
+        vertices.add("v8");
+        vertices.add("v9");
+
+        // Add vertices
+        for(String v : vertices) {
+            g.addVertex(v);
+        }
+
+        Random gen = new Random();
+
+        // Assign edges between all vertices, and assign a random weight.
+        for(String v : vertices) {
+            for(String u : vertices) {
+                if(v != u) {
+                    g.addEdge(v, u);
+                    g.setEdgeWeight(g.getEdge(v, u), gen.nextInt(1000));
+                }
+            }
+        }
+
+        return g;
+    }
 
 
 
