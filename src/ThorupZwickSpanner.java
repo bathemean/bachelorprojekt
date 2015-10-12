@@ -1,7 +1,6 @@
 
 import org.jgrapht.alg.DijkstraShortestPath;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class ThorupZwickSpanner {
@@ -44,30 +43,6 @@ public class ThorupZwickSpanner {
 
     }
 
-    private HashMap<Integer, ArrayList<String>> nonRandPartition(ArrayList<String> vertices) {
-
-        HashMap<Integer, ArrayList<String>> partitions = new HashMap<>();
-
-        partitions.put(0, vertices); // Put all vertices into A_0.
-
-        for(int i = 1; i < k; i++) {
-
-            ArrayList<String> prev = partitions.get(i - 1);
-            ArrayList<String> prevPart = new ArrayList<>();
-
-            for(int j = 1; j < prev.size(); j++) {
-                prevPart.add(prev.get(j));
-            }
-
-            partitions.put(i, prevPart);
-        }
-
-        partitions.put(k, null);
-
-        return partitions;
-
-    }
-
     private HashMap<Integer, ArrayList<String>> partition(ArrayList<String> vertices) {
 
         HashMap<Integer, ArrayList<String>> partitions = new HashMap<>();
@@ -75,7 +50,8 @@ public class ThorupZwickSpanner {
         partitions.put(0, vertices); // Put all vertices into A_0.
 
         int n = vertices.size();
-        int margin = (int) Math.pow(n, (-1.0)/k);
+        double margin =  Math.pow(n, (-1.0)/k);
+        int intMargin =  (int) (((double) Integer.MAX_VALUE) / margin);
 
         Random gen = new Random();
 
@@ -86,8 +62,7 @@ public class ThorupZwickSpanner {
             for(String v : partitions.get(i-1)) {
                 int next = gen.nextInt(Integer.MAX_VALUE);
                 System.out.println("Margin: " + margin + ", next: " + next);
-                if(margin > next) {
-
+                if(intMargin > next) {
                     subset.add(v);
                 }
             }
