@@ -90,7 +90,6 @@ public class ThorupZwickSpanner {
 
                     subset.add(v);
                 }
-
             }
 
             partitions.put(i, subset);
@@ -113,10 +112,13 @@ public class ThorupZwickSpanner {
 
         // Iterate through each A_i
         LinkedHashMap<Integer, LinkedHashMap<String, Integer>> distancesCollection = new LinkedHashMap<Integer, LinkedHashMap<String, Integer>>();
+
         for (Integer i = k-1; i >= 0 ; i--) {
+
             uwGraph distanceGraph = this.graph.cloneGraph();
             String sourceV;
             sourceV = "sourceV";
+
             // Build source edges to find the witnesses fast
             for (String u : ai.get(i)) {
                 distanceGraph.addEdge(sourceV, u);
@@ -125,11 +127,15 @@ public class ThorupZwickSpanner {
 
             // Find distances and witnesses from A_i to v
             LinkedHashMap<String, Integer> distancesAi = new LinkedHashMap<String, Integer>();
+
             for (String v : this.graph.vertexSet()) {
+
                 DijkstraShortestPath distance = new DijkstraShortestPath(distanceGraph, sourceV, v);
                 double weight = distance.getPathLength();
+
                 // Assuming the first edge is the source/dummy edge, we pick the second
                 Object witnessEdge = distance.getPathEdgeList().get(1);
+
                 // witness to add
                 String witness = "I have no freaking clue";
                 distancesAi.put(witness, (int) weight);
@@ -150,6 +156,8 @@ public class ThorupZwickSpanner {
             ArrayList<String> cur = partitions.get(i);
             ArrayList<String> next = partitions.get(i + 1);
 
+
+            // Computer the subset A_i - A_i+1.
             for (String c : cur) {
 
                 if (next != null) {
@@ -162,8 +170,8 @@ public class ThorupZwickSpanner {
 
             }
 
-
             if (next != null) {
+                // Find the shortest path from each vertex in the subset, to all the vertices in the graph.
                 for (String w : subset) {
                     ArrayList<DijkstraShortestPath> sp = new ArrayList<>();
 
