@@ -9,6 +9,9 @@ public class ThorupZwickSpanner {
     private int k;
     private uwGraph graph;
 
+    private HashMap<Integer, ArrayList<String>> partitions;
+    private ArrayList<Distance> distances;
+
     public ThorupZwickSpanner(uwGraph g, int k) {
 
         this.k = k;
@@ -16,12 +19,12 @@ public class ThorupZwickSpanner {
         ArrayList<String> vertices = vertexSetToArray(g.vertexSet());
 
         // Assign vertices into parititions.
-        HashMap<Integer, ArrayList<String>> p = partition(vertices);
+        this.partitions = partition(vertices);
 
         // Compute distance between A_k and every vertex v.
-        ArrayList<Distance> d = distances(p);
-        System.out.println("Distances: " + d);
-        System.out.println("Distances length: " + d.size());
+        this.distances = distances(this.partitions);
+        //System.out.println("Distances: " + this.distances);
+        //System.out.println("Distances length: " + this.distances.size());
 
         //ArrayList<ArrayList<DijkstraShortestPath>> spt = shortestPathsTrees(g, p);
         //System.out.println(spt);
@@ -68,7 +71,6 @@ public class ThorupZwickSpanner {
                     subset.add(v);
                 }
             }
-            System.out.println(subset.toArray().length);
             partitions.put(i, subset);
 
         }
@@ -117,8 +119,10 @@ public class ThorupZwickSpanner {
                         Object witnessEdge = path.getPathEdgeList().get(1);
                         String witness = distanceGraph.getEdgeSource((DefaultWeightedEdge) witnessEdge);
 
-                        Distance distance = new Distance(i, witness, v, weight);
-                        distancesCollection.add(distance);
+                        if(witness != v) {
+                            Distance distance = new Distance(i, witness, v, weight);
+                            distancesCollection.add(distance);
+                        }
                     } catch(Exception e) {
                         System.out.println("Exception: " + e.toString());
                     }
@@ -179,6 +183,14 @@ public class ThorupZwickSpanner {
     }
     private /*Something here*/ void uniion(){
 
+    }
+
+    public HashMap<Integer, ArrayList<String>> getPartitions() {
+        return this.partitions;
+    }
+
+    public ArrayList<Distance> getDistances() {
+        return this.distances;
     }
 
 

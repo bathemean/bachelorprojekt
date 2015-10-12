@@ -1,9 +1,9 @@
 public class Distance {
 
-    int partition;
-    String witness;
-    String target;
-    double distance;
+    private int partition;
+    private String witness;
+    private String target;
+    private double distance;
 
     public Distance(int partition, String witness, String target, double distance) {
         this.partition = partition;
