@@ -15,7 +15,7 @@ public class ThorupZwickSpanner {
         ArrayList<String> vertices = vertexSetToArray(g.vertexSet());
 
         // Assign vertices into parititions.
-        HashMap<Integer, ArrayList<String>> p = nonRandPartition(vertices);
+        HashMap<Integer, ArrayList<String>> p = partition(vertices);
 
         // Compute distance between A_k and every vertex v.
         //distances(partition p, vertex v);
@@ -51,7 +51,7 @@ public class ThorupZwickSpanner {
 
         int n = vertices.size();
         double margin =  Math.pow(n, (-1.0)/k);
-        int intMargin =  (int) (((double) Integer.MAX_VALUE) / margin);
+        double intMargin =  ((double) Integer.MAX_VALUE) * margin;
 
         Random gen = new Random();
 
@@ -59,14 +59,13 @@ public class ThorupZwickSpanner {
 
             ArrayList<String> subset = new ArrayList<>();
 
-            for(String v : partitions.get(i-1)) {
+            for(String v : partitions.get(i - 1)) {
                 int next = gen.nextInt(Integer.MAX_VALUE);
-                System.out.println("Margin: " + margin + ", next: " + next);
                 if(intMargin > next) {
                     subset.add(v);
                 }
             }
-
+            System.out.println(subset.toArray().length);
             partitions.put(i, subset);
 
         }
