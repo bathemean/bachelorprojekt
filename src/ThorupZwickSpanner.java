@@ -20,9 +20,10 @@ public class ThorupZwickSpanner {
 
         // Assign vertices into parititions.
         this.partitions = partition(vertices);
+        System.out.println("Partitions: " + this.partitions);
 
         // Compute distance between A_k and every vertex v.
-        this.distances = distances(this.partitions);
+        distances(this.partitions);
         //System.out.println("Distances: " + this.distances);
         //System.out.println("Distances length: " + this.distances.size());
 
@@ -81,19 +82,76 @@ public class ThorupZwickSpanner {
 
     }
 
+
+    private void distances(HashMap<Integer, ArrayList<String>> partitions) {
+
+        uwGraph spanner = this.graph.copyGraphNoEdges();
+
+        for(int i = k-1; i >= 0; i--) {
+System.out.println("==== i: " + i + " ====");
+            uwGraph tmpGraph = this.graph.cloneGraph();
+
+            ArrayList<String> ai = partitions.get(i);
+
+            // Add Source vertex to the temporary graph
+            String source = "source";
+            tmpGraph.addVertex(source);
+
+            // Assign the source vertex to all the nodes in ai.
+            for(String v : ai) {
+                tmpGraph.addEdge(source, v);
+                tmpGraph.setEdgeWeight(tmpGraph.getEdge(source, v), 0);
+            }
+
+System.out.println(tmpGraph.toString());
+
+            for(String v : this.graph.vertexSet()) {
+
+                DijkstraShortestPath path = new DijkstraShortestPath(tmpGraph, source, v);
+                double pathLength = path.getPathLength();
+System.out.println("EdgeList: " + path.getPathEdgeList());
+                if(pathLength > 0) {
+                    List<DefaultWeightedEdge> edges = path.getPathEdgeList();
+
+                    for(DefaultWeightedEdge e : edges) {
+                        String edgeSource = tmpGraph.getEdgeSource(e);
+                        String edgeTarget = tmpGraph.getEdgeTarget(e);
+                        double edgeWeight = tmpGraph.getEdgeWeight(e);
+
+                        // Dont inlucde source vertex in new graph
+                        if(edgeSource != source) {
+                            spanner.addEdge(edgeSource, edgeTarget);
+                            spanner.setEdgeWeight(spanner.getEdge(edgeSource, edgeTarget), edgeWeight);
+                        }
+
+                    }
+
+                }
+            }
+            System.out.println("Spanner: " + spanner);
+
+        }
+
+
+
+    }
+
     /**
      * Iterates over the A_i's from K-1 down to 0.
      * Still untested.
      * @param partitions unsorted partitioning of the vertices in the graph.
      * @return ArrayList of the distances found, with partition, witness, target and the found distance.
      */
-    private ArrayList<Distance> distances(HashMap<Integer, ArrayList<String>> partitions){
+    private ArrayList<Distance> distancesOLD(HashMap<Integer, ArrayList<String>> partitions){
 
         ArrayList<Distance> distancesCollection = new ArrayList<>();
 
-        for (Integer i = k-1; i > 0 ; i--) {
+        ArrayList<String> sourceTagets = new ArrayList<>();
+
+        for (Integer i = k-1; i >= 0 ; i--) {
 
             ArrayList<String> ai = partitions.get(i);
+
             // Create a copy of the original graph, so that we can add a source vertex.
             uwGraph distanceGraph = this.graph.cloneGraph();
             String sourceV;
@@ -103,17 +161,23 @@ public class ThorupZwickSpanner {
             // Build source edges to find the witnesses fast
             for (String u : ai) {
                 distanceGraph.addEdge(sourceV, u);
+
+                if(!sourceTagets.contains(u)) {
+                    sourceTagets.add(u);
+                }
+
                 distanceGraph.setEdgeWeight(distanceGraph.getEdge(sourceV, u), 0);
             }
 
             // For all vertices in the graph, find the shortest path to the partition (witness).
+            System.out.println(this.graph.vertexSet().toString());
             for (String v : this.graph.vertexSet()) {
 
                 DijkstraShortestPath path = new DijkstraShortestPath(distanceGraph, sourceV, v);
                 double weight = path.getPathLength();
-
+                System.out.println(i + " EdgeList: " + path.getPathEdgeList().toString() + " " + weight);
                 // The path must be bigger than just the source vertex and the partition vertex.
-                if(weight > 0) {
+                if(weight > 0 && ai.size() > 0) {
                     try {
                         // Assuming the first edge is the source/dummy edge, we pick the second
                         Object witnessEdge = path.getPathEdgeList().get(1);
@@ -124,13 +188,30 @@ public class ThorupZwickSpanner {
                             distancesCollection.add(distance);
                         }
                     } catch(Exception e) {
-                        System.out.println("Exception: " + e.toString());
+                        System.out.printf("Exception: %s, target: %s, weight; %f\n", e.toString(), v, weight);
                     }
+
+                } else {
+                    //System.out.println(i + " " + v + " ");
 
                 }
             }
 
         }
+
+        if(sourceTagets.size() != 10) {
+            sourceTagets.sort(String.CASE_INSENSITIVE_ORDER);
+            System.out.println("Source Targets: " + sourceTagets);
+        } else {
+            System.out.println("All nodes sourced.");
+        }
+
+        System.out.println("=== DISTANCES ===");
+        for(Distance d : distancesCollection) {
+            System.out.println(d);
+        }
+        System.out.println("=================");
+
 
         return distancesCollection;
     }

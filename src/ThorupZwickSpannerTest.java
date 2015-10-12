@@ -24,7 +24,6 @@ public class ThorupZwickSpannerTest {
             flags.add(0);
         }
 
-System.out.println(vertices.length);
         // Make sure all vertices are connected.
         for(int j = 0; j < vertices.length; j++) {
             String v = vertices[j].toString();
@@ -39,7 +38,7 @@ System.out.println(vertices.length);
             }
 
         }
-System.out.println(flags.toString());
+System.out.println("Flags " + flags.toString());
         if(flags.contains(0)) {
             String res = "Missing nodes: ";
 

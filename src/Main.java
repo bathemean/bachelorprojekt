@@ -20,8 +20,8 @@ public class Main {
         ThorupZwickSpanner tzspanner = new ThorupZwickSpanner(bigStrGraph, 4);
         System.out.println("TZ Spanner: " + tzspanner.toString());
 
-        ThorupZwickSpannerTest tzTest = new ThorupZwickSpannerTest();
-        System.out.println("Distanes test: " + tzTest.testDistances());
+        //ThorupZwickSpannerTest tzTest = new ThorupZwickSpannerTest();
+        //System.out.println("Distanes test: " + tzTest.testDistances());
 
     }
 
