@@ -3,7 +3,7 @@ import org.jgrapht.graph.DefaultWeightedEdge;
 
 import java.util.*;
 
-public class GreedySpanner {
+public class GreedySpanner extends Spanner {
 
     public GreedySpanner() {
 
@@ -16,6 +16,8 @@ public class GreedySpanner {
      * @return a spanner with multiplication degree r.
      */
     public uwGraph makeSpanner(uwGraph g, Integer r){
+        super.startTiming();
+
         Object[] vertices = g.vertexSet().toArray();
         Object[] edges = g.edgeSet().toArray();
 
@@ -41,6 +43,10 @@ public class GreedySpanner {
                 gPling.setEdgeWeight(gPling.getEdge(vS, uS), entry.getValue());
             }
         }
+
+        super.endTiming();
+        gPling.setRuntime(super.getRuntime());
+
         return gPling;
 
     }

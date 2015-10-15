@@ -1,9 +1,12 @@
+import com.sun.tools.javac.util.Pair;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.ListenableUndirectedWeightedGraph;
 
 import java.util.HashMap;
 
 public class uwGraph extends ListenableUndirectedWeightedGraph<String, DefaultWeightedEdge> {
+
+    private long runtime;
 
     public uwGraph(Class<DefaultWeightedEdge> base) {
         super(base);
@@ -44,15 +47,20 @@ public class uwGraph extends ListenableUndirectedWeightedGraph<String, DefaultWe
 
     }
 
+    protected void setRuntime(long runtime) {
+        this.runtime = runtime;
+    }
+
     public String toString() {
         return super.toString();
     }
 
     public void getStretch() {
 
-
         Object[] vertices = this.vertexSet().toArray();
         Object[] edges = this.edgeSet().toArray();
+
+        // GI MIG DIJKSTRA!
 
     }
 
@@ -79,16 +87,34 @@ public class uwGraph extends ListenableUndirectedWeightedGraph<String, DefaultWe
 
     }
 
-    public void getDegree() {
+    public int getHighestDegree() {
 
+        Object[] vertices = this.vertexSet().toArray();
+        int highest = 0;
+
+        for(Object ov : vertices) {
+            String v = ov.toString();
+            if(this.degreeOf(v) > highest) {
+                highest = this.degreeOf(v);
+            }
+        }
+
+        return highest;
+
+    }
+
+    public long getRuntime() {
+        return this.runtime;
     }
 
     public String getMetricsAsString() {
 
-        String str;
+        String weight = "Total Weight: " + this.getTotalWeight() + ".";
+        String density = "Density: " + this.getDensity() + ".";
+        String hdegree = "Highest degree: " + this.getHighestDegree() + ".";
+        String runtime = "Runtime: " + this.getRuntime() + " ms.";
 
-        str = "Total Weight: " + this.getTotalWeight() + ".";
-        str += " Density: " + this.getDensity() + ".";
+        String str = weight + " " + density + " " + hdegree + " " + runtime;
 
         return str;
 
