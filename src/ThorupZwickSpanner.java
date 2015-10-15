@@ -57,7 +57,7 @@ public class ThorupZwickSpanner {
         partitions.put(0, vertices); // Put all vertices into A_0.
 
         int n = vertices.size();
-        double margin =  Math.pow(n, (-1.0) / k);
+        double margin =  Math.pow( (n/Math.log(n)) , (-1.0) / k);
         double intMargin =  ((double) Integer.MAX_VALUE) * margin;
 
         Random gen = new Random();
@@ -103,14 +103,14 @@ System.out.println("==== i: " + i + " ====");
                 tmpGraph.setEdgeWeight(tmpGraph.getEdge(source, v), 0);
             }
 
-System.out.println(tmpGraph.toString());
+//System.out.println(tmpGraph.toString());
 
             for(String v : this.graph.vertexSet()) {
 
                 DijkstraShortestPath path = new DijkstraShortestPath(tmpGraph, source, v);
                 double pathLength = path.getPathLength();
-System.out.println("EdgeList: " + path.getPathEdgeList());
-                if(pathLength > 0) {
+//System.out.println("EdgeList: " + path.getPathEdgeList() + " L: " + pathLength);
+                if(pathLength > 0 && !Double.isInfinite(pathLength)) {
                     List<DefaultWeightedEdge> edges = path.getPathEdgeList();
 
                     for(DefaultWeightedEdge e : edges) {
@@ -170,7 +170,7 @@ System.out.println("EdgeList: " + path.getPathEdgeList());
             }
 
             // For all vertices in the graph, find the shortest path to the partition (witness).
-            System.out.println(this.graph.vertexSet().toString());
+            //System.out.println(this.graph.vertexSet().toString());
             for (String v : this.graph.vertexSet()) {
 
                 DijkstraShortestPath path = new DijkstraShortestPath(distanceGraph, sourceV, v);

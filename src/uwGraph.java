@@ -25,6 +25,12 @@ public class uwGraph extends ListenableUndirectedWeightedGraph<String, DefaultWe
 
     }
 
+    protected Spanner toSpanner() {
+        Spanner spanner = new Spanner(DefaultWeightedEdge.class);
+        org.jgrapht.Graphs.addAllVertices(spanner, this.vertexSet());
+        return spanner;
+    }
+
     protected uwGraph cloneGraph() {
         uwGraph graphClone = copyGraphNoEdges();
         // We might be able to just use the line below to do all the magic
@@ -42,5 +48,9 @@ public class uwGraph extends ListenableUndirectedWeightedGraph<String, DefaultWe
 
         return edgeWeights;
 
+    }
+
+    public String toString() {
+        return super.toString();
     }
 }

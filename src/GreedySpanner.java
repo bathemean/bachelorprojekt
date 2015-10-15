@@ -5,7 +5,8 @@ import java.util.*;
 
 public class GreedySpanner {
 
-    public GreedySpanner(uwGraph stringGraph, int i) {
+    public GreedySpanner() {
+
     }
 
     /**
@@ -14,23 +15,23 @@ public class GreedySpanner {
      * @param r multiplication degree of desired spanner.
      * @return a spanner with multiplication degree r.
      */
-    public uwGraph GreedySpanner(uwGraph g, Integer r){
+    public Spanner makeSpanner(uwGraph g, Integer r){
         Object[] vertices = g.vertexSet().toArray();
         Object[] edges = g.edgeSet().toArray();
 
-        uwGraph gPling = g.copyGraphNoEdges();
+        Spanner gPling = g.toSpanner();
 
         HashMap<Object, Integer> edgeWeights = g.getEdgeWeights();
-
+System.out.println(g);
         // Sort edges by weight, smallest first.
         HashMap<DefaultWeightedEdge, Integer> edgesSorted = sortHashMapByValuesD(edgeWeights);
-
+System.out.println(edgesSorted);
         // Iterate over all the edges.
         for (Map.Entry<DefaultWeightedEdge, Integer> entry : edgesSorted.entrySet()) {
             Object v, u;
             v = g.getEdgeSource(entry.getKey());
             u = g.getEdgeTarget(entry.getKey());
-
+System.out.println("doaewqeioqwp");
 
             DijkstraShortestPath dijkstraShortestPath = new DijkstraShortestPath(gPling, v, u);
 
@@ -39,9 +40,9 @@ public class GreedySpanner {
                 String uS = u.toString();
                 gPling.addEdge(vS, uS);
                 gPling.setEdgeWeight(gPling.getEdge(vS, uS), entry.getValue());
+                System.out.println("dsahjdsajka");
             }
         }
-
         return gPling;
 
     }
