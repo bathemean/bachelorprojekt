@@ -11,7 +11,7 @@ public class ThorupZwickSpannerTest {
     public ThorupZwickSpannerTest() {
         GraphFactory factory = new GraphFactory();
         this.graph = factory.createBiggerStringGraph();
-        this.spanner = new ThorupZwickSpanner(this.graph, 4);
+        //this.spanner = new ThorupZwickSpanner(this.graph, 4);
     }
 
     public String testDistances() {

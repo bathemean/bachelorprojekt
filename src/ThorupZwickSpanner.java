@@ -12,11 +12,17 @@ public class ThorupZwickSpanner {
     private HashMap<Integer, ArrayList<String>> partitions;
     private ArrayList<Distance> distances;
 
-    public ThorupZwickSpanner(uwGraph g, int k) {
+    public ThorupZwickSpanner() {
+
+    }
+
+    public Spanner makeSpanner(uwGraph g, int k) {
 
         this.k = k;
         this.graph = g;
         ArrayList<String> vertices = vertexSetToArray(g.vertexSet());
+
+        Spanner spanner = g.toSpanner();
 
         // Assign vertices into parititions.
         this.partitions = partition(vertices);
@@ -34,7 +40,7 @@ public class ThorupZwickSpanner {
         //uniion(trees);
 
 
-
+        return spanner;
 
     }
 

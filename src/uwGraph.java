@@ -5,13 +5,8 @@ import java.util.HashMap;
 
 public class uwGraph extends ListenableUndirectedWeightedGraph<String, DefaultWeightedEdge> {
 
-    Object[] edges;
-
     public uwGraph(Class<DefaultWeightedEdge> base) {
         super(base);
-
-        edges = this.edgeSet().toArray();
-
     }
 
     protected uwGraph copyGraphNoEdges() {
@@ -25,6 +20,10 @@ public class uwGraph extends ListenableUndirectedWeightedGraph<String, DefaultWe
 
     }
 
+    /**
+     * Converts a uwGraph to a Spanner type. Conserving vertices, while omitting edges in the process.
+     * @return vertices of the graph, as a Spanner type.
+     */
     protected Spanner toSpanner() {
         Spanner spanner = new Spanner(DefaultWeightedEdge.class);
         org.jgrapht.Graphs.addAllVertices(spanner, this.vertexSet());
@@ -41,7 +40,7 @@ public class uwGraph extends ListenableUndirectedWeightedGraph<String, DefaultWe
 
         HashMap<Object, Integer> edgeWeights = new HashMap<>();
         // Populating HasMap with edges and weights
-        for (Object edge : this.edges) {
+        for (Object edge : this.edgeSet().toArray()) {
             Integer weight = (int) this.getEdgeWeight((DefaultWeightedEdge) edge);
             edgeWeights.put(edge, weight);
         }

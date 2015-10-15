@@ -22,16 +22,15 @@ public class GreedySpanner {
         Spanner gPling = g.toSpanner();
 
         HashMap<Object, Integer> edgeWeights = g.getEdgeWeights();
-System.out.println(g);
+
         // Sort edges by weight, smallest first.
         HashMap<DefaultWeightedEdge, Integer> edgesSorted = sortHashMapByValuesD(edgeWeights);
-System.out.println(edgesSorted);
+
         // Iterate over all the edges.
         for (Map.Entry<DefaultWeightedEdge, Integer> entry : edgesSorted.entrySet()) {
             Object v, u;
             v = g.getEdgeSource(entry.getKey());
             u = g.getEdgeTarget(entry.getKey());
-System.out.println("doaewqeioqwp");
 
             DijkstraShortestPath dijkstraShortestPath = new DijkstraShortestPath(gPling, v, u);
 
@@ -40,7 +39,6 @@ System.out.println("doaewqeioqwp");
                 String uS = u.toString();
                 gPling.addEdge(vS, uS);
                 gPling.setEdgeWeight(gPling.getEdge(vS, uS), entry.getValue());
-                System.out.println("dsahjdsajka");
             }
         }
         return gPling;
