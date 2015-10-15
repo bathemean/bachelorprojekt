@@ -7,5 +7,3 @@ TZ-Spanner:
 
 Spanner:
     - Stretch, største vægt, i forhold til graf, mellem to knuder.
-    - Degree, største antal kanter på én knude.
-    - Weight, vægten af hele spanneren
