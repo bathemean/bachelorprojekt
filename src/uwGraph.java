@@ -36,6 +36,11 @@ public class uwGraph extends ListenableUndirectedWeightedGraph<String, DefaultWe
         org.jgrapht.Graphs.addAllEdges(graphClone, this, this.edgeSet());
         return graphClone;
     }
+
+    /**
+     * Gets all the edge, weight pairs.
+     * @return (edge, weight) pairs.
+     */
     protected HashMap<Object, Integer> getEdgeWeights() {
 
         HashMap<Object, Integer> edgeWeights = new HashMap<>();
@@ -51,5 +56,51 @@ public class uwGraph extends ListenableUndirectedWeightedGraph<String, DefaultWe
 
     public String toString() {
         return super.toString();
+    }
+
+    public void getStretch() {
+
+
+        Object[] vertices = this.vertexSet().toArray();
+        Object[] edges = this.edgeSet().toArray();
+
+    }
+
+    public double getDensity() {
+
+        double numVertices = this.vertexSet().size();
+        double numEdges = this.edgeSet().size();
+        double result = numEdges / numVertices;
+
+        return result;
+
+    }
+
+    public int getTotalWeight() {
+
+        Object[] weights = this.getEdgeWeights().values().toArray();
+        int sum = 0;
+
+        for(Object w : weights) {
+            sum += (int) w;
+        }
+
+        return sum;
+
+    }
+
+    public void getDegree() {
+
+    }
+
+    public String getMetricsAsString() {
+
+        String str;
+
+        str = "Total Weight: " + this.getTotalWeight() + ".";
+        str += " Density: " + this.getDensity() + ".";
+
+        return str;
+
     }
 }

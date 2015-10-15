@@ -20,17 +20,23 @@ public class Main {
 
         System.out.println("==== String Graph: ====");
         System.out.println("Original: " + stringGraph.toString());
+        System.out.println(stringGraph.getMetricsAsString());
         Spanner spannerOne = greedy.makeSpanner(stringGraph, 2);
         System.out.println("GreedySpanner:  " + spannerOne.toString());
+        System.out.println(spannerOne.getMetricsAsString());
+
         Spanner spannerTwo = thorupzwick.makeSpanner(stringGraph, 2);
         System.out.println("ThorupZwick: " + spannerTwo.toString());
 
+        /*
         System.out.println("==== Big String Graph: ====");
         System.out.println("Original: " + bigStrGraph.toString());
         Spanner spannerThree = greedy.makeSpanner(bigStrGraph, 2);
         System.out.println("GreedySpanner:  " + spannerThree.toString());
         Spanner spannerFour = thorupzwick.makeSpanner(bigStrGraph, 2);
         System.out.println("ThorupZwick: " + spannerFour.toString());
+        */
+
 
         //Spanner bspanner = greedy.makeSpanner(bigStrGraph, 2);
         //System.out.println("BSpanner:  " + bspanner.toString());
