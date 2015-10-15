@@ -21,12 +21,12 @@ public class Main {
         System.out.println("==== String Graph: ====");
         System.out.println("Original: " + stringGraph.toString());
         System.out.println(stringGraph.getMetricsAsString());
-        Spanner spannerOne = greedy.makeSpanner(stringGraph, 2);
+        uwGraph spannerOne = greedy.makeSpanner(stringGraph, 2);
         System.out.println("GreedySpanner:  " + spannerOne.toString());
         System.out.println(spannerOne.getMetricsAsString());
 
-        Spanner spannerTwo = thorupzwick.makeSpanner(stringGraph, 2);
-        System.out.println("ThorupZwick: " + spannerTwo.toString());
+        //uwGraph spannerTwo = thorupzwick.makeSpanner(stringGraph, 2);
+        //System.out.println("ThorupZwick: " + spannerTwo.toString());
 
         /*
         System.out.println("==== Big String Graph: ====");

@@ -15,11 +15,11 @@ public class GreedySpanner {
      * @param r multiplication degree of desired spanner.
      * @return a spanner with multiplication degree r.
      */
-    public Spanner makeSpanner(uwGraph g, Integer r){
+    public uwGraph makeSpanner(uwGraph g, Integer r){
         Object[] vertices = g.vertexSet().toArray();
         Object[] edges = g.edgeSet().toArray();
 
-        Spanner gPling = g.toSpanner();
+        uwGraph gPling = g.copyGraphNoEdges();
 
         HashMap<Object, Integer> edgeWeights = g.getEdgeWeights();
 
