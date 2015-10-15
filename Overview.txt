@@ -1,0 +1,11 @@
+TZ-Spanner:
+    - d(A_k, v) = \infinity
+    - Optimering af Dijkstra (når shittet virker(!!!!))
+        * Måkse implemenetere Dijkstra selv
+
+
+
+Spanner:
+    - Stretch, største vægt, i forhold til graf, mellem to knuder.
+    - Degree, største antal kanter på én knude.
+    - Weight, vægten af hele spanneren
