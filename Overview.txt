@@ -3,7 +3,8 @@ TZ-Spanner:
     - Optimering af Dijkstra (når shittet virker(!!!!))
         * Måkse implemenetere Dijkstra selv
 
-
+Dijkstra:
+    - At relax step: compute adjacent vertices.
 
 Spanner:
     - Stretch, største vægt, i forhold til graf, mellem to knuder.

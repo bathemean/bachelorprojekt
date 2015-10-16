@@ -49,13 +49,28 @@ public class uwGraph extends ListenableUndirectedWeightedGraph<String, DefaultWe
 
     }
 
-    protected void getEdgeComponents(String edge) {
-        //Pattern p = Pattern.compile("^\\(([a-z A-Z 0-9]*)\\ \\:\\ ([a-z A-Z 0-9]*)\\)");
-        Pattern p = Pattern.compile("[a-z]");
-        Matcher m = p.matcher(edge);
-
+    /**
+     * Gets the components of the edge, source and target.
+     * @param edge The String edge in question.
+     * @return Pair of Strings, source and target.
+     */
+    protected Pair<String, String> getEdgeComponents(String edge) {
         String[] s = edge.split(":");
-        System.out.println(s[0].substring(1, s[0].length()-1) + "." + s[1]);
+
+        String source = s[0].substring(1, s[0].length() - 1); // Remove initial ( and trailing whitespace.
+        String target = s[1].substring(1, s[1].length() - 1); // Remove initial whitespace, and trailing ).
+
+        Pair<String, String> components = new Pair<>(source, target);
+        return components;
+    }
+
+    /**
+     * Alternative way to get edge components, passing an Object.
+     * @param edge The Object edge in question.
+     * @return Same as above, Pair of Strings, source and target.
+     */
+    protected Pair<String, String> getEdgeComponents(Object edge) {
+        return getEdgeComponents(edge.toString());
     }
 
     protected void getAdjecentVertices(String v) {
@@ -64,7 +79,7 @@ public class uwGraph extends ListenableUndirectedWeightedGraph<String, DefaultWe
         String[] adjacent = new String[edges.length];
         int i = 0;
 
-        getEdgeComponents(edges[0].toString());
+        System.out.println(getEdgeComponents(edges[0]).fst);
 
 
         //for(Object e : edges) {
