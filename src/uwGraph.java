@@ -3,6 +3,8 @@ import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.ListenableUndirectedWeightedGraph;
 
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class uwGraph extends ListenableUndirectedWeightedGraph<String, DefaultWeightedEdge> {
 
@@ -44,6 +46,31 @@ public class uwGraph extends ListenableUndirectedWeightedGraph<String, DefaultWe
         }
 
         return edgeWeights;
+
+    }
+
+    protected void getEdgeComponents(String edge) {
+        //Pattern p = Pattern.compile("^\\(([a-z A-Z 0-9]*)\\ \\:\\ ([a-z A-Z 0-9]*)\\)");
+        Pattern p = Pattern.compile("[a-z]");
+        Matcher m = p.matcher(edge);
+
+        String[] s = edge.split(":");
+        System.out.println(s[0].substring(1, s[0].length()-1) + "." + s[1]);
+    }
+
+    protected void getAdjecentVertices(String v) {
+
+        Object[] edges = this.edgesOf(v).toArray();
+        String[] adjacent = new String[edges.length];
+        int i = 0;
+
+        getEdgeComponents(edges[0].toString());
+
+
+        //for(Object e : edges) {
+        //    DefaultWeightedEdge edge = this.getEdge(e);
+        //    adjacent[i] = this.getEdgeTarget(e);
+        //}
 
     }
 

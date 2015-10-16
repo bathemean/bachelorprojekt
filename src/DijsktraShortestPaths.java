@@ -1,8 +1,7 @@
+import com.sun.tools.javac.util.Pair;
+
 import java.util.*;
 
-/**
- * Created by mcfallen on 10/15/15.
- */
 public class DijsktraShortestPaths {
 
     /**
@@ -17,26 +16,53 @@ public class DijsktraShortestPaths {
     public DijsktraShortestPaths(uwGraph graph, String source){
         this.graph = graph;
         this.source = source;
-        this.initSS();
-        // This is where the magic happens
+        PriorityQueue<Pair<Double, String>> queue = this.initSS();
+
+        // MAGICKZ
+        ArrayList<Pair<Double, String>> verticeList = new ArrayList<>();
+
+        while(!queue.isEmpty()) {
+
+            // extract-min
+            Pair<Double, String> u = queue.poll();
+
+            verticeList.add(u);
+
+            //Object[] edges = this.graph.getEdgesFrom(u.snd);
+            this.graph.getAdjecentVertices(u.snd);
+        }
+
         this.setShortestPaths();
     }
 
-    private void initSS(){
+    private PriorityQueue<Pair<Double, String>> initSS(){
         // Below should be the creation of the priority queue
-        PriorityQueue<HashMap<Integer, String>> queue = new PriorityQueue<>(this.graph.vertexSet().size(), Comparator.<HashMap<Integer,String>>naturalOrder());
 
-        // Iterate over the vertices and generate the Pair v(d, p)
-        Iterator<String> iterV = this.graph.vertexSet().iterator();
-        while(iterV.hasNext()){
-            //Create collection(?) of v(d, p)
+        int numVertices = this.graph.vertexSet().size();
+        Object[] vertices = this.graph.vertexSet().toArray();
+
+        //  min-heap
+        PriorityQueue<Pair<Double, String>> queue = new PriorityQueue();
+
+        for(Object vert : vertices) {
+            String v = vert.toString();
+            double length = Double.POSITIVE_INFINITY;
+
+            Pair<Double, String> p = new Pair<>(length, v);
+
+            queue.add(p);
         }
+
+        return queue;
+
     }
 
     /**
      * use references to alter values _after_ extraction
      */
-    private void relax(){}
+    private void relax() {
+
+    }
 
     // Removal is opional
     // Setter and getters cuz I can motherfucking generate them (11!+?)

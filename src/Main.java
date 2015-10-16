@@ -25,6 +25,8 @@ public class Main {
         System.out.println("GreedySpanner:  " + spannerOne.toString());
         System.out.println(spannerOne.getMetricsAsString());
 
+        stringGraph.getAdjecentVertices("v1");
+
         //uwGraph spannerTwo = thorupzwick.makeSpanner(stringGraph, 2);
         //System.out.println("ThorupZwick: " + spannerTwo.toString());
 
