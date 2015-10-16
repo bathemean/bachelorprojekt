@@ -73,19 +73,30 @@ public class uwGraph extends ListenableUndirectedWeightedGraph<String, DefaultWe
         return getEdgeComponents(edge.toString());
     }
 
-    protected void getAdjecentVertices(String v) {
+    protected String[] getAdjecentVertices(String v) {
 
         Object[] edges = this.edgesOf(v).toArray();
         String[] adjacent = new String[edges.length];
+
+
+        int degree = this.degreeOf(v);
+
         int i = 0;
+        for(Object e : edges) {
+            String source = this.getEdgeComponents(e).fst;
+            String target = this.getEdgeComponents(e).snd;
 
-        System.out.println(getEdgeComponents(edges[0]).fst);
+            if(source != v || target != v) {
+                adjacent[i] = target;
+                i++;
+                }
+            }
 
-
-        //for(Object e : edges) {
-        //    DefaultWeightedEdge edge = this.getEdge(e);
-        //    adjacent[i] = this.getEdgeTarget(e);
-        //}
+        if(adjacent.length > 0) {
+            return adjacent;
+        } else {
+            return null;
+        }
 
     }
 
