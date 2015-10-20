@@ -36,7 +36,6 @@ public class DijsktraShortestPaths {
     }
 
     private PriorityQueue<Pair<Double, String>> initSS(){
-        // Below should be the creation of the priority queue
 
         int numVertices = this.graph.vertexSet().size();
         Object[] vertices = this.graph.vertexSet().toArray();
@@ -51,6 +50,10 @@ public class DijsktraShortestPaths {
             Pair<Double, String> p = new Pair<>(length, v);
 
             queue.add(p);
+
+            String[] adjacent = this.graph.getAdjecentVertices(v);
+            relax(v, adjacent);
+
         }
 
         return queue;
@@ -60,8 +63,10 @@ public class DijsktraShortestPaths {
     /**
      * use references to alter values _after_ extraction
      */
-    private void relax() {
-
+    private void relax(String source, String[] adjacent) {
+        for(String v : adjacent) {
+            this.graph.removeEdge(source, v);
+        }
     }
 
     // Removal is opional

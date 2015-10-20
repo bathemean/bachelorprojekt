@@ -25,7 +25,9 @@ public class Main {
         System.out.println("GreedySpanner:  " + spannerOne.toString());
         System.out.println(spannerOne.getMetricsAsString());
 
-        System.out.println(stringGraph.getAdjecentVertices("v1").length);
+
+        DijsktraShortestPaths dijkstra = new DijsktraShortestPaths(stringGraph, "v1");
+        System.out.println(dijkstra.getGraph().toString());
 
         //uwGraph spannerTwo = thorupzwick.makeSpanner(stringGraph, 2);
         //System.out.println("ThorupZwick: " + spannerTwo.toString());

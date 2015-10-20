@@ -4,7 +4,7 @@ TZ-Spanner:
         * Måkse implemenetere Dijkstra selv
 
 Dijkstra:
-    - At relax step: compute adjacent vertices.
+    - Need custom comparator for Pairs?
 
 Spanner:
     - Stretch, største vægt, i forhold til graf, mellem to knuder.
