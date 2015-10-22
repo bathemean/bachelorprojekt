@@ -1,3 +1,5 @@
+package main;
+
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.ListenableUndirectedWeightedGraph;
 
@@ -7,7 +9,7 @@ import java.util.Set;
 
 public class StoreageTest {
 
-    public static void main(String args []){
+    public static void main(String args[]) {
         ListenableUndirectedWeightedGraph<String, DefaultWeightedEdge> stringGraph = createStringGraph();
         System.out.println(stringGraph.toString());
 
@@ -16,19 +18,16 @@ public class StoreageTest {
 
         Object[] va = vertices.toArray();
 
-        for(Iterator<DefaultWeightedEdge> edge = edges.iterator(); edge.hasNext();) {
-            DefaultWeightedEdge e = edge.next();
-
+        for (DefaultWeightedEdge e : edges) {
             double o = stringGraph.getEdgeWeight(e);
             System.out.println(o);
         }
 
     }
 
-    private static ListenableUndirectedWeightedGraph<String, DefaultWeightedEdge> createStringGraph()
-    {
+    private static ListenableUndirectedWeightedGraph<String, DefaultWeightedEdge> createStringGraph() {
         ListenableUndirectedWeightedGraph<String, DefaultWeightedEdge> g =
-                new ListenableUndirectedWeightedGraph<>(DefaultWeightedEdge.class);
+                new ListenableUndirectedWeightedGraph<String, DefaultWeightedEdge>(DefaultWeightedEdge.class);
 
         String v1 = "v1";
         String v2 = "v2";
@@ -57,5 +56,4 @@ public class StoreageTest {
 
         return g;
     }
-
 }

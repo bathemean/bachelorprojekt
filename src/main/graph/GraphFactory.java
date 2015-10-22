@@ -1,3 +1,5 @@
+package main.graph;
+
 import org.jgrapht.graph.DefaultWeightedEdge;
 
 import java.util.ArrayList;
@@ -53,7 +55,7 @@ public class GraphFactory {
         uwGraph g = new uwGraph(DefaultWeightedEdge.class);
 
 
-        ArrayList<String> vertices = new ArrayList<>();
+        ArrayList<String> vertices = new ArrayList<String>();
 
         vertices.add("v0");
         vertices.add("v1");

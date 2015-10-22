@@ -1,11 +1,12 @@
-import org.jgrapht.alg.DijkstraShortestPath;
-import org.jgrapht.graph.DefaultWeightedEdge;
+package main;
 
-import java.util.*;
+import main.graph.GraphFactory;
+import main.graph.GraphLoader;
+import main.graph.uwGraph;
 
 public class Main {
 
-    public static void main(String args []){
+    public static void main(String args[]) {
 
         GraphFactory factory = new GraphFactory();
 
@@ -18,13 +19,12 @@ public class Main {
         GraphLoader gl = new GraphLoader();
         uwGraph condmat2005 = gl.loadCondMat2005();
 
-        System.out.println("==== String Graph: ====");
+        System.out.println("==== String graph: ====");
         System.out.println("Original: " + stringGraph.toString());
         System.out.println(stringGraph.getMetricsAsString());
         uwGraph spannerOne = greedy.makeSpanner(stringGraph, 2);
         System.out.println("GreedySpanner:  " + spannerOne.toString());
         System.out.println(spannerOne.getMetricsAsString());
-
 
         DijsktraShortestPaths dijkstra = new DijsktraShortestPaths(stringGraph, "v1");
         System.out.println(dijkstra.getGraph().toString());
@@ -33,7 +33,7 @@ public class Main {
         //System.out.println("ThorupZwick: " + spannerTwo.toString());
 
         /*
-        System.out.println("==== Big String Graph: ====");
+        System.out.println("==== Big String graph: ====");
         System.out.println("Original: " + bigStrGraph.toString());
         Spanner spannerThree = greedy.makeSpanner(bigStrGraph, 2);
         System.out.println("GreedySpanner:  " + spannerThree.toString());
@@ -41,14 +41,7 @@ public class Main {
         System.out.println("ThorupZwick: " + spannerFour.toString());
         */
 
-
         //Spanner bspanner = greedy.makeSpanner(bigStrGraph, 2);
         //System.out.println("BSpanner:  " + bspanner.toString());
-
     }
-
-
-
-
-
 }

@@ -1,7 +1,9 @@
+package main;
+
+import main.graph.GraphFactory;
+import main.graph.uwGraph;
+
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 
 public class ThorupZwickSpannerTest {
 
@@ -19,31 +21,31 @@ public class ThorupZwickSpannerTest {
 
         Object[] vertices = graph.vertexSet().toArray();
 
-        ArrayList<Integer> flags = new ArrayList<>();
-        for(int i = 0; i < vertices.length; i++) {
+        ArrayList<Integer> flags = new ArrayList<Integer>();
+        for (Object vertice : vertices) {
             flags.add(0);
         }
 
         // Make sure all vertices are connected.
-        for(int j = 0; j < vertices.length; j++) {
+        for (int j = 0; j < vertices.length; j++) {
             String v = vertices[j].toString();
             //System.out.println(v + " " + flags.toString());
-            for(int i = 0; i < distances.size(); i++) {
-                Distance d = distances.get(i);
+            for (Distance d : distances) {
                 //System.out.println("j: " + j + " i: " + i + " - " + v + ", " + d);
-                if( d.getWitness() == v || d.getTarget() == v ) {
+                if (d.getWitness().equals(v) || d.getTarget().equals(v)) {
                     flags.set(j, 1);
                     //break;
                 }
             }
-
         }
-System.out.println("Flags " + flags.toString());
-        if(flags.contains(0)) {
+
+        System.out.println("Flags " + flags.toString());
+
+        if (flags.contains(0)) {
             String res = "Missing nodes: ";
 
-            for(int i = 0; i < flags.size(); i++) {
-                if(flags.get(i) == 0) {
+            for (int i = 0; i < flags.size(); i++) {
+                if (flags.get(i) == 0) {
                     res += i + " ";
                 }
             }
@@ -52,8 +54,5 @@ System.out.println("Flags " + flags.toString());
         } else {
             return "0";
         }
-
-
     }
-
 }

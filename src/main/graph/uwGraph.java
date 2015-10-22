@@ -1,7 +1,11 @@
+package main.graph;
+
 import javafx.util.Pair;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.ListenableUndirectedWeightedGraph;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 
 public class uwGraph extends ListenableUndirectedWeightedGraph<String, DefaultWeightedEdge> {
@@ -12,7 +16,7 @@ public class uwGraph extends ListenableUndirectedWeightedGraph<String, DefaultWe
         super(base);
     }
 
-    protected uwGraph copyGraphNoEdges() {
+    public uwGraph copyGraphNoEdges() {
 
         // This is our G', that represents all the edges added. It contains the same vertices as G(g)
         uwGraph gPling = new uwGraph(DefaultWeightedEdge.class);
@@ -20,10 +24,9 @@ public class uwGraph extends ListenableUndirectedWeightedGraph<String, DefaultWe
         org.jgrapht.Graphs.addAllVertices(gPling, this.vertexSet());
 
         return gPling;
-
     }
 
-    protected uwGraph cloneGraph() {
+    public uwGraph cloneGraph() {
         uwGraph graphClone = copyGraphNoEdges();
         // We might be able to just use the line below to do all the magic
         org.jgrapht.Graphs.addAllEdges(graphClone, this, this.edgeSet());
@@ -32,11 +35,12 @@ public class uwGraph extends ListenableUndirectedWeightedGraph<String, DefaultWe
 
     /**
      * Gets all the edge, weight pairs.
+     *
      * @return (edge, weight) pairs.
      */
-    protected HashMap<Object, Integer> getEdgeWeights() {
+    public HashMap<Object, Integer> getEdgeWeights() {
 
-        HashMap<Object, Integer> edgeWeights = new HashMap<>();
+        HashMap<Object, Integer> edgeWeights = new HashMap<Object, Integer>();
         // Populating HasMap with edges and weights
         for (Object edge : this.edgeSet().toArray()) {
             Integer weight = (int) this.getEdgeWeight((DefaultWeightedEdge) edge);
@@ -44,11 +48,11 @@ public class uwGraph extends ListenableUndirectedWeightedGraph<String, DefaultWe
         }
 
         return edgeWeights;
-
     }
 
     /**
      * Gets the components of the edge, source and target.
+     *
      * @param edge The String edge in question.
      * @return Pair of Strings, source and target.
      */
@@ -58,12 +62,13 @@ public class uwGraph extends ListenableUndirectedWeightedGraph<String, DefaultWe
         String source = s[0].substring(1, s[0].length() - 1); // Remove initial ( and trailing whitespace.
         String target = s[1].substring(1, s[1].length() - 1); // Remove initial whitespace, and trailing ).
 
-        Pair<String, String> components = new Pair<>(source, target);
+        Pair<String, String> components = new Pair<String, String>(source, target);
         return components;
     }
 
     /**
      * Alternative way to get edge components, passing an Object.
+     *
      * @param edge The Object edge in question.
      * @return Same as above, Pair of Strings, source and target.
      */
@@ -80,25 +85,24 @@ public class uwGraph extends ListenableUndirectedWeightedGraph<String, DefaultWe
         int degree = this.degreeOf(v);
 
         int i = 0;
-        for(Object e : edges) {
+        for (Object e : edges) {
             String source = this.getEdgeComponents(e).getKey();
             String target = this.getEdgeComponents(e).getValue();
 
-            if(source != v || target != v) {
+            if (!source.equals(v) || !target.equals(v)) {
                 adjacent[i] = target;
                 i++;
-                }
             }
+        }
 
-        if(adjacent.length > 0) {
+        if (adjacent.length > 0) {
             return adjacent;
         } else {
             return null;
         }
-
     }
 
-    protected void setRuntime(long runtime) {
+    public void setRuntime(long runtime) {
         this.runtime = runtime;
     }
 
@@ -122,20 +126,18 @@ public class uwGraph extends ListenableUndirectedWeightedGraph<String, DefaultWe
         double result = numEdges / numVertices;
 
         return result;
-
     }
 
     public int getTotalWeight() {
 
-        Object[] weights = this.getEdgeWeights().values().toArray();
+        Collection<Integer> weights = this.getEdgeWeights().values();
         int sum = 0;
 
-        for(Object w : weights) {
-            sum += (int) w;
+        for (int w : weights) {
+            sum += w;
         }
 
         return sum;
-
     }
 
     public int getHighestDegree() {
@@ -143,15 +145,14 @@ public class uwGraph extends ListenableUndirectedWeightedGraph<String, DefaultWe
         Object[] vertices = this.vertexSet().toArray();
         int highest = 0;
 
-        for(Object ov : vertices) {
+        for (Object ov : vertices) {
             String v = ov.toString();
-            if(this.degreeOf(v) > highest) {
+            if (this.degreeOf(v) > highest) {
                 highest = this.degreeOf(v);
             }
         }
 
         return highest;
-
     }
 
     public long getRuntime() {
@@ -168,6 +169,5 @@ public class uwGraph extends ListenableUndirectedWeightedGraph<String, DefaultWe
         String str = weight + " " + density + " " + hdegree + " " + runtime;
 
         return str;
-
     }
 }

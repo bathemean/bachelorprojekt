@@ -1,56 +1,38 @@
 package test;
 
-import junit.framework.Test; 
-import junit.framework.TestSuite; 
+import junit.framework.Test;
+import junit.framework.TestSuite;
 import junit.framework.TestCase;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** 
-* GreedySpanner Tester. 
-* 
-* @author <Authors name> 
-* @since <pre>10/08/2015</pre> 
-* @version 1.0 
-*/ 
-public class GreedySpannerTest extends TestCase { 
-public GreedySpannerTest(String name) { 
-super(name); 
-} 
 
-public void setUp() throws Exception { 
-super.setUp(); 
-} 
+public class GreedySpannerTest extends TestCase {
 
-public void tearDown() throws Exception { 
-super.tearDown(); 
-} 
+    public GreedySpannerTest(String name) {
+        super(name);
+    }
 
-/** 
-* 
-* Method: GreedySpanner(ListenableUndirectedWeightedGraph g, Integer r) 
-* 
-*/ 
-public void testGreedySpanner() throws Exception { 
+    public void setUp() throws Exception {
+        super.setUp();
+    }
 
-    //assertEquals();
+    public void tearDown() throws Exception {
+        super.tearDown();
+    }
 
-}
+    public void testGreedySpanner() throws Exception {
 
-/** 
-* 
-* Method: sortHashMapByValuesD(HashMap passedMap) 
-* 
-*/ 
-public void testSortHashMapByValuesD() throws Exception {
+        //assertEquals();
+    }
 
-    //LinkedHashMap sorted = new
-}
+    public void testSortHashMapByValuesD() throws Exception {
 
+        //LinkedHashMap sorted = new
+    }
 
-
-public static Test suite() { 
-return new TestSuite(GreedySpannerTest.class); 
-} 
+    public static Test suite() {
+        return new TestSuite(GreedySpannerTest.class);
+    }
 } 

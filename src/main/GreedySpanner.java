@@ -1,3 +1,6 @@
+package main;
+
+import main.graph.uwGraph;
 import org.jgrapht.alg.DijkstraShortestPath;
 import org.jgrapht.graph.DefaultWeightedEdge;
 
@@ -65,27 +68,20 @@ public class GreedySpanner extends Spanner {
 
         LinkedHashMap sortedMap = new LinkedHashMap();
 
-        Iterator valueIt = mapValues.iterator();
-        while (valueIt.hasNext()) {
-            Object val = valueIt.next();
-            Iterator keyIt = mapKeys.iterator();
+        for (Object val : mapValues) {
 
-            while (keyIt.hasNext()) {
-                Object key = keyIt.next();
+            for (Object key : mapKeys) {
                 String comp1 = passedMap.get(key).toString();
                 String comp2 = val.toString();
 
-                if (comp1.equals(comp2)){
+                if (comp1.equals(comp2)) {
                     passedMap.remove(key);
                     mapKeys.remove(key);
                     sortedMap.put(key, val);
                     break;
                 }
-
             }
-
         }
         return sortedMap;
     }
-
 }

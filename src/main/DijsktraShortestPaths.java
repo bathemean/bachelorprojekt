@@ -1,4 +1,7 @@
+package main;
+
 import javafx.util.Pair;
+import main.graph.uwGraph;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,45 +19,45 @@ public class DijsktraShortestPaths {
     private String source;
     private int shortestPaths;
 
-    public DijsktraShortestPaths(uwGraph graph, String source){
+    public DijsktraShortestPaths(uwGraph graph, String source) {
         this.graph = graph;
         this.source = source;
         PriorityQueue<Pair<String, Pair<Double, String>>> queue = this.initSS();
 
         // MAGICKZ
-        ArrayList<Pair<Double, String>> verticeList = new ArrayList<>();
+        ArrayList<Pair<Double, String>> verticeList = new ArrayList<Pair<Double, String>>();
 
-        while(!queue.isEmpty()) {
+        while (!queue.isEmpty()) {
 
             // extract-min
-//            Pair<Double, String> u = queue.poll();
+            // Pair<Double, String> u = queue.poll();
 
-//            verticeList.add(u);
+            // verticeList.add(u);
 
-            //Object[] edges = this.graph.getEdgesFrom(u.snd);
-  //          this.graph.getAdjecentVertices(u.snd);
+            // Object[] edges = this.graph.getEdgesFrom(u.snd);
+            //          this.graph.getAdjecentVertices(u.snd);
         }
 
         this.setShortestPaths();
     }
 
-    private PriorityQueue<Pair<String, Pair<Double, String>>> initSS(){
+    private PriorityQueue<Pair<String, Pair<Double, String>>> initSS() {
 
         //  Initialize empty min-heap v => (d, u)
         QueComparator queComparator = new QueComparator();
-        PriorityQueue<Pair<String, Pair<Double, String>>> queue = new PriorityQueue<>(queComparator);
+        PriorityQueue<Pair<String, Pair<Double, String>>> queue = new PriorityQueue<Pair<String, Pair<Double, String>>>(queComparator);
 
         // Fetch all vertices in given graph
         Set<String> vertices = this.graph.vertexSet();
 
         // Init values for all vertices
-        Pair<Double, String> vInit = new Pair<>(Double.POSITIVE_INFINITY, "");
+        Pair<Double, String> vInit = new Pair<Double, String>(Double.POSITIVE_INFINITY, "");
 
         // Iterate through vertices and create
-        for(String vert : vertices) {
+        for (String vert : vertices) {
             Pair<String, Pair<Double, String>> v;
-            if (vert.equals(this.source)){
-                Pair<Double, String> vSource = new Pair<>(0.0, "");
+            if (vert.equals(this.source)) {
+                Pair<Double, String> vSource = new Pair<Double, String>(0.0, "");
                 v = new Pair<String, Pair<Double, String>>(vert, vSource);
             } else {
                 v = new Pair<String, Pair<Double, String>>(vert, vInit);
@@ -72,12 +75,16 @@ public class DijsktraShortestPaths {
      */
     private Pair relax(Pair source, Pair predecessor, Double weight) {
 
+        /*
         Pair<Double, String> updatedVertice;
         double cumWeight = (((double) predecessor.getKey()) + weight);
-        if ((double) source.getKey() > cumWeight){
-            updatedVertice = new Pair<>(cumWeight, (String) predecessor.getValue());
+
+        if ((double) source.getKey() > cumWeight) {
+            updatedVertice = new Pair<Double, String>(cumWeight, (String) predecessor.getValue());
             return updatedVertice;
         }
+        */
+
         return source;
     }
 

@@ -1,4 +1,4 @@
-
+package main;
 
 public class Spanner {
 
@@ -18,6 +18,4 @@ public class Spanner {
     protected long getRuntime() {
         return this.runtime;
     }
-
-
 }
