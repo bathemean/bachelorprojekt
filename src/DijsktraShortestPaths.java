@@ -39,7 +39,8 @@ public class DijsktraShortestPaths {
     private PriorityQueue<Pair<Double, String>> initSS(){
 
         //  Initialize empty min-heap v => (d, u)
-        PriorityQueue<Pair<String, Pair<Double, String>>> queue = new PriorityQueue();
+        QueCom
+        PriorityQueue<Pair<String, Pair<Double, String>>> queue = new PriorityQueue<>();
 
         // Fetch all vertices in given graph
         Set<String> vertices = this.graph.vertexSet();

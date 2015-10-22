@@ -1,7 +1,7 @@
 import javafx.util.Pair;
 import java.util.Comparator;
 
-public class PairComparator implements Comparator {
+public class QueComparator implements Comparator {
 
     @Override
     // Pair<String, Pair<Double, String>> v1, Pair<String, Pair<Double, String>> v2
