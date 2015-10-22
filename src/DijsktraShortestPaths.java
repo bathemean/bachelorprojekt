@@ -1,4 +1,5 @@
 import com.sun.tools.javac.util.Pair;
+import javafx.util.Pair;
 
 import java.util.*;
 
@@ -61,12 +62,18 @@ public class DijsktraShortestPaths {
     }
 
     /**
-     * use references to alter values _after_ extraction
+     * Relaxes an egde and updates (creates a new) vertice
+     * Else it just returns the source vertice as it is.
      */
-    private void relax(String source, String[] adjacent) {
-        for(String v : adjacent) {
-            this.graph.removeEdge(source, v);
+    private Pair relax(Pair source, Pair predecessor, Double weight) {
+
+        Pair<Double, String> updatedVertice;
+        double cumWeight = (((double) predecessor.getKey()) + weight);
+        if ((double) source.getKey() > cumWeight){
+            updatedVertice = new Pair<>(cumWeight, (String) predecessor.getValue());
+            return updatedVertice;
         }
+        return source;
     }
 
     // Removal is opional
