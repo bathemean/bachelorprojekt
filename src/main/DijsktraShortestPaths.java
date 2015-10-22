@@ -66,7 +66,6 @@ public class DijsktraShortestPaths {
         }
 
         return queue;
-
     }
 
     /**
@@ -119,5 +118,4 @@ public class DijsktraShortestPaths {
     public void setGraph(uwGraph graph) {
         this.graph = graph;
     }
-
 }

@@ -1,4 +1,4 @@
-package main;
+package test;
 
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.ListenableUndirectedWeightedGraph;

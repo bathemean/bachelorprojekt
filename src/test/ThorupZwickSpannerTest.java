@@ -1,5 +1,6 @@
-package main;
+package test;
 
+import main.Distance;
 import main.graph.GraphFactory;
 import main.graph.uwGraph;
 import main.spanner.ThorupZwickSpanner;
