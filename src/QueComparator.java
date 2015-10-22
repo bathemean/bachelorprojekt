@@ -4,8 +4,7 @@ import java.util.Comparator;
 public class QueComparator implements Comparator {
 
     @Override
-    // Pair<String, Pair<Double, String>> v1, Pair<String, Pair<Double, String>> v2
-    public int compare(Object v1, Object v2) {
+    public int compare(Pair<String, Pair<Double, String>> v1, Pair<String, Pair<Double, String>> v2) {
         Double weight1 = v1.getValue().getKey();
         Double weight2 = v2.getValue().getKey();
 

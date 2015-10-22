@@ -1,10 +1,8 @@
-import com.sun.tools.javac.util.Pair;
+import javafx.util.Pair;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.ListenableUndirectedWeightedGraph;
 
 import java.util.HashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class uwGraph extends ListenableUndirectedWeightedGraph<String, DefaultWeightedEdge> {
 
@@ -83,8 +81,8 @@ public class uwGraph extends ListenableUndirectedWeightedGraph<String, DefaultWe
 
         int i = 0;
         for(Object e : edges) {
-            String source = this.getEdgeComponents(e).fst;
-            String target = this.getEdgeComponents(e).snd;
+            String source = this.getEdgeComponents(e).getKey();
+            String target = this.getEdgeComponents(e).getValue();
 
             if(source != v || target != v) {
                 adjacent[i] = target;
