@@ -1,7 +1,9 @@
-import com.sun.tools.javac.util.Pair;
 import javafx.util.Pair;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.PriorityQueue;
+import java.util.Set;
 
 public class DijsktraShortestPaths {
 
@@ -17,7 +19,7 @@ public class DijsktraShortestPaths {
     public DijsktraShortestPaths(uwGraph graph, String source){
         this.graph = graph;
         this.source = source;
-        PriorityQueue<Pair<Double, String>> queue = this.initSS();
+        PriorityQueue<Pair<String, Pair<Double, String>>> queue = this.initSS();
 
         // MAGICKZ
         ArrayList<Pair<Double, String>> verticeList = new ArrayList<>();
@@ -25,32 +27,39 @@ public class DijsktraShortestPaths {
         while(!queue.isEmpty()) {
 
             // extract-min
-            Pair<Double, String> u = queue.poll();
+//            Pair<Double, String> u = queue.poll();
 
-            verticeList.add(u);
+//            verticeList.add(u);
 
             //Object[] edges = this.graph.getEdgesFrom(u.snd);
-            this.graph.getAdjecentVertices(u.snd);
+  //          this.graph.getAdjecentVertices(u.snd);
         }
 
         this.setShortestPaths();
     }
 
-    private PriorityQueue<Pair<Double, String>> initSS(){
+    private PriorityQueue<Pair<String, Pair<Double, String>>> initSS(){
 
         //  Initialize empty min-heap v => (d, u)
-        QueCom
-        PriorityQueue<Pair<String, Pair<Double, String>>> queue = new PriorityQueue<>();
+        QueComparator queComparator = new QueComparator();
+        PriorityQueue<Pair<String, Pair<Double, String>>> queue = new PriorityQueue<>(queComparator);
 
         // Fetch all vertices in given graph
         Set<String> vertices = this.graph.vertexSet();
 
-        Double length = Double.POSITIVE_INFINITY;
+        // Init values for all vertices
+        Pair<Double, String> vInit = new Pair<>(Double.POSITIVE_INFINITY, "");
 
         // Iterate through vertices and create
         for(String vert : vertices) {
-            Pair<Double, String> p = new Pair<>(length, vert);
-            queue.add(p);
+            Pair<String, Pair<Double, String>> v;
+            if (vert.equals(this.source)){
+                Pair<Double, String> vSource = new Pair<>(0.0, "");
+                v = new Pair<String, Pair<Double, String>>(vert, vSource);
+            } else {
+                v = new Pair<String, Pair<Double, String>>(vert, vInit);
+            }
+            queue.add(v);
         }
 
         return queue;
