@@ -38,23 +38,18 @@ public class DijsktraShortestPaths {
 
     private PriorityQueue<Pair<Double, String>> initSS(){
 
-        int numVertices = this.graph.vertexSet().size();
-        Object[] vertices = this.graph.vertexSet().toArray();
+        //  Initialize empty min-heap v => (d, u)
+        PriorityQueue<Pair<String, Pair<Double, String>>> queue = new PriorityQueue();
 
-        //  min-heap
-        PriorityQueue<Pair<Double, String>> queue = new PriorityQueue();
+        // Fetch all vertices in given graph
+        Set<String> vertices = this.graph.vertexSet();
 
-        for(Object vert : vertices) {
-            String v = vert.toString();
-            double length = Double.POSITIVE_INFINITY;
+        Double length = Double.POSITIVE_INFINITY;
 
-            Pair<Double, String> p = new Pair<>(length, v);
-
+        // Iterate through vertices and create
+        for(String vert : vertices) {
+            Pair<Double, String> p = new Pair<>(length, vert);
             queue.add(p);
-
-            String[] adjacent = this.graph.getAdjecentVertices(v);
-            relax(v, adjacent);
-
         }
 
         return queue;
@@ -63,7 +58,7 @@ public class DijsktraShortestPaths {
 
     /**
      * Relaxes an egde and updates (creates a new) vertice
-     * Else it just returns the source vertice as it is.
+     * Else it just returns the source vertice as it is
      */
     private Pair relax(Pair source, Pair predecessor, Double weight) {
 
