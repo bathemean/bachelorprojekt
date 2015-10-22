@@ -81,7 +81,6 @@ public class uwGraph extends ListenableUndirectedWeightedGraph<String, DefaultWe
         Object[] edges = this.edgesOf(v).toArray();
         String[] adjacent = new String[edges.length];
 
-
         int degree = this.degreeOf(v);
 
         int i = 0;
@@ -116,7 +115,6 @@ public class uwGraph extends ListenableUndirectedWeightedGraph<String, DefaultWe
         Object[] edges = this.edgeSet().toArray();
 
         // GI MIG DIJKSTRA!
-
     }
 
     public double getDensity() {

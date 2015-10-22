@@ -1,5 +1,6 @@
-package main;
+package main.spanner;
 
+import main.Distance;
 import main.graph.uwGraph;
 import org.jgrapht.alg.DijkstraShortestPath;
 import org.jgrapht.graph.DefaultWeightedEdge;

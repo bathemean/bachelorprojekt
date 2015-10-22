@@ -3,6 +3,8 @@ package main;
 import main.graph.GraphFactory;
 import main.graph.GraphLoader;
 import main.graph.uwGraph;
+import main.spanner.GreedySpanner;
+import main.spanner.ThorupZwickSpanner;
 
 public class Main {
 

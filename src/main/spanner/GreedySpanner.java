@@ -1,6 +1,7 @@
-package main;
+package main.spanner;
 
 import main.graph.uwGraph;
+import main.spanner.Spanner;
 import org.jgrapht.alg.DijkstraShortestPath;
 import org.jgrapht.graph.DefaultWeightedEdge;
 

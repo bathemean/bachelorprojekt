@@ -2,6 +2,7 @@ package main;
 
 import main.graph.GraphFactory;
 import main.graph.uwGraph;
+import main.spanner.ThorupZwickSpanner;
 
 import java.util.ArrayList;
 
