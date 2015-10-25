@@ -1,10 +1,12 @@
 TZ-Spanner:
     - d(A_k, v) = \infinity
     - Optimering af Dijkstra (når shittet virker(!!!!))
-        * Måkse implemenetere Dijkstra selv
 
 Dijkstra:
-    - Need custom comparator for Pairs?
+    - Comparator implemented.
+    - Processing of graph.
+    - ShortestPath, jonglering af que og adj vertices.
+    - Finde ud af hvordan vi håndterer shortestpaths med edges.
 
 Spanner:
     - Stretch, største vægt, i forhold til graf, mellem to knuder.

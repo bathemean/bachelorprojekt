@@ -1,7 +1,6 @@
 package main;
 
 import main.graph.GraphFactory;
-import main.graph.GraphLoader;
 import main.graph.uwGraph;
 import main.spanner.GreedySpanner;
 import main.spanner.ThorupZwickSpanner;
@@ -16,19 +15,23 @@ public class Main {
         ThorupZwickSpanner thorupzwick = new ThorupZwickSpanner();
 
         uwGraph stringGraph = factory.createStringGraph();
-        uwGraph bigStrGraph = factory.createBiggerStringGraph();
+//        uwGraph bigStrGraph = factory.createBiggerStringGraph();
 
-        GraphLoader gl = new GraphLoader();
-        uwGraph condmat2005 = gl.loadCondMat2005();
+//        GraphLoader gl = new GraphLoader();
+//        uwGraph condmat2005 = gl.loadCondMat2005();
 
+        /*
         System.out.println("==== String graph: ====");
         System.out.println("Original: " + stringGraph.toString());
         System.out.println(stringGraph.getMetricsAsString());
         uwGraph spannerOne = greedy.makeSpanner(stringGraph, 2);
         System.out.println("GreedySpanner:  " + spannerOne.toString());
-        System.out.println(spannerOne.getMetricsAsString());
+        uwGraph spannerOne = thorupzwick.makeSpanner(stringGraph, 2);
+        System.out.println("GreedySpanner:  " + spannerOne.toString());
 
-        DijsktraShortestPaths dijkstra = new DijsktraShortestPaths(stringGraph, "v1");
+        System.out.println(spannerOne.getMetricsAsString());
+        */
+        DijsktraShortestPaths dijkstra = new DijsktraShortestPaths(stringGraph, "v1", 0.0);
         System.out.println(dijkstra.getGraph().toString());
 
         //uwGraph spannerTwo = thorupzwick.makeSpanner(stringGraph, 2);

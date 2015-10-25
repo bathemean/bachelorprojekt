@@ -4,7 +4,6 @@ import javafx.util.Pair;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.ListenableUndirectedWeightedGraph;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
@@ -56,7 +55,7 @@ public class uwGraph extends ListenableUndirectedWeightedGraph<String, DefaultWe
      * @param edge The String edge in question.
      * @return Pair of Strings, source and target.
      */
-    protected Pair<String, String> getEdgeComponents(String edge) {
+    public Pair<String, String> getEdgeComponents(String edge) {
         String[] s = edge.split(":");
 
         String source = s[0].substring(1, s[0].length() - 1); // Remove initial ( and trailing whitespace.
