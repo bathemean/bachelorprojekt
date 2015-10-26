@@ -2,18 +2,20 @@ package main;
 
 import javafx.util.Pair;
 import main.graph.uwGraph;
+import org.apache.commons.collections.buffer.PriorityBuffer;
 import org.jgrapht.graph.DefaultWeightedEdge;
 
 import java.util.ArrayList;
 import java.util.PriorityQueue;
 import java.util.Set;
+import org.apache.commons.*;
 
 public class DijsktraShortestPaths {
 
     /**
      * Based on the algorithm in Cormen et al. 3. ed., page 658
      */
-
+    private PriorityBuffer heap;
     private PriorityQueue<Pair<String, Pair<Double, String>>> vertices;
     private uwGraph graph;
     private String source;
