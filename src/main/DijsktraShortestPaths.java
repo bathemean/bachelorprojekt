@@ -32,6 +32,8 @@ public class DijsktraShortestPaths {
         QueComparator queComparator = new QueComparator();
         PriorityQueue<Pair<String, Pair<Double, String>>> queue = new PriorityQueue<Pair<String, Pair<Double, String>>>(queComparator);
 
+
+
         // Fetch all vertices in given graph
         Set<String> vertices = this.graph.vertexSet();
 
