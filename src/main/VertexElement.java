@@ -30,7 +30,8 @@ import javafx.beans.NamedArg;
 import java.io.Serializable;
 
 /**
- * <p>A convenience class to represent name-value pairs.</p>
+ * Originally the Pair<> class, but copied for expansion of mutable value containers.
+ * Setters added for key and value. We need this when decreasing the key in MinHeap
  * @since JavaFX 2.0
  */
 public class VertexElement<K,V> implements Serializable{

@@ -3,6 +3,7 @@ package main;
 import java.util.ArrayList;
 
 /**
+ *
  * Created by mcfallen on 11/2/15.
  */
 public class MinHeap {
