@@ -15,18 +15,23 @@ public class MinHeap {
         return heap;
     }
 
-    private ArrayList<String> mapping;
+    public ArrayList<String> mapping;
 
     public int getMapping(String v) {
         return this.mapping.indexOf(v);
     }
 
-    public VertexElement<Double, String> getVertex(String v) {
-        return this.heap.get(this.mapping.indexOf(v));
+    public VertexElement<Integer, VertexElement<Double, String>> getVertex(String v) {
+        System.out.println("map " + this.mapping + " v: " + v);
+        int index = this.mapping.indexOf(v);
+        System.out.println("ii " + index);
+        System.out.println("dd " + this.heap.get(index));
+        return new VertexElement<Integer, VertexElement<Double, String>>(index, this.heap.get(index));
     }
 
     public MinHeap(){
         this.heap = new ArrayList<VertexElement<Double, String>>();
+        this.mapping = new ArrayList<String>();
     }
 
     public VertexElement<String, VertexElement<Double, String>> extractMin() throws Exception {
@@ -43,18 +48,29 @@ public class MinHeap {
      * @param key
      * @throws Exception
      */
-    public void decreaseKey(String v, Double key, String p) throws Exception {
-        if (key > this.heap.get(this.getMapping(v)).getKey()) {
+    public void decreaseKey(VertexElement<String, VertexElement<Double, String>> v, Double key, String p) throws Exception {
+
+        // Fetch source vertex data
+        VertexElement<String, VertexElement<Double, String>> source = v;
+        if (key > source.getValue().getKey()) {
             throw new Exception("new key is larger than current");
         }
+        // Fetch pred vertex data
+        VertexElement<Integer, VertexElement<Double, String>> pred = this.getVertex(p);
 
-        int i = this.getMapping(v);
-        // Update predecessor
-        this.heap.get(this.getMapping(v)).setValue(p);
-        // Fetch weight
-        Double Ai = this.heap.get(this.getMapping(v)).getKey();
+        if (!(source.getValue().getKey() > pred.getValue().getKey() + key)) {
+            return;
+        }
+
+        // Fetch index of source
+        int i = source.getKey();
+
+        // Update key & predecessor
+        this.heap.get(source.getKey()).setKey(pred.getValue().getKey() + key);
+        this.heap.get(source.getKey()).setValue(p);
+
         // Bubble up to rebalance heap
-        while (i < 1 && this.getParent(i) > Ai) {
+        while (i < 1 && this.heap.get(getParent(i)).getKey() > source.getValue().getKey()) {
             i = swap(i, this.getParent(i));
         }
     }

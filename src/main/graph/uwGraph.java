@@ -1,6 +1,7 @@
 package main.graph;
 
 import javafx.util.Pair;
+import main.VertexElement;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.ListenableUndirectedWeightedGraph;
 
@@ -75,22 +76,34 @@ public class uwGraph extends ListenableUndirectedWeightedGraph<String, DefaultWe
         return getEdgeComponents(edge.toString());
     }
 
-    public String[] getAdjecentVertices(String v) {
+    public VertexElement[] getAdjecentVertices(String v) {
 
         Object[] edges = this.edgesOf(v).toArray();
-        String[] adjacent = new String[edges.length];
+        VertexElement[] adjacent = new VertexElement[edges.length];
 
-        int degree = this.degreeOf(v);
+
 
         int i = 0;
         for (Object e : edges) {
             String source = this.getEdgeComponents(e).getKey();
             String target = this.getEdgeComponents(e).getValue();
 
-            if (!source.equals(v) || !target.equals(v)) {
-                adjacent[i] = target;
-                i++;
+            String insert = "";
+            if (source.equals(v)) {
+                insert = target;
+            } else {
+                insert = source;
             }
+
+            Double w = this.getEdgeWeight((DefaultWeightedEdge) e);
+
+
+
+
+            VertexElement ele = new VertexElement<Double, String>(w, insert);
+            adjacent[i] = ele;
+            System.out.println(insert);
+            i++;
         }
 
         if (adjacent.length > 0) {

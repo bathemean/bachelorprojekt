@@ -1,10 +1,6 @@
 package main;
 
-import com.sun.tools.javac.util.Pair;
-import javafx.util.VertexElement;
 import main.graph.uwGraph;
-import org.jgrapht.graph.DefaultWeightedEdge;
-import sun.security.provider.certpath.Vertex;
 
 import java.util.ArrayList;
 import java.util.Set;
@@ -36,7 +32,7 @@ public class DijsktraShortestPaths {
         Set<String> vertices = this.graph.vertexSet();
 
         // VertexElement used for initializing vertices in the heap.
-        VertexElement<Double, String> vInit = new VertexElement<Double, String>(Double.POSITIVE_INFINITY, null);
+        VertexElement<Double, String> vInit = new VertexElement<Double, String>(Double.POSITIVE_INFINITY, "");
 
         // Iterate through vertices and create
         for (String vert : vertices) {
@@ -51,11 +47,10 @@ public class DijsktraShortestPaths {
             // Set all others to vInit (infinite)
                 v = new VertexElement<String, VertexElement<Double, String>>(vert, vInit);
             }
-
             heap.add(v);
 
         }
-
+        System.out.println("heep " + heap.mapping);
         return heap;
     }
 
@@ -65,28 +60,6 @@ public class DijsktraShortestPaths {
      */
     private VertexElement relax(VertexElement source, String predecessor, Double weight) {
 
-        Double sourceDist = (Double) source.getKey();
-
-        VertexElement pred = this.heap.getVertex(predecessor);
-        Double predDist = (Double) pred.getKey();
-
-        if(predDist > sourceDist + weight) {
-
-            pred.setKey( sourceDist + weight );
-            pred.setValue( source );
-
-        }
-
-
-        /*
-        VertexElement<Double, String> updatedVertice;
-        double cumWeight = (((double) predecessor.getKey()) + weight);
-
-        if ((double) source.getKey() > cumWeight) {
-            updatedVertice = new VertexElement<Double, String>(cumWeight, (String) predecessor.getValue());
-            return updatedVertice;
-        }
-        */
 
         return source;
     }
@@ -123,16 +96,17 @@ public class DijsktraShortestPaths {
 
         while(this.heap.size() > 0) {
 
-            VertexElement u = this.heap.extractMin();
+            VertexElement<String, VertexElement<Double, String>> u = this.heap.extractMin();
+
             Double weight = getWeight(u);
 
             shortestPath.add(u);
 
-            String[] adj = this.graph.getAdjecentVertices((String) u.getKey());
+            VertexElement[] adj = this.graph.getAdjecentVertices((String) u.getKey());
 
-            for(String v : adj) {
+            for(VertexElement v : adj) {
 
-                relax(u, v, weight);
+                this.heap.decreaseKey(u, weight, (String) v.getValue());
             }
 
         }
