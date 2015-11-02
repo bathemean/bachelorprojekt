@@ -49,10 +49,10 @@ public class MinHeap {
 
         // Fetch adjacent vertex data
         VertexElement<Integer, VertexElement<Double, String>> adjV = this.getVertex(v);
-        System.out.print(pred.getKey() + "\n");
-        System.out.print(v + "\n");
-        System.out.print(adjV.getValue().getKey() + "\n");
-        System.out.print(adjV.getValue().getValue() + "\n");
+        //System.out.print(pred.getKey() + "\n");
+        //System.out.print(v + "\n");
+        //System.out.print(adjV.getValue().getKey() + "\n");
+        //System.out.print(adjV.getValue().getValue() + "\n");
 
         if (!(adjV.getValue().getKey() > pred.getValue().getKey() + key)) {
             return;
@@ -67,7 +67,6 @@ public class MinHeap {
 
         // Bubble up to rebalance heap
         while (i > -1 && this.heap.get(getParent(i)).getKey() > adjV.getValue().getKey()) {
-            System.out.print(v);
             i = swap(i, this.getParent(i));
         }
     }

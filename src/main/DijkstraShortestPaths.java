@@ -1,11 +1,12 @@
 package main;
 
 import main.graph.uwGraph;
+import org.jgrapht.graph.DefaultWeightedEdge;
 
 import java.util.ArrayList;
 import java.util.Set;
 
-public class DijsktraShortestPaths {
+public class DijkstraShortestPaths {
 
     /**
      * Based on the algorithm in Cormen et al. 3. ed., page 658
@@ -14,10 +15,9 @@ public class DijsktraShortestPaths {
     private uwGraph graph;
     private String source;
     private ArrayList shortestPath;
-    private int shortestPaths;
 
-    public DijsktraShortestPaths(uwGraph graph, String source, Double w) throws Exception {
-        this.graph = graph;
+    public DijkstraShortestPaths(uwGraph graph, String source, Double w) throws Exception {
+        this.graph = graph.cloneGraph();
         this.source = source;
         this.heap = this.initSS();
         this.shortestPath = new ArrayList();
@@ -41,7 +41,6 @@ public class DijsktraShortestPaths {
             // Set the source vertex to weight 0.
             if (vert.equals(this.source)) {
                 VertexElement<Double, String> vSource = new VertexElement<Double, String>(0.0, "");
-                // (Target,
                 v = new VertexElement<String, VertexElement<Double, String>>(vert, vSource);
             } else {
             // Set all others to vInit (infinite)
@@ -81,8 +80,8 @@ public class DijsktraShortestPaths {
         this.source = source;
     }
 
-    public int getShortestPaths() {
-        return this.shortestPaths;
+    public ArrayList<VertexElement<String, VertexElement<Double, String>>> getShortestPaths() {
+        return this.shortestPath;
     }
 
     /**
@@ -91,26 +90,31 @@ public class DijsktraShortestPaths {
      * be aware that object in the queue should be extracted and re-inserted to maintain the integrity of the queue
      * i.o.w. don't just alter the object in the queue by reference.
      */
-    public void setShortestPaths() throws Exception {
+    protected void setShortestPaths() throws Exception {
 
         while(this.heap.size() > 1) {
 
             VertexElement<String, VertexElement<Double, String>> u = this.heap.extractMin();
 
+            // Add the minimal vertex to our shortest path.
             shortestPath.add(u);
 
             VertexElement[] adj = this.graph.getAdjecentVertices(u.getKey());
 
+            // Decrease key for all the adjacent vertices.
             for(VertexElement v : adj) {
                 this.heap.decreaseKey(u, (Double) v.getKey(), (String) v.getValue());
             }
 
         }
-        VertexElement<String, VertexElement<Double, String>> u = this.heap.extractMin();
-        shortestPath.add(u);
-        System.out.println(this.shortestPath);
-    }
 
+        // Extract the remaining vertex and add it to our path.
+        VertexElement<String, VertexElement<Double, String>> u = this.heap.extractMin();
+
+        shortestPath.add(u);
+        //System.out.println(shortestPath);
+
+    }
 
     public uwGraph getGraph() {
         return this.graph;

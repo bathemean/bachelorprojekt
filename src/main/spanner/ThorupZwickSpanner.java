@@ -1,6 +1,8 @@
 package main.spanner;
 
+import main.DijkstraShortestPaths;
 import main.Distance;
+import main.VertexElement;
 import main.graph.uwGraph;
 import org.jgrapht.alg.DijkstraShortestPath;
 import org.jgrapht.graph.DefaultWeightedEdge;
@@ -23,6 +25,7 @@ public class ThorupZwickSpanner {
 
         this.k = k;
         this.graph = g;
+
         ArrayList<String> vertices = vertexSetToArray(g.vertexSet());
 
         // Assign vertices into parititions.
@@ -112,6 +115,20 @@ public class ThorupZwickSpanner {
 
 //System.out.println(tmpGraph.toString());
 
+            try {
+                DijkstraShortestPaths path = new DijkstraShortestPaths(tmpGraph, source, 0.0);
+                System.out.println(tmpGraph);
+                System.out.println("SP " + path.getShortestPaths());
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
+
+
+    /*
             for (String v : this.graph.vertexSet()) {
 
                 DijkstraShortestPath path = new DijkstraShortestPath(tmpGraph, source, v);
@@ -134,7 +151,9 @@ public class ThorupZwickSpanner {
                     }
 
                 }
-            }
+
+
+            }*/
 
             System.out.println("Spanner: " + spanner);
         }

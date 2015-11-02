@@ -31,10 +31,10 @@ public class Main {
 
         System.out.println(spannerOne.getMetricsAsString());
         */
-        DijsktraShortestPaths dijkstra = new DijsktraShortestPaths(stringGraph, "v1", 0.0);
-        System.out.println(dijkstra.getGraph().toString());
+        DijkstraShortestPaths dijkstra = new DijkstraShortestPaths(stringGraph, "v1", 0.0);
+        System.out.println(dijkstra.getShortestPaths());
 
-        //uwGraph spannerTwo = thorupzwick.makeSpanner(stringGraph, 2);
+        uwGraph spannerTwo = thorupzwick.makeSpanner(stringGraph, 2);
         //System.out.println("ThorupZwick: " + spannerTwo.toString());
 
         /*
