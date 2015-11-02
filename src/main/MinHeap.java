@@ -43,12 +43,17 @@ public class MinHeap {
      * @param key
      * @throws Exception
      */
-    public void decreaseKey(String v, Double key) throws Exception {
+    public void decreaseKey(String v, Double key, String p) throws Exception {
         if (key > this.heap.get(this.getMapping(v)).getKey()) {
             throw new Exception("new key is larger than current");
         }
+
         int i = this.getMapping(v);
+        // Update predecessor
+        this.heap.get(this.getMapping(v)).setValue(p);
+        // Fetch weight
         Double Ai = this.heap.get(this.getMapping(v)).getKey();
+        // Bubble up to rebalance heap
         while (i < 1 && this.getParent(i) > Ai) {
             i = swap(i, this.getParent(i));
         }
