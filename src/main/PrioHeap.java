@@ -354,7 +354,7 @@ class PrioQueue<E> extends AbstractQueue<E>
     private int indexOf(Object o) {
         if (o != null) {
             for (int i = 0; i < size; i++)
-                if (o.equals(queue[i]))
+                if (queue[i].equals(o))
                     return i;
         }
         return -1;
@@ -819,6 +819,15 @@ class PrioQueue<E> extends AbstractQueue<E>
         return removeAt(index);
     }
 
+    public int searchVertex(String o) {
+        if (o != null) {
+            for (int i = 0; i < size; i++)
+                if ()
+                    return i;
+        }
+        return -1;
+    }
+
     static final class PriorityQueueSpliterator<E> implements Spliterator<E> {
         /*
          * This is very similar to ArrayList Spliterator, except for
@@ -909,4 +918,5 @@ class PrioQueue<E> extends AbstractQueue<E>
             return Spliterator.SIZED | Spliterator.SUBSIZED | Spliterator.NONNULL;
         }
     }
+
 }

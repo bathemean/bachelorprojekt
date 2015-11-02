@@ -12,4 +12,9 @@ public class QueComparator implements Comparator<Pair<String, Pair<Double, Strin
 
         return (int) (weight1 - weight2);
     }
+
+    public boolean equals(Pair<String, Pair<Double, String>> v1, String v2){
+        String first = v1.getKey();
+        return (first.equals(v2));
+    }
 }

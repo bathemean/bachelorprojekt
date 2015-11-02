@@ -7,7 +7,7 @@ import main.spanner.ThorupZwickSpanner;
 
 public class Main {
 
-    public static void main(String args[]) {
+    public static void main(String args[]) throws Exception {
 
         GraphFactory factory = new GraphFactory();
 
