@@ -31,11 +31,11 @@ public class DijsktraShortestPaths {
         // Fetch all vertices in given graph
         Set<String> vertices = this.graph.vertexSet();
 
-        // VertexElement used for initializing vertices in the heap.
-        VertexElement<Double, String> vInit = new VertexElement<Double, String>(Double.POSITIVE_INFINITY, "");
 
         // Iterate through vertices and create
         for (String vert : vertices) {
+            // VertexElement used for initializing vertices in the heap.
+            VertexElement<Double, String> vInit = new VertexElement<Double, String>(Double.POSITIVE_INFINITY, "");
             VertexElement<String, VertexElement<Double, String>> v;
 
             // Set the source vertex to weight 0.
@@ -48,9 +48,8 @@ public class DijsktraShortestPaths {
                 v = new VertexElement<String, VertexElement<Double, String>>(vert, vInit);
             }
             heap.add(v);
-
         }
-        System.out.println("heep " + heap.mapping);
+
         return heap;
     }
 
@@ -98,19 +97,18 @@ public class DijsktraShortestPaths {
 
             VertexElement<String, VertexElement<Double, String>> u = this.heap.extractMin();
 
-            Double weight = getWeight(u);
-
             shortestPath.add(u);
 
-            VertexElement[] adj = this.graph.getAdjecentVertices((String) u.getKey());
+            VertexElement[] adj = this.graph.getAdjecentVertices(u.getKey());
 
             for(VertexElement v : adj) {
-
-                this.heap.decreaseKey(u, weight, (String) v.getValue());
+                this.heap.decreaseKey(u, (Double) v.getKey(), (String) v.getValue());
             }
 
         }
-
+        VertexElement<String, VertexElement<Double, String>> u = this.heap.extractMin();
+        shortestPath.add(u);
+        System.out.println(this.shortestPath);
     }
 
 

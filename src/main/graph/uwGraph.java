@@ -100,12 +100,7 @@ public class uwGraph extends ListenableUndirectedWeightedGraph<String, DefaultWe
             this.removeEdge((DefaultWeightedEdge) e);
         }
 
-        if (adjacent.length > 0) {
-            return adjacent;
-        } else {
-            System.out.println("Size lel 4 v" + v + " " + adjacent.length);
-            return null;
-        }
+        return adjacent;
     }
 
     public void setRuntime(long runtime) {

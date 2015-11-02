@@ -33,14 +33,14 @@ public class GraphFactory {
         // add edges to create a circuit
         g.addEdge(v1, v2);
         g.setEdgeWeight(g.getEdge("v1", "v2"), 10.0);
-//        g.addEdge(v2, v3);
-//        g.setEdgeWeight(g.getEdge("v2", "v3"), 30.0);
+        g.addEdge(v2, v3);
+        g.setEdgeWeight(g.getEdge("v2", "v3"), 30.0);
         g.addEdge(v3, v4);
         g.setEdgeWeight(g.getEdge("v3", "v4"), 20.0);
         g.addEdge(v4, v1);
         g.setEdgeWeight(g.getEdge("v4", "v1"), 45.0);
         g.addEdge(v2, v4);
-//        g.setEdgeWeight(g.getEdge("v2", "v4"), 50.0);
+        g.setEdgeWeight(g.getEdge("v2", "v4"), 50.0);
         g.addEdge(v3, v1);
         g.setEdgeWeight(g.getEdge("v3", "v1"), 15.0);
 

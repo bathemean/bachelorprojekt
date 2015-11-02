@@ -22,10 +22,7 @@ public class MinHeap {
     }
 
     public VertexElement<Integer, VertexElement<Double, String>> getVertex(String v) {
-        System.out.println("map " + this.mapping + " v: " + v);
         int index = this.mapping.indexOf(v);
-        System.out.println("ii " + index);
-        System.out.println("dd " + this.heap.get(index));
         return new VertexElement<Integer, VertexElement<Double, String>>(index, this.heap.get(index));
     }
 
@@ -52,11 +49,10 @@ public class MinHeap {
 
         // Fetch adjacent vertex data
         VertexElement<Integer, VertexElement<Double, String>> adjV = this.getVertex(v);
-
-        // Check if new key is larger than current
-        if (key > adjV.getValue().getKey()) {
-            throw new Exception("new key is larger than current");
-        }
+        System.out.print(pred.getKey() + "\n");
+        System.out.print(v + "\n");
+        System.out.print(adjV.getValue().getKey() + "\n");
+        System.out.print(adjV.getValue().getValue() + "\n");
 
         if (!(adjV.getValue().getKey() > pred.getValue().getKey() + key)) {
             return;
@@ -70,7 +66,8 @@ public class MinHeap {
         this.heap.get(adjV.getKey()).setValue(pred.getKey());
 
         // Bubble up to rebalance heap
-        while (i < 1 && this.heap.get(getParent(i)).getKey() > adjV.getValue().getKey()) {
+        while (i > -1 && this.heap.get(getParent(i)).getKey() > adjV.getValue().getKey()) {
+            System.out.print(v);
             i = swap(i, this.getParent(i));
         }
     }
@@ -85,7 +82,9 @@ public class MinHeap {
 
         // Store vertex data before overwrite
         VertexElement<Double, String> vTmp = this.heap.get(i);
+        System.out.print("lolomg");
         String iTmp = this.mapping.get(i);
+        System.out.print(iTmp);
 
         // Overwrite old vertex
         this.heap.add(i, this.heap.get(parent));
