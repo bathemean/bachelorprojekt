@@ -4,6 +4,7 @@ import com.sun.tools.javac.util.Pair;
 import javafx.util.VertexElement;
 import main.graph.uwGraph;
 import org.jgrapht.graph.DefaultWeightedEdge;
+import sun.security.provider.certpath.Vertex;
 
 import java.util.ArrayList;
 import java.util.Set;
@@ -65,13 +66,15 @@ public class DijsktraShortestPaths {
     private VertexElement relax(VertexElement source, String predecessor, Double weight) {
 
         Double sourceDist = (Double) source.getKey();
-        Double predDist = (Double) predecessor.getKey();
 
+        VertexElement pred = this.heap.getVertex(predecessor);
+        Double predDist = (Double) pred.getKey();
 
         if(predDist > sourceDist + weight) {
 
-            predecessor.setKey( sourceDist + weight );
-            predecessor.setValue(source);
+            pred.setKey( sourceDist + weight );
+            pred.setValue( source );
+
         }
 
 
