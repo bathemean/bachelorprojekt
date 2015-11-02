@@ -21,6 +21,14 @@ public class MinHeap {
         return this.heap.remove(0);
     }
 
+    public void add(VertexElement element) {
+        this.heap.add(element);
+    }
+
+    public int size() {
+        return this.heap.size();
+    }
+
     public void decreaseKey(int i, Double key) throws Exception {
         if (key > this.heap.get(i).getValue().getKey()) {
             throw new Exception("new key is larger than current");

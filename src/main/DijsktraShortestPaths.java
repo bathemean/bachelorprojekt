@@ -1,6 +1,7 @@
 package main;
 
-import javafx.util.Pair;
+import com.sun.tools.javac.util.Pair;
+import javafx.util.VertexElement;
 import main.graph.uwGraph;
 import org.jgrapht.graph.DefaultWeightedEdge;
 
@@ -12,64 +13,87 @@ public class DijsktraShortestPaths {
     /**
      * Based on the algorithm in Cormen et al. 3. ed., page 658
      */
-    private PrioQueue<Pair<String, Pair<Double, String>>> vertices;
+    private MinHeap heap;
     private uwGraph graph;
     private String source;
+    private ArrayList shortestPath;
     private int shortestPaths;
 
     public DijsktraShortestPaths(uwGraph graph, String source, Double w) throws Exception {
         this.graph = graph;
         this.source = source;
-        this.vertices = this.initSS();
+        this.heap = this.initSS();
+        this.shortestPath = new ArrayList();
         this.setShortestPaths();
     }
 
-    private PrioQueue<Pair<String, Pair<Double, String>>> initSS() {
+    private MinHeap initSS() {
 
-        //  Initialize empty min-heap v => (d, u)
-        QueComparator queComparator = new QueComparator();
-        PrioQueue<Pair<String, Pair<Double, String>>> queue = new PrioQueue<Pair<String, Pair<Double, String>>>(queComparator);
-
-
+        MinHeap heap = new MinHeap();
 
         // Fetch all vertices in given graph
         Set<String> vertices = this.graph.vertexSet();
 
-        // Init values for all vertices
-        Pair<Double, String> vInit = new Pair<Double, String>(Double.POSITIVE_INFINITY, null);
+        // VertexElement used for initializing vertices in the heap.
+        VertexElement<Double, String> vInit = new VertexElement<Double, String>(Double.POSITIVE_INFINITY, null);
 
         // Iterate through vertices and create
         for (String vert : vertices) {
-            Pair<String, Pair<Double, String>> v;
+            VertexElement<String, VertexElement<Double, String>> v;
+
+            // Set the source vertex to weight 0.
             if (vert.equals(this.source)) {
-                Pair<Double, String> vSource = new Pair<Double, String>(0.0, "");
-                v = new Pair<String, Pair<Double, String>>(vert, vSource);
+                VertexElement<Double, String> vSource = new VertexElement<Double, String>(0.0, "");
+                // (Target,
+                v = new VertexElement<String, VertexElement<Double, String>>(vert, vSource);
             } else {
-                v = new Pair<String, Pair<Double, String>>(vert, vInit);
+            // Set all others to vInit (infinite)
+                v = new VertexElement<String, VertexElement<Double, String>>(vert, vInit);
             }
-            queue.add(v);
+
+            heap.add(v);
+
         }
 
-        return queue;
+        return heap;
     }
 
     /**
      * Relaxes an egde and updates (creates a new) vertice
      * Else it just returns the source vertice as it is
      */
-    private Pair relax(Pair source, Pair predecessor, Double weight) {
+    private VertexElement relax(VertexElement source, String predecessor, Double weight) {
+
+        Double sourceDist = (Double) source.getKey();
+        Double predDist = (Double) predecessor.getKey();
+
+
+        if(predDist > sourceDist + weight) {
+
+            predecessor.setKey( sourceDist + weight );
+            predecessor.setValue(source);
+        }
+
 
         /*
-        Pair<Double, String> updatedVertice;
+        VertexElement<Double, String> updatedVertice;
         double cumWeight = (((double) predecessor.getKey()) + weight);
 
         if ((double) source.getKey() > cumWeight) {
-            updatedVertice = new Pair<Double, String>(cumWeight, (String) predecessor.getValue());
+            updatedVertice = new VertexElement<Double, String>(cumWeight, (String) predecessor.getValue());
             return updatedVertice;
         }
         */
 
         return source;
+    }
+
+    private String getPredecessor(VertexElement<String, VertexElement<Double, String>> ele) {
+        return ele.getValue().getValue();
+    }
+
+    private Double getWeight(VertexElement<String, VertexElement<Double, String>> ele) {
+        return ele.getValue().getKey();
     }
 
     // Removal is opional
@@ -93,37 +117,26 @@ public class DijsktraShortestPaths {
      * i.o.w. don't just alter the object in the queue by reference.
      */
     public void setShortestPaths() throws Exception {
-        System.out.println(this.vertices.peek());
-        System.out.println(this.vertices.contains("v1"));
-        while (this.vertices.size() > 0) {
-            Pair<String, Pair<Double, String>> vertice = this.vertices.poll();
 
-            ArrayList<String> adjV = new ArrayList<String>();
-            for(DefaultWeightedEdge edge : this.getGraph().edgesOf(vertice.getKey())){
-                adjV.add(this.findAdjVertex(vertice.getKey(), edge));
+        while(this.heap.size() > 0) {
+
+            VertexElement u = this.heap.extractMin();
+            Double weight = getWeight(u);
+
+            shortestPath.add(u);
+
+            String[] adj = this.graph.getAdjecentVertices((String) u.getKey());
+
+            for(String v : adj) {
+
+                relax(u, v, weight);
             }
 
         }
 
     }
 
-    /**
-     * Find the adj vertex to the evaluated vertex from an edge
-     * @param vertice
-     * @param edge
-     * @return
-     * @throws Exception
-     */
-    private String findAdjVertex(String vertice, DefaultWeightedEdge edge) throws Exception {
-        Pair<String, String> vPair = this.getGraph().getEdgeComponents(edge.toString());
-        if (vPair.getKey().equals(vertice)){
-            return vPair.getValue();
-        }else if (vPair.getValue().equals(vertice)){
-            return vPair.getKey();
-        } else {
-            throw new Exception("Something went wrong, neither vertices matches evaluated one");
-        }
-    }
+
     public uwGraph getGraph() {
         return this.graph;
     }
