@@ -21,24 +21,36 @@ public class MinHeap {
         return this.heap.remove(0);
     }
 
+    /**
+     * Updates value of element and orders the min heap
+     * @param i
+     * @param key
+     * @throws Exception
+     */
     public void decreaseKey(int i, Double key) throws Exception {
         if (key > this.heap.get(i).getValue().getKey()) {
             throw new Exception("new key is larger than current");
         }
         Double Ai = this.heap.get(i).getValue().getKey();
         while (i < 1 && this.getParent(i) > Ai) {
-            swap(i, this.getParent(i));
-            i = this.getParent(i);
+            i = swap(i, this.getParent(i));
         }
     }
 
-    private void swap(int i, int parent) {
+    /**
+     * Swaps to elements in the array, returning the current parent.
+     * @param i child index to swap
+     * @param parent parent index to swap
+     * @return parent
+     */
+    private int swap(int i, int parent) {
         // Store vertex data before overwrite
         VertexElement<String, VertexElement<Double, String>> tmp = this.heap.get(i);
         // Overwrite old vertex
         this.heap.add(i, this.heap.get(parent));
         // Overwrite stored vertex on parent index
         this.heap.add(parent, tmp);
+        return parent;
     }
     public int getParent(int i) {
         return (i - 1) / 2;
