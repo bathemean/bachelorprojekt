@@ -81,8 +81,6 @@ public class uwGraph extends ListenableUndirectedWeightedGraph<String, DefaultWe
         Object[] edges = this.edgesOf(v).toArray();
         VertexElement[] adjacent = new VertexElement[edges.length];
 
-
-
         int i = 0;
         for (Object e : edges) {
             String source = this.getEdgeComponents(e).getKey();
@@ -96,19 +94,16 @@ public class uwGraph extends ListenableUndirectedWeightedGraph<String, DefaultWe
             }
 
             Double w = this.getEdgeWeight((DefaultWeightedEdge) e);
-
-
-
-
             VertexElement ele = new VertexElement<Double, String>(w, insert);
             adjacent[i] = ele;
-            System.out.println(insert);
             i++;
+            this.removeEdge((DefaultWeightedEdge) e);
         }
 
         if (adjacent.length > 0) {
             return adjacent;
         } else {
+            System.out.println("Size lel 4 v" + v + " " + adjacent.length);
             return null;
         }
     }

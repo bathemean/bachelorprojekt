@@ -94,7 +94,7 @@ public class DijsktraShortestPaths {
      */
     public void setShortestPaths() throws Exception {
 
-        while(this.heap.size() > 0) {
+        while(this.heap.size() > 1) {
 
             VertexElement<String, VertexElement<Double, String>> u = this.heap.extractMin();
 

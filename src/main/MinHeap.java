@@ -48,29 +48,29 @@ public class MinHeap {
      * @param key
      * @throws Exception
      */
-    public void decreaseKey(VertexElement<String, VertexElement<Double, String>> v, Double key, String p) throws Exception {
+    public void decreaseKey(VertexElement<String, VertexElement<Double, String>> pred, Double key, String v) throws Exception {
 
-        // Fetch source vertex data
-        VertexElement<String, VertexElement<Double, String>> source = v;
-        if (key > source.getValue().getKey()) {
+        // Fetch adjacent vertex data
+        VertexElement<Integer, VertexElement<Double, String>> adjV = this.getVertex(v);
+
+        // Check if new key is larger than current
+        if (key > adjV.getValue().getKey()) {
             throw new Exception("new key is larger than current");
         }
-        // Fetch pred vertex data
-        VertexElement<Integer, VertexElement<Double, String>> pred = this.getVertex(p);
 
-        if (!(source.getValue().getKey() > pred.getValue().getKey() + key)) {
+        if (!(adjV.getValue().getKey() > pred.getValue().getKey() + key)) {
             return;
         }
 
         // Fetch index of source
-        int i = source.getKey();
+        int i = adjV.getKey();
 
         // Update key & predecessor
-        this.heap.get(source.getKey()).setKey(pred.getValue().getKey() + key);
-        this.heap.get(source.getKey()).setValue(p);
+        this.heap.get(adjV.getKey()).setKey(pred.getValue().getKey() + key);
+        this.heap.get(adjV.getKey()).setValue(pred.getKey());
 
         // Bubble up to rebalance heap
-        while (i < 1 && this.heap.get(getParent(i)).getKey() > source.getValue().getKey()) {
+        while (i < 1 && this.heap.get(getParent(i)).getKey() > adjV.getValue().getKey()) {
             i = swap(i, this.getParent(i));
         }
     }
