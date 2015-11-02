@@ -8,31 +8,46 @@ import java.util.ArrayList;
  */
 public class MinHeap {
 
-    public ArrayList<VertexElement<String, VertexElement<Double, String>>> heap;
+
+    private ArrayList<VertexElement<Double, String>> heap;
+
+    public ArrayList<VertexElement<Double, String>> getHeap() {
+        return heap;
+    }
+
+    private ArrayList<String> mapping;
+
+    public int getMapping(String v) {
+        return this.mapping.indexOf(v);
+    }
+
+    public VertexElement<Double, String> getVertex(String v) {
+        return this.heap.get(this.mapping.indexOf(v));
+    }
 
     public MinHeap(){
-        this.heap = new ArrayList<VertexElement<String, VertexElement<Double, String>>>();
+        this.heap = new ArrayList<VertexElement<Double, String>>();
     }
 
     public VertexElement<String, VertexElement<Double, String>> extractMin() throws Exception {
         if (this.heap.size() < 1) {
             throw new Exception("Heap underflow");
         }
-
-        return this.heap.remove(0);
+        return new VertexElement<String, VertexElement<Double, String>>(this.mapping.remove(0), this.heap.remove(0));
     }
 
     /**
      * Updates value of element and orders the min heap
-     * @param i
+     * @param v
      * @param key
      * @throws Exception
      */
-    public void decreaseKey(int i, Double key) throws Exception {
-        if (key > this.heap.get(i).getValue().getKey()) {
+    public void decreaseKey(String v, Double key) throws Exception {
+        if (key > this.heap.get(this.getMapping(v)).getKey()) {
             throw new Exception("new key is larger than current");
         }
-        Double Ai = this.heap.get(i).getValue().getKey();
+        int i = this.getMapping(v);
+        Double Ai = this.heap.get(this.getMapping(v)).getKey();
         while (i < 1 && this.getParent(i) > Ai) {
             i = swap(i, this.getParent(i));
         }
@@ -45,23 +60,32 @@ public class MinHeap {
      * @return parent
      */
     private int swap(int i, int parent) {
+
         // Store vertex data before overwrite
-        VertexElement<String, VertexElement<Double, String>> tmp = this.heap.get(i);
+        VertexElement<Double, String> vTmp = this.heap.get(i);
+        String iTmp = this.mapping.get(i);
+
         // Overwrite old vertex
         this.heap.add(i, this.heap.get(parent));
+        this.mapping.add(i, this.mapping.get(parent));
+
         // Overwrite stored vertex on parent index
-        this.heap.add(parent, tmp);
+        this.heap.add(parent, vTmp);
+        this.mapping.add(parent, iTmp);
+
         return parent;
     }
-    public int getParent(int i) {
-        return (i - 1) / 2;
-    }
 
-    public int getLeftChild(int i) {
-        return (i - 1) * 2;
-    }
+    public int getParent(int i) { return (i - 1) / 2; }
 
-    public int getRightChild(int i) {
-        return (i - 1) * 2 + 1;
+    public int getLeftChild(int i) { return (i - 1) * 2; }
+
+    public int getRightChild(int i) { return (i - 1) * 2 + 1; }
+
+    public int size() { return this.heap.size(); }
+
+    public void add(VertexElement<String, VertexElement<Double, String>> v){
+        this.heap.add(v.getValue());
+        this.mapping.add(v.getKey());
     }
 }
