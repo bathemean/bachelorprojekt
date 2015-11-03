@@ -14,14 +14,14 @@ public class DijkstraShortestPaths {
     private MinHeap heap;
     private uwGraph graph;
     private String source;
-    private ArrayList shortestPath;
+    private ArrayList<Edge> shortestPath;
 
     public DijkstraShortestPaths(uwGraph graph, String source) throws Exception {
         // Clone the graph, so that we don't modify the existing one.
         this.graph = graph.cloneGraph();
         this.source = source;
         this.heap = this.initSS();
-        this.shortestPath = new ArrayList();
+        this.shortestPath = new ArrayList<Edge>();
         this.setShortestPaths();
     }
 
@@ -60,13 +60,6 @@ public class DijkstraShortestPaths {
         return heap;
     }
 
-    /**
-     * Relaxes an egde and updates (creates a new) vertice
-     * Else it just returns the source vertice as it is
-     */
-    private VertexElement relax(VertexElement source, String predecessor, Double weight) {
-        return source;
-    }
 
     private String getPredecessor(VertexElement<String, VertexElement<Double, String>> ele) {
         return ele.getValue().getValue();
@@ -86,7 +79,7 @@ public class DijkstraShortestPaths {
         this.source = source;
     }
 
-    public ArrayList<VertexElement<String, VertexElement<Double, String>>> getShortestPaths() {
+    public ArrayList<Edge> getShortestPaths() {
         return this.shortestPath;
     }
 
@@ -105,11 +98,11 @@ public class DijkstraShortestPaths {
             // Add the minimal vertex to our shortest path.
             shortestPath.add(u);
 
-            VertexElement[] adj = this.graph.getAdjecentVertices(u.getSource());
+            Edge[] adj = this.graph.getAdjecentVertices(u.getSource());
 
             // Decrease key for all the adjacent vertices.
-            for(VertexElement v : adj) {
-                this.heap.decreaseKey(u, (Double) v.getKey(), (String) v.getValue());
+            for(Edge e : adj) {
+                this.heap.decreaseKey(u, e.getWeight(), e.getTarget());
             }
 
         }
