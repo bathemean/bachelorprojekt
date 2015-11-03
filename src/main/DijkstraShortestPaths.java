@@ -16,7 +16,8 @@ public class DijkstraShortestPaths {
     private String source;
     private ArrayList shortestPath;
 
-    public DijkstraShortestPaths(uwGraph graph, String source, Double w) throws Exception {
+    public DijkstraShortestPaths(uwGraph graph, String source) throws Exception {
+        // Clone the graph, so that we don't modify the existing one.
         this.graph = graph.cloneGraph();
         this.source = source;
         this.heap = this.initSS();
@@ -31,20 +32,27 @@ public class DijkstraShortestPaths {
         // Fetch all vertices in given graph
         Set<String> vertices = this.graph.vertexSet();
 
-
-        // Iterate through vertices and create
+        // Iterate through vertices
         for (String vert : vertices) {
-            // VertexElement used for initializing vertices in the heap.
-            VertexElement<Double, String> vInit = new VertexElement<Double, String>(Double.POSITIVE_INFINITY, "");
-            VertexElement<String, VertexElement<Double, String>> v;
+
+
+            //VertexElement<Double, String> vInit = new VertexElement<Double, String>(Double.POSITIVE_INFINITY, "");
+            //VertexElement<String, VertexElement<Double, String>> v;
+
+            Edge v;
 
             // Set the source vertex to weight 0.
             if (vert.equals(this.source)) {
-                VertexElement<Double, String> vSource = new VertexElement<Double, String>(0.0, "");
-                v = new VertexElement<String, VertexElement<Double, String>>(vert, vSource);
-            } else {
-            // Set all others to vInit (infinite)
-                v = new VertexElement<String, VertexElement<Double, String>>(vert, vInit);
+                //VertexElement<Double, String> vSource = new VertexElement<Double, String>(0.0, "");
+                //v = new VertexElement<String, VertexElement<Double, String>>(vert, vSource);
+
+                v = new Edge(vert, "", 0.0);
+
+            } else { // Set all others to vInit (infinite)
+
+                // VertexElement used for initializing vertices in the heap.
+                v = new Edge(vert, null, Double.POSITIVE_INFINITY);
+                //v = new VertexElement<String, VertexElement<Double, String>>(vert, vInit);
             }
             heap.add(v);
         }
@@ -57,8 +65,6 @@ public class DijkstraShortestPaths {
      * Else it just returns the source vertice as it is
      */
     private VertexElement relax(VertexElement source, String predecessor, Double weight) {
-
-
         return source;
     }
 
@@ -94,12 +100,12 @@ public class DijkstraShortestPaths {
 
         while(this.heap.size() > 1) {
 
-            VertexElement<String, VertexElement<Double, String>> u = this.heap.extractMin();
+            Edge u = this.heap.extractMin();
 
             // Add the minimal vertex to our shortest path.
             shortestPath.add(u);
 
-            VertexElement[] adj = this.graph.getAdjecentVertices(u.getKey());
+            VertexElement[] adj = this.graph.getAdjecentVertices(u.getSource());
 
             // Decrease key for all the adjacent vertices.
             for(VertexElement v : adj) {
@@ -109,7 +115,7 @@ public class DijkstraShortestPaths {
         }
 
         // Extract the remaining vertex and add it to our path.
-        VertexElement<String, VertexElement<Double, String>> u = this.heap.extractMin();
+        Edge u = this.heap.extractMin();
 
         shortestPath.add(u);
         //System.out.println(shortestPath);

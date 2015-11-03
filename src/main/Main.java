@@ -11,8 +11,8 @@ public class Main {
 
         GraphFactory factory = new GraphFactory();
 
-        GreedySpanner greedy = new GreedySpanner();
-        ThorupZwickSpanner thorupzwick = new ThorupZwickSpanner();
+        //GreedySpanner greedy = new GreedySpanner();
+        //ThorupZwickSpanner thorupzwick = new ThorupZwickSpanner();
 
         uwGraph stringGraph = factory.createStringGraph();
 //        uwGraph bigStrGraph = factory.createBiggerStringGraph();
@@ -31,10 +31,14 @@ public class Main {
 
         System.out.println(spannerOne.getMetricsAsString());
         */
-        DijkstraShortestPaths dijkstra = new DijkstraShortestPaths(stringGraph, "v1", 0.0);
+
+        Edge e = new Edge("v1", "v2", 2.0);
+        System.out.println(e);
+
+        DijkstraShortestPaths dijkstra = new DijkstraShortestPaths(stringGraph, "v1");
         System.out.println(dijkstra.getShortestPaths());
 
-        uwGraph spannerTwo = thorupzwick.makeSpanner(stringGraph, 2);
+        //uwGraph spannerTwo = thorupzwick.makeSpanner(stringGraph, 2);
         //System.out.println("ThorupZwick: " + spannerTwo.toString());
 
         /*

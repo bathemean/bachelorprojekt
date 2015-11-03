@@ -116,9 +116,9 @@ public class ThorupZwickSpanner {
 //System.out.println(tmpGraph.toString());
 
             try {
-                DijkstraShortestPaths path = new DijkstraShortestPaths(tmpGraph, source, 0.0);
+                //DijkstraShortestPaths path = new DijkstraShortestPaths(tmpGraph, source, 0.0);
                 System.out.println(tmpGraph);
-                System.out.println("SP " + path.getShortestPaths());
+   //             System.out.println("SP " + path.getShortestPaths());
 
 
             } catch (Exception e) {
