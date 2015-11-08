@@ -17,16 +17,19 @@ public class DijkstraShortestPaths {
     private boolean isTZ;
 
     public DijkstraShortestPaths(uwGraph graph, String source, boolean isTZ) throws Exception {
+
         // Clone the graph, so that we don't modify the existing one.
-        this.isTZ = isTZ;
         this.graph = graph.cloneGraph();
         this.source = source;
-        this.heap = this.initSS();
+        this.isTZ = isTZ;
+
+        this.heap = this.initialize();
         this.shortestPath = new ArrayList<Edge>();
         this.setShortestPaths();
+
     }
 
-    private MinHeap initSS() {
+    private MinHeap initialize() {
 
         MinHeap heap = new MinHeap();
 
@@ -55,20 +58,6 @@ public class DijkstraShortestPaths {
         return heap;
     }
 
-    // Removal is opional
-    // Setter and getters cuz I can motherfucking generate them (11!+?)
-    public String getSource() {
-        return this.source;
-    }
-
-    public void setSource(String source) {
-        this.source = source;
-    }
-
-    public ArrayList<Edge> getShortestPaths() {
-        return this.shortestPath;
-    }
-
     /**
      * Magic function that actually creates the shortest paths
      * extracts min() etc (above mentioned data structure use poll/peek)
@@ -95,9 +84,24 @@ public class DijkstraShortestPaths {
 
         // Extract the remaining vertex and add it to our path.
         Edge u = this.heap.extractMin();
-
         shortestPath.add(u);
-        //System.out.println(shortestPath);
+        System.out.println("Dijkstra: " + shortestPath);
+
+    }
+
+    public ArrayList<Edge> getShortestPaths() {
+        return this.shortestPath;
+    }
+
+    public Double getPathBetween(String source, String target) {
+
+        for(Edge e : this.shortestPath) {
+            if( (e.getSource() == source && e.getTarget() == target) || (e.getSource() == target && e.getTarget() == source)) {
+                return e.getWeight();
+            }
+        }
+
+        return Double.POSITIVE_INFINITY;
 
     }
 

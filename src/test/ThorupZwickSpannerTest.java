@@ -18,7 +18,7 @@ public class ThorupZwickSpannerTest {
         //this.spanner = new ThorupZwickSpanner(this.graph, 4);
     }
 
-    public String testDistances() {
+    /*public String testDistances() {
         ArrayList<Distance> distances = spanner.getDistances();
 
         Object[] vertices = graph.vertexSet().toArray();
@@ -56,5 +56,5 @@ public class ThorupZwickSpannerTest {
         } else {
             return "0";
         }
-    }
+    }*/
 }

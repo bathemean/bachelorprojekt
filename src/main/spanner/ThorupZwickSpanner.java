@@ -15,10 +15,10 @@ public class ThorupZwickSpanner {
     private uwGraph graph;
 
     private HashMap<Integer, ArrayList<String>> partitions;
-    private ArrayList<Distance> distances;
+    private ArrayList<ArrayList<Edge>> distances;
 
     public ThorupZwickSpanner() {
-
+        this.distances = new ArrayList<ArrayList<Edge>>();
     }
 
     public uwGraph makeSpanner(uwGraph g, int k) {
@@ -29,11 +29,70 @@ public class ThorupZwickSpanner {
         ArrayList<String> vertices = vertexSetToArray(g.vertexSet());
 
         // Assign vertices into parititions.
-        this.partitions = partition(vertices);
-        System.out.println("Partitions: " + this.partitions);
+        //this.partitions = partition(vertices);
+        //System.out.println("Partitions: " + this.partitions);
 
-        // Compute distance between A_k and every vertex v.
-        distances(this.partitions);
+
+
+        HashMap<Integer, ArrayList<String>> p0 = new HashMap<Integer, ArrayList<String>>();
+        ArrayList<String> a0 = new ArrayList<String>();
+        ArrayList<String> b0 = new ArrayList<String>();
+        a0.add("v1");
+        a0.add("v2");
+        a0.add("v3");
+        a0.add("v4");
+        p0.put(0, a0);
+        b0.add("v2");
+        b0.add("v3");
+        b0.add("v4");
+        p0.put(1, b0);
+        p0.put(2, null);
+
+        HashMap<Integer, ArrayList<String>> p1 = new HashMap<Integer, ArrayList<String>>();
+        ArrayList<String> a1 = new ArrayList<String>();
+        ArrayList<String> b1 = new ArrayList<String>();
+        a1.add("v1");
+        a1.add("v2");
+        a1.add("v3");
+        a1.add("v4");
+        b1.add("v3");
+        b1.add("v4");
+        p1.put(0, a1);
+        p1.put(1, b1);
+        p1.put(2, null);
+
+        HashMap<Integer, ArrayList<String>> p2 = new HashMap<Integer, ArrayList<String>>();
+        ArrayList<String> a2 = new ArrayList<String>();
+        ArrayList<String> b2 = new ArrayList<String>();
+        a2.add("v1");
+        a2.add("v2");
+        a2.add("v3");
+        a2.add("v4");
+        b2.add("v4");
+        p2.put(0, a2);
+        p2.put(1, b2);
+        p2.put(2, null);
+
+
+
+        ArrayList<HashMap<Integer, ArrayList<String>>> ps = new ArrayList<HashMap<Integer, ArrayList<String>>>();
+        ps.add(p0);
+        ps.add(p1);
+        ps.add(p2);
+
+        for(HashMap<Integer, ArrayList<String>> p : ps) {
+            System.out.println("_____________________________");
+            System.out.println(p);
+
+            // Compute distance between A_k and every vertex v.
+            try {
+                distances(p);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        System.out.println(this.distances);
         //System.out.println("Distances: " + this.distances);
         //System.out.println("Distances length: " + this.distances.size());
 
@@ -62,6 +121,7 @@ public class ThorupZwickSpanner {
 
     private HashMap<Integer, ArrayList<String>> partition(ArrayList<String> vertices) {
 
+        // {k, {parition members}}
         HashMap<Integer, ArrayList<String>> partitions = new HashMap<Integer, ArrayList<String>>();
 
         partitions.put(0, vertices); // Put all vertices into A_0.
@@ -95,10 +155,18 @@ public class ThorupZwickSpanner {
 
     private void distances(HashMap<Integer, ArrayList<String>> partitions) throws Exception {
 
-        uwGraph spanner = this.graph.copyGraphNoEdges();
-
-        for (int i = k - 1; i >= 0; i--) {
+        /*uwGraph tmpGraph2 = this.graph.cloneGraph();
+        ArrayList<String> ak = partitions.get(k-1);
+        DijkstraShortestPaths dijkstra2 = new DijkstraShortestPaths(tmpGraph2, ak.get(0), false);
+        ArrayList<Edge> path2 = dijkstra2.getShortestPaths();
+        System.out.println("WWW: " + dijkstra2.getPathBetween("v3", "v4"));
+        System.out.println("k: " + ak);
+        System.out.println(path2);
+        */
+        
+        for (int i = k-1; i >= 0; i--) {
             System.out.println("==== i: " + i + " ====");
+
             uwGraph tmpGraph = this.graph.cloneGraph();
 
             ArrayList<String> ai = partitions.get(i);
@@ -106,18 +174,23 @@ public class ThorupZwickSpanner {
             // Add Source vertex to the temporary graph
             String source = "source";
             tmpGraph.addVertex(source);
-
+System.out.println(ai);
             // Assign the source vertex to all the nodes in ai.
             for (String v : ai) {
                 tmpGraph.addEdge(source, v);
                 tmpGraph.setEdgeWeight(tmpGraph.getEdge(source, v), 0);
             }
 
-                DijkstraShortestPaths path = new DijkstraShortestPaths(tmpGraph, source, false);
-                ArrayList<Edge> pathLength = path.getShortestPaths();
-                if (pathLength.size() > 0 && !Double.isInfinite(pathLength)) {
+            DijkstraShortestPaths dijkstra = new DijkstraShortestPaths(tmpGraph, source, false);
+            ArrayList<Edge> path = dijkstra.getShortestPaths();
 
-                }
+
+
+            //if (pathLength.size() > 0 && !Double.isInfinite(pathLength)) {
+            System.out.println("PL: " + path);
+            if(path.size() > 0) {
+                this.distances.add(path);
+            }
 
 
         }
@@ -257,8 +330,6 @@ public class ThorupZwickSpanner {
         return this.partitions;
     }
 
-    public ArrayList<Distance> getDistances() {
-        return this.distances;
-    }
+
 
 }

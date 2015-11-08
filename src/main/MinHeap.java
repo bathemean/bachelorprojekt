@@ -86,9 +86,11 @@ public class MinHeap {
         // Bubble up to rebalance heap
         //while (i > -1 && this.heap.get(getParent(i)).getKey() > adjV.getValue().getKey()) {
         Double parentWeight = this.heap.get( getParent(i) ).getWeight();
-        while (i > -1 && parentWeight > adjV.getWeight() ) {
+        while (i > 0 && parentWeight > adjV.getWeight() ) {
+
             i = swap(i, this.getParent(i));
         }
+
     }
 
     /**
@@ -104,14 +106,15 @@ public class MinHeap {
         String iTmp = this.mapping.get(i);
 
         // Overwrite old vertex
-        this.heap.add(i, this.heap.get(parent));
-        this.mapping.add(i, this.mapping.get(parent));
+        this.heap.set(i, this.heap.get(parent));
+        this.mapping.set(i, this.mapping.get(parent));
 
         // Overwrite stored vertex on parent index
-        this.heap.add(parent, vTmp);
-        this.mapping.add(parent, iTmp);
+        this.heap.set(parent, vTmp);
+        this.mapping.set(parent, iTmp);
 
         return parent;
+
     }
 
     public int getParent(int i) { return (i - 1) / 2; }

@@ -26,18 +26,17 @@ public class Main {
         uwGraph spannerOne = greedy.makeSpanner(stringGraph, 2);
         System.out.println("GreedySpanner:  " + spannerOne.toString());
         */
-        uwGraph spannerOne = thorupzwick.makeSpanner(stringGraph, 2);
+        //uwGraph spannerOne = thorupzwick.makeSpanner(stringGraph, 2);
 //        System.out.println("GreedySpanner:  " + spannerOne.toString());
 
 //        System.out.println(spannerOne.getMetricsAsString());
 
-        Edge e = new Edge("v1", "v2", 2.0);
-        System.out.println(e);
 
-        DijkstraShortestPaths dijkstra = new DijkstraShortestPaths(stringGraph, "v1", false);
-        System.out.println(dijkstra.getShortestPaths());
 
-        //uwGraph spannerTwo = thorupzwick.makeSpanner(stringGraph, 2);
+        //DijkstraShortestPaths dijkstra = new DijkstraShortestPaths(stringGraph, "v1", false);
+        //System.out.println(dijkstra.getShortestPaths());
+
+        uwGraph spannerTwo = thorupzwick.makeSpanner(stringGraph, 2);
         //System.out.println("ThorupZwick: " + spannerTwo.toString());
 
         /*
