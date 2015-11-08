@@ -1,7 +1,6 @@
 package main;
 
 import main.graph.uwGraph;
-import org.jgrapht.graph.DefaultWeightedEdge;
 
 import java.util.ArrayList;
 import java.util.Set;
@@ -15,9 +14,11 @@ public class DijkstraShortestPaths {
     private uwGraph graph;
     private String source;
     private ArrayList<Edge> shortestPath;
+    private boolean isTZ;
 
-    public DijkstraShortestPaths(uwGraph graph, String source) throws Exception {
+    public DijkstraShortestPaths(uwGraph graph, String source, boolean isTZ) throws Exception {
         // Clone the graph, so that we don't modify the existing one.
+        this.isTZ = isTZ;
         this.graph = graph.cloneGraph();
         this.source = source;
         this.heap = this.initSS();
@@ -35,38 +36,23 @@ public class DijkstraShortestPaths {
         // Iterate through vertices
         for (String vert : vertices) {
 
-
-            //VertexElement<Double, String> vInit = new VertexElement<Double, String>(Double.POSITIVE_INFINITY, "");
-            //VertexElement<String, VertexElement<Double, String>> v;
-
             Edge v;
 
             // Set the source vertex to weight 0.
             if (vert.equals(this.source)) {
-                //VertexElement<Double, String> vSource = new VertexElement<Double, String>(0.0, "");
-                //v = new VertexElement<String, VertexElement<Double, String>>(vert, vSource);
 
                 v = new Edge(vert, "", 0.0);
-
+                // Insert source vertice data in the head of the MinHeap.
+                heap.addHead(v);
             } else { // Set all others to vInit (infinite)
 
-                // VertexElement used for initializing vertices in the heap.
                 v = new Edge(vert, null, Double.POSITIVE_INFINITY);
-                //v = new VertexElement<String, VertexElement<Double, String>>(vert, vInit);
+                // Insert vertice data in the MinHeap.
+                heap.add(v);
             }
-            heap.add(v);
         }
 
         return heap;
-    }
-
-
-    private String getPredecessor(VertexElement<String, VertexElement<Double, String>> ele) {
-        return ele.getValue().getValue();
-    }
-
-    private Double getWeight(VertexElement<String, VertexElement<Double, String>> ele) {
-        return ele.getValue().getKey();
     }
 
     // Removal is opional

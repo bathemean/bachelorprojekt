@@ -2,7 +2,7 @@ package main.spanner;
 
 import main.DijkstraShortestPaths;
 import main.Distance;
-import main.VertexElement;
+import main.Edge;
 import main.graph.uwGraph;
 import org.jgrapht.alg.DijkstraShortestPath;
 import org.jgrapht.graph.DefaultWeightedEdge;
@@ -93,7 +93,7 @@ public class ThorupZwickSpanner {
     }
 
 
-    private void distances(HashMap<Integer, ArrayList<String>> partitions) {
+    private void distances(HashMap<Integer, ArrayList<String>> partitions) throws Exception {
 
         uwGraph spanner = this.graph.copyGraphNoEdges();
 
@@ -113,49 +113,13 @@ public class ThorupZwickSpanner {
                 tmpGraph.setEdgeWeight(tmpGraph.getEdge(source, v), 0);
             }
 
-//System.out.println(tmpGraph.toString());
-
-            try {
-                //DijkstraShortestPaths path = new DijkstraShortestPaths(tmpGraph, source, 0.0);
-                System.out.println(tmpGraph);
-   //             System.out.println("SP " + path.getShortestPaths());
-
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-
-
-
-    /*
-            for (String v : this.graph.vertexSet()) {
-
-                DijkstraShortestPath path = new DijkstraShortestPath(tmpGraph, source, v);
-                double pathLength = path.getPathLength();
-//System.out.println("EdgeList: " + path.getPathEdgeList() + " L: " + pathLength);
-                if (pathLength > 0 && !Double.isInfinite(pathLength)) {
-                    List<DefaultWeightedEdge> edges = path.getPathEdgeList();
-
-                    for (DefaultWeightedEdge e : edges) {
-                        String edgeSource = tmpGraph.getEdgeSource(e);
-                        String edgeTarget = tmpGraph.getEdgeTarget(e);
-                        double edgeWeight = tmpGraph.getEdgeWeight(e);
-
-                        // Dont inlucde source vertex in new graph
-                        if (!edgeSource.equals(source)) {
-                            spanner.addEdge(edgeSource, edgeTarget);
-                            spanner.setEdgeWeight(spanner.getEdge(edgeSource, edgeTarget), edgeWeight);
-                        }
-
-                    }
+                DijkstraShortestPaths path = new DijkstraShortestPaths(tmpGraph, source, false);
+                ArrayList<Edge> pathLength = path.getShortestPaths();
+                if (pathLength.size() > 0 && !Double.isInfinite(pathLength)) {
 
                 }
 
 
-            }*/
-
-            System.out.println("Spanner: " + spanner);
         }
     }
 

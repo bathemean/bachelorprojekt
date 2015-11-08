@@ -7,10 +7,25 @@ import java.util.Random;
 
 public class GraphFactory {
 
+    boolean isWeighted;
+    int vertices;
+    int density;
+
     public GraphFactory() {
+    }
+
+    public void unweightedDenseGraph(){
 
     }
 
+    private uwGraph genGraphFromData(int vertices, int density, boolean isWeighted){
+        uwGraph g = new uwGraph(DefaultWeightedEdge.class);
+        for (int i = 0; i < vertices; i++) {
+             boolean derp = false;
+
+        }
+        return g;
+    }
     /**
      * Creates a dummy graph.
      * @return the graph.

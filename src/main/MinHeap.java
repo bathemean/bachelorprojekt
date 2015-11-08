@@ -101,9 +101,7 @@ public class MinHeap {
 
         // Store vertex data before overwrite
         Edge vTmp = this.heap.get(i);
-        System.out.print("lolomg");
         String iTmp = this.mapping.get(i);
-        System.out.print(iTmp);
 
         // Overwrite old vertex
         this.heap.add(i, this.heap.get(parent));
@@ -127,5 +125,10 @@ public class MinHeap {
     public void add(Edge v){
         this.heap.add(v);
         this.mapping.add(v.getSource());
+    }
+
+    public void addHead(Edge v){
+        this.heap.add(0, v);
+        this.mapping.add(0, v.getSource());
     }
 }
