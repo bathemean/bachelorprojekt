@@ -4,28 +4,77 @@ import org.jgrapht.graph.DefaultWeightedEdge;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Set;
 
 public class GraphFactory {
 
-    boolean isWeighted;
-    int vertices;
-    int density;
+    private ArrayList<Set<String>> subGraphs;
 
     public GraphFactory() {
     }
 
-    public void unweightedDenseGraph(){
-
+    public uwGraph wieghtedCompleteDenseGraph(int vertices) throws Exception {
+        double density = (double) vertices - 1;
+        return this.genGraphFromData(vertices, density, true);
     }
 
-    private uwGraph genGraphFromData(int vertices, int density, boolean isWeighted){
-        uwGraph g = new uwGraph(DefaultWeightedEdge.class);
-        for (int i = 0; i < vertices; i++) {
-             boolean derp = false;
+    public uwGraph wieghtedDenseGraph(int vertices, double density) throws Exception {
+        return this.genGraphFromData(vertices, density, true);
+    }
 
+    public uwGraph unweightedCompleteDenseGraph(int vertices) throws Exception {
+        double density = (double) vertices - 1;
+        return this.genGraphFromData(vertices, density, false);
+    }
+
+    public uwGraph unwieghtedDenseGraph(int vertices, double density) throws Exception {
+        return this.genGraphFromData(vertices, density, false);
+    }
+
+    private uwGraph genGraphFromData(int vertices, double density, boolean isWeighted) throws Exception {
+        if (density < 0.0) {
+            throw new Exception("Density too low, all vertices cannot be connected\n");
+        } else if (vertices < 2) {
+            throw new Exception("Not enough vertices given, need atleast 2\n");
+        }
+
+        uwGraph g = new uwGraph(DefaultWeightedEdge.class);
+        // Create this due to easier fetching of vertices
+        ArrayList<String> gV = new ArrayList<String>();
+        // Insert vertices intro graph
+        for (int i = 0; i < vertices; i++) {
+            g.addVertex(("v" + i));
+            gV.add(("v" + i));
+        }
+
+        // Amount of edges to be inserted into the graph
+        double edges = (double) (vertices - 1) * density;
+
+        Random gen = new Random();
+        String prev = gV.get(gen.nextInt(vertices));
+
+        // Keep iterating until we've depleted the edge pool
+        while (edges > 0.0) {
+
+            // Fetch a random vertices within range
+            String next = gV.get(gen.nextInt(vertices));
+
+            // Skip if get the same node or edge already exists
+            if (prev.equals(next) || g.containsEdge(prev, next) || g.containsEdge(next, prev)) {
+                continue;
+            }
+            g.addEdge(prev, next);
+            double weight = 1;
+            if (isWeighted) {
+                weight =((double) gen.nextInt(1000));
+            }
+            g.setEdgeWeight(g.getEdge(prev, next), weight);
+            prev = next;
+            edges--;
         }
         return g;
     }
+
     /**
      * Creates a dummy graph.
      * @return the graph.
