@@ -93,6 +93,10 @@ public class DijkstraShortestPaths {
         return this.shortestPath;
     }
 
+    public double getPathWeight(String u) {
+        return this.heap.getVertex(u).getValue().getWeight();
+    }
+
     public Double getPathBetween(String source, String target) {
 
         for(Edge e : this.shortestPath) {

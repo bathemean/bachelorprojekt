@@ -1,8 +1,7 @@
 package main.spanner;
 
+import main.DijkstraShortestPaths;
 import main.graph.uwGraph;
-import main.spanner.Spanner;
-import org.jgrapht.alg.DijkstraShortestPath;
 import org.jgrapht.graph.DefaultWeightedEdge;
 
 import java.util.*;
@@ -19,7 +18,7 @@ public class GreedySpanner extends Spanner {
      * @param r multiplication degree of desired spanner.
      * @return a spanner with multiplication degree r.
      */
-    public uwGraph makeSpanner(uwGraph g, Integer r){
+    public uwGraph makeSpanner(uwGraph g, Integer r) throws Exception {
         super.startTiming();
 
         Object[] vertices = g.vertexSet().toArray();
@@ -34,17 +33,16 @@ public class GreedySpanner extends Spanner {
 
         // Iterate over all the edges.
         for (Map.Entry<DefaultWeightedEdge, Integer> entry : edgesSorted.entrySet()) {
-            Object v, u;
-            v = g.getEdgeSource(entry.getKey());
-            u = g.getEdgeTarget(entry.getKey());
+            DefaultWeightedEdge entryEdge = entry.getKey();
+            String v, u;
+            v = g.getEdgeSource(entryEdge);
+            u = g.getEdgeTarget(entryEdge);
 
-            DijkstraShortestPath dijkstraShortestPath = new DijkstraShortestPath(gPling, v, u);
+            DijkstraShortestPaths dijkstraShortestPath = new DijkstraShortestPaths(gPling, v, false);
 
-            if ((r * entry.getValue()) < dijkstraShortestPath.getPathLength()) {
-                String vS = v.toString();
-                String uS = u.toString();
-                gPling.addEdge(vS, uS);
-                gPling.setEdgeWeight(gPling.getEdge(vS, uS), entry.getValue());
+            if ((r * entry.getValue()) < dijkstraShortestPath.getPathWeight(u)) {
+                gPling.addEdge(v, u);
+                gPling.setEdgeWeight(gPling.getEdge(v, u), entry.getValue());
             }
         }
 

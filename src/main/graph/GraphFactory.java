@@ -38,10 +38,13 @@ public class GraphFactory {
             throw new Exception("Not enough vertices given, need atleast 2\n");
         }
 
+        // Instantiate graph
         uwGraph g = new uwGraph(DefaultWeightedEdge.class);
+
         // Create this due to easier fetching of vertices
         ArrayList<String> gV = new ArrayList<String>();
-        // Insert vertices intro graph
+
+        // Insert vertices intro graph and arraylist
         for (int i = 0; i < vertices; i++) {
             g.addVertex(("v" + i));
             gV.add(("v" + i));
