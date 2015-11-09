@@ -3,6 +3,7 @@ package main.graph;
 import org.jgrapht.graph.DefaultWeightedEdge;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Random;
 import java.util.Set;
 
@@ -49,12 +50,26 @@ public class GraphFactory {
             g.addVertex(("v" + i));
             gV.add(("v" + i));
         }
-
         // Amount of edges to be inserted into the graph
         double edges = (double) (vertices - 1) * density;
 
         Random gen = new Random();
-        String prev = gV.get(gen.nextInt(vertices));
+
+        // This is to ensure coherence in graph
+        double weight;
+        Iterator<String> iterV = g.vertexSet().iterator();
+        String prev = iterV.next();
+        while (iterV.hasNext()) {
+
+            String next = iterV.next();
+            // Add edge and set edge weight
+            g.addEdge(prev, next);
+            weight = (isWeighted ? ((double) gen.nextInt(1000)) : 1.0);
+            g.setEdgeWeight(g.getEdge(prev, next), weight);
+
+            prev = next;
+            edges--;
+        }
 
         // Keep iterating until we've depleted the edge pool
         while (edges > 0.0) {
@@ -67,10 +82,7 @@ public class GraphFactory {
                 continue;
             }
             g.addEdge(prev, next);
-            double weight = 1;
-            if (isWeighted) {
-                weight =((double) gen.nextInt(1000));
-            }
+            weight = (isWeighted ? ((double) gen.nextInt(1000)) : 1.0);
             g.setEdgeWeight(g.getEdge(prev, next), weight);
             prev = next;
             edges--;
