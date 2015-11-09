@@ -85,7 +85,7 @@ public class DijkstraShortestPaths {
         // Extract the remaining vertex and add it to our path.
         Edge u = this.heap.extractMin();
         shortestPath.add(u);
-        System.out.println("Dijkstra: " + shortestPath);
+        //System.out.println("Dijkstra: " + shortestPath);
 
     }
 

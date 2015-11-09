@@ -15,10 +15,10 @@ public class ThorupZwickSpanner {
     private uwGraph graph;
 
     private HashMap<Integer, ArrayList<String>> partitions;
-    private ArrayList<ArrayList<Edge>> distances;
+    private ArrayList<Edge> distances;
 
     public ThorupZwickSpanner() {
-        this.distances = new ArrayList<ArrayList<Edge>>();
+        this.distances = new ArrayList<Edge>();
     }
 
     public uwGraph makeSpanner(uwGraph g, int k) {
@@ -90,9 +90,16 @@ public class ThorupZwickSpanner {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
+            System.out.println("ds: " + this.distances);
+
+            this.union();
+
+
         }
 
-        System.out.println(this.distances);
+
+
         //System.out.println("Distances: " + this.distances);
         //System.out.println("Distances length: " + this.distances.size());
 
@@ -174,9 +181,12 @@ public class ThorupZwickSpanner {
             // Add Source vertex to the temporary graph
             String source = "source";
             tmpGraph.addVertex(source);
-System.out.println(ai);
+
+            System.out.println(ai);
+
             // Assign the source vertex to all the nodes in ai.
             for (String v : ai) {
+                // Run dijkstra here, creating a new tmpgraph for each w in Ai - Ai+1
                 tmpGraph.addEdge(source, v);
                 tmpGraph.setEdgeWeight(tmpGraph.getEdge(source, v), 0);
             }
@@ -184,98 +194,34 @@ System.out.println(ai);
             DijkstraShortestPaths dijkstra = new DijkstraShortestPaths(tmpGraph, source, false);
             ArrayList<Edge> path = dijkstra.getShortestPaths();
 
-
-
             //if (pathLength.size() > 0 && !Double.isInfinite(pathLength)) {
-            System.out.println("PL: " + path);
-            if(path.size() > 0) {
-                this.distances.add(path);
+            //if (path.size() > 0) {
+            //    this.distances.add(path);
+            //}
+
+            ArrayList<ArrayList<Edge>> paths = new ArrayList<ArrayList<Edge>>();
+
+            // Calculate the subset of A(i) - A(i+1).
+            ArrayList<String> ai1 = partitions.get(i + 1);
+            // If i == k-1, k+1 is null, thus A(i) - A(i+1) == A(i).
+            if (ai1 != null) {
+                ai.removeAll(ai1);
             }
 
+            System.out.println("Ai: " + ai);
+            for(String v : ai) {
+                //System.out.println("** Paths for: " + v);
+                DijkstraShortestPaths dijk = new DijkstraShortestPaths(this.graph, v, false);
+                ArrayList<Edge> p = dijk.getShortestPaths();
+                //System.out.println("P: " + p);
+
+                this.distances.addAll(p);
+            }
 
         }
     }
 
-    /**
-     * Iterates over the A_i's from K-1 down to 0.
-     * Still untested.
-     *
-     * @param partitions unsorted partitioning of the vertices in the graph.
-     * @return ArrayList of the distances found, with partition, witness, target and the found distance.
-     */
-    private ArrayList<Distance> distancesOLD(HashMap<Integer, ArrayList<String>> partitions) {
 
-        ArrayList<Distance> distancesCollection = new ArrayList<Distance>();
-
-        ArrayList<String> sourceTagets = new ArrayList<String>();
-
-        for (Integer i = k - 1; i >= 0; i--) {
-
-            ArrayList<String> ai = partitions.get(i);
-
-            // Create a copy of the original graph, so that we can add a source vertex.
-            uwGraph distanceGraph = this.graph.cloneGraph();
-            String sourceV;
-            sourceV = "sourceV";
-            distanceGraph.addVertex(sourceV);
-
-            // Build source edges to find the witnesses fast
-            for (String u : ai) {
-                distanceGraph.addEdge(sourceV, u);
-
-                if (!sourceTagets.contains(u)) {
-                    sourceTagets.add(u);
-                }
-
-                distanceGraph.setEdgeWeight(distanceGraph.getEdge(sourceV, u), 0);
-            }
-
-            // For all vertices in the graph, find the shortest path to the partition (witness).
-            //System.out.println(this.graph.vertexSet().toString());
-            for (String v : this.graph.vertexSet()) {
-
-                DijkstraShortestPath path = new DijkstraShortestPath(distanceGraph, sourceV, v);
-                double weight = path.getPathLength();
-                System.out.println(i + " EdgeList: " + path.getPathEdgeList().toString() + " " + weight);
-                // The path must be bigger than just the source vertex and the partition vertex.
-                if (weight > 0 && ai.size() > 0) {
-                    try {
-                        // Assuming the first edge is the source/dummy edge, we pick the second
-                        Object witnessEdge = path.getPathEdgeList().get(1);
-                        String witness = distanceGraph.getEdgeSource((DefaultWeightedEdge) witnessEdge);
-
-                        if (!witness.equals(v)) {
-                            Distance distance = new Distance(i, witness, v, weight);
-                            distancesCollection.add(distance);
-                        }
-                    } catch (Exception e) {
-                        System.out.printf("Exception: %s, target: %s, weight; %f\n", e.toString(), v, weight);
-                    }
-
-                } else {
-                    //System.out.println(i + " " + v + " ");
-
-                }
-            }
-
-        }
-
-        if (sourceTagets.size() != 10) {
-            sourceTagets.sort(String.CASE_INSENSITIVE_ORDER);
-            System.out.println("Source Targets: " + sourceTagets);
-        } else {
-            System.out.println("All nodes sourced.");
-        }
-
-        System.out.println("=== DISTANCES ===");
-        for (Distance d : distancesCollection) {
-            System.out.println(d);
-        }
-        System.out.println("=================");
-
-
-        return distancesCollection;
-    }
 
     private ArrayList<ArrayList<DijkstraShortestPath>> shortestPathsTrees(uwGraph g, HashMap<Integer, ArrayList<String>> partitions) {
 
@@ -322,7 +268,20 @@ System.out.println(ai);
 
     }
 
-    private /*Something here*/ void uniion() {
+    private void union() {
+
+        ArrayList<Edge> spanner = new ArrayList<Edge>();
+
+        System.out.println(this.distances.size());
+        for(Edge e : this.distances) {
+            if( !(e.getSource().equals("") || e.getTarget().equals("")) ) {
+                spanner.add(e);
+                // CALCULATE PROPER PATH. IE. PROPER WEIGHTS.d
+            }
+        }
+
+        System.out.println(spanner.size());
+
 
     }
 
