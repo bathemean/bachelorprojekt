@@ -37,7 +37,7 @@ public class Main {
         //System.out.println(dijkstra.getShortestPaths());
 
         uwGraph spannerTwo = thorupzwick.makeSpanner(stringGraph, 2);
-        //System.out.println("ThorupZwick: " + spannerTwo.toString());
+        System.out.println("ThorupZwick: " + spannerTwo.toString());
 
         /*
         System.out.println("==== Big String graph: ====");

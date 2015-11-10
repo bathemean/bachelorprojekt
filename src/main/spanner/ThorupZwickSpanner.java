@@ -1,5 +1,6 @@
 package main.spanner;
 
+import javafx.util.Pair;
 import main.DijkstraShortestPaths;
 import main.Distance;
 import main.Edge;
@@ -13,6 +14,7 @@ public class ThorupZwickSpanner {
 
     private int k;
     private uwGraph graph;
+    private uwGraph spanner;
 
     private HashMap<Integer, ArrayList<String>> partitions;
     private ArrayList<Edge> distances;
@@ -22,6 +24,30 @@ public class ThorupZwickSpanner {
     }
 
     public uwGraph makeSpanner(uwGraph g, int k) {
+
+        this.k = k;
+        this.graph = g;
+
+        ArrayList<String> vertices = vertexSetToArray(g.vertexSet());
+
+        // Assign vertices into parititions.
+        this.partitions = partition(vertices);
+
+
+        // Compute distance between A_k and every vertex v.
+        try {
+            distances(this.partitions);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        this.spanner = this.union();
+        return this.spanner;
+
+    }
+
+    public uwGraph makeTestSpanner(uwGraph g, int k) {
 
         this.k = k;
         this.graph = g;
@@ -93,22 +119,10 @@ public class ThorupZwickSpanner {
 
             System.out.println("ds: " + this.distances);
 
-            this.union();
-
+            this.spanner = this.union();
+            //return this.spanner;
 
         }
-
-
-
-        //System.out.println("Distances: " + this.distances);
-        //System.out.println("Distances length: " + this.distances.size());
-
-        //ArrayList<ArrayList<DijkstraShortestPath>> spt = shortestPathsTrees(g, p);
-        //System.out.println(spt);
-
-        // UNITE THE TREES!
-        //uniion(trees);
-
 
         return null;
 
@@ -172,8 +186,6 @@ public class ThorupZwickSpanner {
         */
         
         for (int i = k-1; i >= 0; i--) {
-            System.out.println("==== i: " + i + " ====");
-
             uwGraph tmpGraph = this.graph.cloneGraph();
 
             ArrayList<String> ai = partitions.get(i);
@@ -182,22 +194,15 @@ public class ThorupZwickSpanner {
             String source = "source";
             tmpGraph.addVertex(source);
 
-            System.out.println(ai);
 
             // Assign the source vertex to all the nodes in ai.
             for (String v : ai) {
-                // Run dijkstra here, creating a new tmpgraph for each w in Ai - Ai+1
                 tmpGraph.addEdge(source, v);
                 tmpGraph.setEdgeWeight(tmpGraph.getEdge(source, v), 0);
             }
 
             DijkstraShortestPaths dijkstra = new DijkstraShortestPaths(tmpGraph, source, false);
             ArrayList<Edge> path = dijkstra.getShortestPaths();
-
-            //if (pathLength.size() > 0 && !Double.isInfinite(pathLength)) {
-            //if (path.size() > 0) {
-            //    this.distances.add(path);
-            //}
 
             ArrayList<ArrayList<Edge>> paths = new ArrayList<ArrayList<Edge>>();
 
@@ -208,12 +213,9 @@ public class ThorupZwickSpanner {
                 ai.removeAll(ai1);
             }
 
-            System.out.println("Ai: " + ai);
             for(String v : ai) {
-                //System.out.println("** Paths for: " + v);
                 DijkstraShortestPaths dijk = new DijkstraShortestPaths(this.graph, v, false);
                 ArrayList<Edge> p = dijk.getShortestPaths();
-                //System.out.println("P: " + p);
 
                 this.distances.addAll(p);
             }
@@ -264,24 +266,25 @@ public class ThorupZwickSpanner {
         return shortestPaths;
     }
 
-    private /*Something here*/ void trees() {
+    private uwGraph union() {
 
-    }
+        ArrayList<Edge> spannerList = new ArrayList<Edge>();
 
-    private void union() {
-
-        ArrayList<Edge> spanner = new ArrayList<Edge>();
-
-        System.out.println(this.distances.size());
         for(Edge e : this.distances) {
             if( !(e.getSource().equals("") || e.getTarget().equals("")) ) {
-                spanner.add(e);
-                // CALCULATE PROPER PATH. IE. PROPER WEIGHTS.d
+                spannerList.add(e);
             }
         }
 
-        System.out.println(spanner.size());
+        uwGraph spanner = this.graph.copyGraphNoEdges();
 
+        for(Edge e : spannerList) {
+            Double weight = this.graph.getEdgeWeight( this.graph.getEdge(e.getSource(), e.getTarget()) );
+            spanner.addEdge(e.getSource(), e.getTarget());
+            spanner.setEdgeWeight( spanner.getEdge(e.getSource(), e.getTarget()), weight );
+        }
+
+        return spanner;
 
     }
 
