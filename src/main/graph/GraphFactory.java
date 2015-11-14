@@ -3,7 +3,6 @@ package main.graph;
 import org.jgrapht.graph.DefaultWeightedEdge;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Random;
 import java.util.Set;
 
@@ -37,56 +36,50 @@ public class GraphFactory {
             throw new Exception("Density too low, all vertices cannot be connected\n");
         } else if (vertices < 2) {
             throw new Exception("Not enough vertices given, need atleast 2\n");
+        } else if (density > ((vertices - 1)/2)) {
+            // If density is above the maximum density, we set it to the maximum density
+            density = (((double) vertices - 1.0)/2.0);
         }
 
         // Instantiate graph
         uwGraph g = new uwGraph(DefaultWeightedEdge.class);
-
-        // Create this due to easier fetching of vertices
-        ArrayList<String> gV = new ArrayList<String>();
+        ArrayList<String> vList = new ArrayList<String>();
 
         // Insert vertices intro graph and arraylist
         for (int i = 0; i < vertices; i++) {
             g.addVertex(("v" + i));
-            gV.add(("v" + i));
+            vList.add(("v" + i));
         }
+
         // Amount of edges to be inserted into the graph
-        double edges = (double) (vertices - 1) * density;
+        // This should always give a round number, since it is based on edges/vertices
+        // If the amount of edges has some decimals, we will add an ekstra edge.
+        double edges = (double) (vertices) * density;
 
         Random gen = new Random();
-
-        // This is to ensure coherence in graph
-        double weight;
-        Iterator<String> iterV = g.vertexSet().iterator();
-        String prev = iterV.next();
-        while (iterV.hasNext()) {
-
-            String next = iterV.next();
-            // Add edge and set edge weight
-            g.addEdge(prev, next);
-            weight = (isWeighted ? ((double) gen.nextInt(1000)) : 1.0);
-            g.setEdgeWeight(g.getEdge(prev, next), weight);
-
-            prev = next;
-            edges--;
-        }
+        String prev = vList.get(gen.nextInt(vList.size()));
 
         // Keep iterating until we've depleted the edge pool
         while (edges > 0.0) {
 
             // Fetch a random vertices within range
-            String next = gV.get(gen.nextInt(vertices));
+            String next = vList.get(gen.nextInt(vList.size()));
 
             // Skip if get the same node or edge already exists
             if (prev.equals(next) || g.containsEdge(prev, next) || g.containsEdge(next, prev)) {
+                // If we don't do this, we might end up on a vertex that already leads to all and we then loop forever.
+                prev = next;
                 continue;
             }
+
+            // Add to graph
             g.addEdge(prev, next);
-            weight = (isWeighted ? ((double) gen.nextInt(1000)) : 1.0);
+            double weight = (isWeighted ? ((double) gen.nextInt(1000)) : 1.0);
             g.setEdgeWeight(g.getEdge(prev, next), weight);
             prev = next;
             edges--;
         }
+
         return g;
     }
 
