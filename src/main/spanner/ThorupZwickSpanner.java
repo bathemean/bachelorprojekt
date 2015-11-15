@@ -39,29 +39,17 @@ public class ThorupZwickSpanner {
 
         ArrayList<String> vertices = vertexSetToArray(g.vertexSet());
 
-        // Assign vertices into parititions.
+        // Assign vertices into partitions.
         this.partitions = partition(vertices);
-
-        HashMap<Integer, ArrayList<String>> p2 = new HashMap<Integer, ArrayList<String>>();
-        ArrayList<String> a2 = new ArrayList<String>();
-        ArrayList<String> b2 = new ArrayList<String>();
-        a2.add("v1");
-        a2.add("v2");
-        a2.add("v3");
-        a2.add("v4");
-        b2.add("v4");
-        p2.put(0, a2);
-        p2.put(1, b2);
-        p2.put(2, null);
 
         // Compute distance between A_k and every vertex v.
         try {
-            distances(p2);
+            distances(this.partitions);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-
+        // Create the spanner.
         this.spanner = this.union();
         return this.spanner;
 
@@ -168,24 +156,36 @@ public class ThorupZwickSpanner {
 
     }
 
-    
+    /**
+     * Partitions the vertices, using probability n^(-1/k).
+     * @param vertices The vertex set of the graph.
+     * @return HashMap of the partitions. Key is the index of the partitions, while value is an ArrayList of the
+     * vertices of the partition.
+     */
     private HashMap<Integer, ArrayList<String>> partition(ArrayList<String> vertices) {
 
-        // {k, {parition members}}
+        // Format: {partition index, {partition members}}
         HashMap<Integer, ArrayList<String>> partitions = new HashMap<Integer, ArrayList<String>>();
 
-        partitions.put(0, vertices); // Put all vertices into A_0.
+        // Put all vertices into A_0.
+        partitions.put(0, vertices);
 
+        // Compute the probability.
         int n = vertices.size();
         double margin = Math.pow((n / Math.log(n)), (-1.0) / k);
         double intMargin = ((double) Integer.MAX_VALUE) * margin;
 
         Random gen = new Random();
 
+        // Assign vertices into partitions of decreasing size.
+        // Partition 0 should include all vertices in the graph, while partition 1 through k-1 should contain
+        // increasingly smaller subsets of the vertex set.
         for (int i = 1; i < k; i++) {
 
             ArrayList<String> subset = new ArrayList<String>();
 
+            // Fetch the previous partition and with the probability computed above,
+            // randomly determine which of the vertices to put into the next partition.
             for (String v : partitions.get(i - 1)) {
                 int next = gen.nextInt(Integer.MAX_VALUE);
                 if (intMargin > next) {
@@ -196,24 +196,20 @@ public class ThorupZwickSpanner {
 
         }
 
+        // Finally the kth partition should be empty.
         partitions.put(k, null);
 
         return partitions;
 
     }
 
-
+    /**
+     * Finds the distances of all vertices to each partition.
+     * @param partitions The partitioned vertex set.
+     * @throws Exception
+     */
     private void distances(HashMap<Integer, ArrayList<String>> partitions) throws Exception {
 
-        /*uwGraph tmpGraph2 = this.graph.cloneGraph();
-        ArrayList<String> ak = partitions.get(k-1);
-        DijkstraShortestPaths dijkstra2 = new DijkstraShortestPaths(tmpGraph2, ak.get(0), false);
-        ArrayList<Edge> path2 = dijkstra2.getShortestPaths();
-        System.out.println("WWW: " + dijkstra2.getPathBetween("v3", "v4"));
-        System.out.println("k: " + ak);
-        System.out.println(path2);
-        */
-        
         for (int i = k-1; i >= 0; i--) {
             uwGraph tmpGraph = this.graph.cloneGraph();
 
@@ -230,24 +226,25 @@ public class ThorupZwickSpanner {
                 tmpGraph.setEdgeWeight(tmpGraph.getEdge(source, v), 0);
             }
 
+            // Compute all the shortest paths.
             DijkstraShortestPaths dijkstra = new DijkstraShortestPaths(tmpGraph, source);
             ArrayList<Edge> path = dijkstra.getShortestPaths();
 
             System.out.println("Ai: " + ai);
-            System.out.println(path);
+            System.out.println("Path: " + path);
 
+            // Compute the distances (deltas) from all the vertices in the graph, to the partition.
+            // Store them in a HashMap formatted (vertex, weight).
             HashMap<String, Double> deltas = new HashMap<String, Double>();
             for(Edge e : path) {
 
+                // Don't include source vertices.
                 if(!e.getSource().equals("source") && !e.getTarget().equals("source")) {
-                    Pair<String, Double> pathWeight = new Pair<String, Double>(e.getSource(), e.getWeight());
+                    Pair<String, Double> pathWeight = new Pair<String, Double>(e.getTarget(), e.getWeight());
                     deltas.put(pathWeight.getKey(), pathWeight.getValue());
                 }
 
             }
-
-            System.out.println("ds: " + deltas);
-
 
             // Calculate the subset of A(i) - A(i+1).
             ArrayList<String> ai1 = partitions.get(i + 1);
@@ -256,8 +253,9 @@ public class ThorupZwickSpanner {
                 ai.removeAll(ai1);
             }
 
-            System.out.println("subs: " + ai);     
-
+            System.out.println("subs: " + ai);
+System.out.println(deltas);
+            // Grow a shortest paths tree from the vertices in the subset A(i) - A(i+1).
             for(String v : ai) {
                 DijkstraShortestPaths dijk = new DijkstraShortestPaths(this.graph, v, deltas.get(v));
                 ArrayList<Edge> p = dijk.getShortestPaths();
@@ -268,49 +266,10 @@ public class ThorupZwickSpanner {
         }
     }
 
-
-
-    private ArrayList<ArrayList<DijkstraShortestPath>> shortestPathsTrees(uwGraph g, HashMap<Integer, ArrayList<String>> partitions) {
-
-        ArrayList<ArrayList<DijkstraShortestPath>> shortestPaths = new ArrayList<ArrayList<DijkstraShortestPath>>();
-
-        for (int i = 0; i < k; i++) {
-            ArrayList<String> subset = new ArrayList<String>();
-
-            ArrayList<String> cur = partitions.get(i);
-            ArrayList<String> next = partitions.get(i + 1);
-
-            // Computer the subset A_i - A_i+1.
-            for (String c : cur) {
-
-                if (next != null) {
-                    if (!next.contains(c)) {
-                        subset.add(c);
-                    }
-                } else {
-                    subset.add(c);
-                }
-
-            }
-
-            if (next != null) {
-                // Find the shortest path from each vertex in the subset, to all the vertices in the graph.
-                for (String w : subset) {
-                    ArrayList<DijkstraShortestPath> sp = new ArrayList<DijkstraShortestPath>();
-
-                    for (String v : next) {
-                        DijkstraShortestPath p = new DijkstraShortestPath(g, w, v);
-                        sp.add(p);
-                    }
-                    shortestPaths.add(sp);
-                }
-            }
-
-        }
-
-        return shortestPaths;
-    }
-
+    /**
+     * Unites the shortest paths into a single graph, making the spanner.
+     * @return The spanner.
+     */
     private uwGraph union() {
 
         ArrayList<Edge> spannerList = new ArrayList<Edge>();
@@ -321,8 +280,10 @@ public class ThorupZwickSpanner {
             }
         }
 
+        // Inititalize the spanner, by copying it with its vertices.
         uwGraph spanner = this.graph.copyGraphNoEdges();
 
+        // Add all the edges with their weights in spannerList to the spanner.
         for(Edge e : spannerList) {
             Double weight = this.graph.getEdgeWeight( this.graph.getEdge(e.getSource(), e.getTarget()) );
             spanner.addEdge(e.getSource(), e.getTarget());
@@ -336,7 +297,5 @@ public class ThorupZwickSpanner {
     public HashMap<Integer, ArrayList<String>> getPartitions() {
         return this.partitions;
     }
-
-
 
 }

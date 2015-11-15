@@ -14,7 +14,7 @@ public class Main {
         ThorupZwickSpanner thorupzwick = new ThorupZwickSpanner();
 
         uwGraph stringGraph = factory.createStringGraph();
-//        uwGraph bigStrGraph = factory.createBiggerStringGraph();
+        uwGraph bigStrGraph = factory.createBiggerStringGraph();
 
 //        GraphLoader gl = new GraphLoader();
 //        uwGraph condmat2005 = gl.loadCondMat2005();
@@ -45,14 +45,15 @@ public class Main {
         uwGraph derp2 = factory.wieghtedCompleteDenseGraph(5);
         uwGraph gderp= factory.unweightedCompleteDenseGraph(5);
         //System.out.println(generatedGraph);
-        /*
+
         System.out.println("==== Big String graph: ====");
+        /*
         System.out.println("Original: " + bigStrGraph.toString());
         Spanner spannerThree = greedy.makeSpanner(bigStrGraph, 2);
         System.out.println("GreedySpanner:  " + spannerThree.toString());
-        Spanner spannerFour = thorupzwick.makeSpanner(bigStrGraph, 2);
-        System.out.println("ThorupZwick: " + spannerFour.toString());
         */
+        uwGraph spannerFour = thorupzwick.makeSpanner(bigStrGraph, 2);
+        System.out.println("ThorupZwick: " + spannerFour.toString());
 
         //Spanner bspanner = greedy.makeSpanner(bigStrGraph, 2);
         //System.out.println("BSpanner:  " + bspanner.toString());

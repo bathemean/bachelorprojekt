@@ -11,7 +11,7 @@ public class DijkstraShortestPaths {
     private uwGraph graph;
     private String source;
     private ArrayList<Edge> shortestPath;
-    private Double limit = null;
+    private Double limit;
 
     /**
      * Dijkstra's algorithm for finding shortests paths. Based on the algorithm in Cormen et al. 3. ed., page 658.
@@ -29,6 +29,8 @@ public class DijkstraShortestPaths {
         this.shortestPath = new ArrayList<Edge>();
         this.setShortestPaths();
 
+        this.limit = null;
+
     }
 
     /**
@@ -39,9 +41,17 @@ public class DijkstraShortestPaths {
      * @throws Exception
      */
     public DijkstraShortestPaths(uwGraph graph, String source, Double limit) throws Exception {
+        // Clone the graph, so that we don't modify the existing one.
+        this.graph = graph.cloneGraph();
+        this.source = source;
 
-        this(graph, source);
         this.limit = limit;
+
+        this.heap = this.initialize();
+        this.shortestPath = new ArrayList<Edge>();
+        this.setShortestPaths();
+
+
 
     }
 
@@ -51,7 +61,6 @@ public class DijkstraShortestPaths {
      * with the source vertex having weight zero.
      */
     private MinHeap initialize() {
-
         MinHeap heap = new MinHeap();
 
         // Fetch all vertices in given graph
@@ -64,13 +73,11 @@ public class DijkstraShortestPaths {
 
             // Set the source vertex to weight 0.
             if (vert.equals(this.source)) {
-
                 v = new Edge(vert, "", 0.0);
-                // Insert source vertice data in the head of the MinHeap.
+                // Insert source vertex data in the head of the MinHeap.
                 heap.addHead(v);
             } else { // Set all others to vInit (infinite)
-
-                v = new Edge(vert, null, Double.POSITIVE_INFINITY);
+                v = new Edge(vert, "", Double.POSITIVE_INFINITY);
                 // Insert vertice data in the MinHeap.
                 heap.add(v);
             }
@@ -97,10 +104,8 @@ public class DijkstraShortestPaths {
 
             // Decrease key for all the adjacent vertices.
             for(Edge e : adj) {
-                if(this.limit == null || u.getWeight() < this.limit) {
+                if(this.limit == null || (u.getWeight() + e.getWeight()) < this.limit) {
                     this.heap.decreaseKey(u, e.getWeight(), e.getTarget());
-                } else {
-                    throw new Exception("Something went wrong with modified dijkstra!");
                 }
             }
 
