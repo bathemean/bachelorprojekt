@@ -38,7 +38,7 @@ public class GreedySpanner extends Spanner {
             v = g.getEdgeSource(entryEdge);
             u = g.getEdgeTarget(entryEdge);
 
-            DijkstraShortestPaths dijkstraShortestPath = new DijkstraShortestPaths(gPling, v, false);
+            DijkstraShortestPaths dijkstraShortestPath = new DijkstraShortestPaths(gPling, v);
 
             if ((r * entry.getValue()) < dijkstraShortestPath.getPathWeight(u)) {
                 gPling.addEdge(v, u);

@@ -2,6 +2,7 @@ package main;
 
 import main.graph.GraphFactory;
 import main.graph.uwGraph;
+import main.spanner.ThorupZwickSpanner;
 
 public class Main {
 
@@ -10,9 +11,9 @@ public class Main {
         GraphFactory factory = new GraphFactory();
 
         //GreedySpanner greedy = new GreedySpanner();
-//        ThorupZwickSpanner thorupzwick = new ThorupZwickSpanner();
+        ThorupZwickSpanner thorupzwick = new ThorupZwickSpanner();
 
-//        uwGraph stringGraph = factory.createStringGraph();
+        uwGraph stringGraph = factory.createStringGraph();
 //        uwGraph bigStrGraph = factory.createBiggerStringGraph();
 
 //        GraphLoader gl = new GraphLoader();
@@ -35,13 +36,15 @@ public class Main {
         //DijkstraShortestPaths dijkstra = new DijkstraShortestPaths(stringGraph, "v1", false);
         //System.out.println(dijkstra.getShortestPaths());
 
-//        uwGraph spannerTwo = thorupzwick.makeSpanner(stringGraph, 2);
-//        System.out.println("ThorupZwick: " + spannerTwo.toString());
+        uwGraph spannerTwo = thorupzwick.makeSpanner(stringGraph, 2);
+        System.out.println("ThorupZwick: " + spannerTwo.toString());
+
+
         uwGraph generatedGraph = factory.wieghtedDenseGraph(5, 4.0);
         uwGraph derp = factory.unwieghtedDenseGraph(5, 4.0);
         uwGraph derp2 = factory.wieghtedCompleteDenseGraph(5);
         uwGraph gderp= factory.unweightedCompleteDenseGraph(5);
-        System.out.println(generatedGraph);
+        //System.out.println(generatedGraph);
         /*
         System.out.println("==== Big String graph: ====");
         System.out.println("Original: " + bigStrGraph.toString());

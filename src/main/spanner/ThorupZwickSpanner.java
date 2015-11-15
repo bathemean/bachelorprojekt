@@ -19,10 +19,19 @@ public class ThorupZwickSpanner {
     private HashMap<Integer, ArrayList<String>> partitions;
     private ArrayList<Edge> distances;
 
+    /**
+     * Object that can create ThorupZwick spanners, according to the method described in Approximate Distance Oracles.
+     */
     public ThorupZwickSpanner() {
         this.distances = new ArrayList<Edge>();
     }
 
+    /**
+     * Creates and returns a ThorupZwick spanner from the supplied graph, with some multiplication factor.
+     * @param g The graph to make the spanner from.
+     * @param k The multiplication factor.
+     * @return A spanner of the graph g, with multiplication factor k.
+     */
     public uwGraph makeSpanner(uwGraph g, int k) {
 
         this.k = k;
@@ -33,10 +42,21 @@ public class ThorupZwickSpanner {
         // Assign vertices into parititions.
         this.partitions = partition(vertices);
 
+        HashMap<Integer, ArrayList<String>> p2 = new HashMap<Integer, ArrayList<String>>();
+        ArrayList<String> a2 = new ArrayList<String>();
+        ArrayList<String> b2 = new ArrayList<String>();
+        a2.add("v1");
+        a2.add("v2");
+        a2.add("v3");
+        a2.add("v4");
+        b2.add("v4");
+        p2.put(0, a2);
+        p2.put(1, b2);
+        p2.put(2, null);
 
         // Compute distance between A_k and every vertex v.
         try {
-            distances(this.partitions);
+            distances(p2);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -47,6 +67,9 @@ public class ThorupZwickSpanner {
 
     }
 
+    /**
+     * Identical to makeSpanner(), but non-randomized.
+     */
     public uwGraph makeTestSpanner(uwGraph g, int k) {
 
         this.k = k;
@@ -128,6 +151,11 @@ public class ThorupZwickSpanner {
 
     }
 
+    /**
+     * Takes a vertex set and returns it as an ArrayList.
+     * @param set some Set.
+     * @return An ArrayList og the supplied set.
+     */
     private ArrayList<String> vertexSetToArray(Set<String> set) {
 
         ArrayList<String> array = new ArrayList<String>();
@@ -140,6 +168,7 @@ public class ThorupZwickSpanner {
 
     }
 
+    
     private HashMap<Integer, ArrayList<String>> partition(ArrayList<String> vertices) {
 
         // {k, {parition members}}
@@ -201,10 +230,24 @@ public class ThorupZwickSpanner {
                 tmpGraph.setEdgeWeight(tmpGraph.getEdge(source, v), 0);
             }
 
-            DijkstraShortestPaths dijkstra = new DijkstraShortestPaths(tmpGraph, source, false);
+            DijkstraShortestPaths dijkstra = new DijkstraShortestPaths(tmpGraph, source);
             ArrayList<Edge> path = dijkstra.getShortestPaths();
 
-            ArrayList<ArrayList<Edge>> paths = new ArrayList<ArrayList<Edge>>();
+            System.out.println("Ai: " + ai);
+            System.out.println(path);
+
+            HashMap<String, Double> deltas = new HashMap<String, Double>();
+            for(Edge e : path) {
+
+                if(!e.getSource().equals("source") && !e.getTarget().equals("source")) {
+                    Pair<String, Double> pathWeight = new Pair<String, Double>(e.getSource(), e.getWeight());
+                    deltas.put(pathWeight.getKey(), pathWeight.getValue());
+                }
+
+            }
+
+            System.out.println("ds: " + deltas);
+
 
             // Calculate the subset of A(i) - A(i+1).
             ArrayList<String> ai1 = partitions.get(i + 1);
@@ -213,8 +256,10 @@ public class ThorupZwickSpanner {
                 ai.removeAll(ai1);
             }
 
+            System.out.println("subs: " + ai);     
+
             for(String v : ai) {
-                DijkstraShortestPaths dijk = new DijkstraShortestPaths(this.graph, v, false);
+                DijkstraShortestPaths dijk = new DijkstraShortestPaths(this.graph, v, deltas.get(v));
                 ArrayList<Edge> p = dijk.getShortestPaths();
 
                 this.distances.addAll(p);

@@ -7,21 +7,23 @@ import java.util.Set;
 
 public class DijkstraShortestPaths {
 
-    /**
-     * Based on the algorithm in Cormen et al. 3. ed., page 658
-     */
     private MinHeap heap;
     private uwGraph graph;
     private String source;
     private ArrayList<Edge> shortestPath;
-    private boolean isTZ;
+    private Double limit = null;
 
-    public DijkstraShortestPaths(uwGraph graph, String source, boolean isTZ) throws Exception {
+    /**
+     * Dijkstra's algorithm for finding shortests paths. Based on the algorithm in Cormen et al. 3. ed., page 658.
+     * @param graph The graph to find paths in.
+     * @param source The source of the path.
+     * @throws Exception
+     */
+    public DijkstraShortestPaths(uwGraph graph, String source) throws Exception {
 
         // Clone the graph, so that we don't modify the existing one.
         this.graph = graph.cloneGraph();
         this.source = source;
-        this.isTZ = isTZ;
 
         this.heap = this.initialize();
         this.shortestPath = new ArrayList<Edge>();
@@ -29,6 +31,25 @@ public class DijkstraShortestPaths {
 
     }
 
+    /**
+     * Modified Dijkstra algorithm from Approximate Distance Oracles.
+     * @param graph The graph to find paths in.
+     * @param source The source of the path.
+     * @param limit The limit where we no longer perform the relax step.
+     * @throws Exception
+     */
+    public DijkstraShortestPaths(uwGraph graph, String source, Double limit) throws Exception {
+
+        this(graph, source);
+        this.limit = limit;
+
+    }
+
+    /**
+     * Performs initialization.
+     * @return MinHeap containing the vertex set for the supplied graph. All but the source vertex has weight infinity,
+     * with the source vertex having weight zero.
+     */
     private MinHeap initialize() {
 
         MinHeap heap = new MinHeap();
@@ -59,10 +80,9 @@ public class DijkstraShortestPaths {
     }
 
     /**
-     * Magic function that actually creates the shortest paths
-     * extracts min() etc (above mentioned data structure use poll/peek)
-     * be aware that object in the queue should be extracted and re-inserted to maintain the integrity of the queue
-     * i.o.w. don't just alter the object in the queue by reference.
+     * Finds the shortests paths. If running the modified Dijkstra, this.limit will be different from null.
+     * If running vanilla Dijkstra, this.limit will be null. Stores the shortests path in this.shortestPath.
+     * @throws Exception
      */
     protected void setShortestPaths() throws Exception {
 
@@ -71,13 +91,17 @@ public class DijkstraShortestPaths {
             Edge u = this.heap.extractMin();
 
             // Add the minimal vertex to our shortest path.
-            shortestPath.add(u);
+            this.shortestPath.add(u);
 
             Edge[] adj = this.graph.getAdjecentVertices(u.getSource());
 
             // Decrease key for all the adjacent vertices.
             for(Edge e : adj) {
-                this.heap.decreaseKey(u, e.getWeight(), e.getTarget());
+                if(this.limit == null || u.getWeight() < this.limit) {
+                    this.heap.decreaseKey(u, e.getWeight(), e.getTarget());
+                } else {
+                    throw new Exception("Something went wrong with modified dijkstra!");
+                }
             }
 
         }
@@ -93,20 +117,13 @@ public class DijkstraShortestPaths {
         return this.shortestPath;
     }
 
+    /**
+     * Get the weight of vertex u in.
+     * @param u Some vertex.
+     * @return The weight of the vertex in the shortest path.
+     */
     public double getPathWeight(String u) {
         return this.heap.getVertex(u).getValue().getWeight();
-    }
-
-    public Double getPathBetween(String source, String target) {
-
-        for(Edge e : this.shortestPath) {
-            if( (e.getSource() == source && e.getTarget() == target) || (e.getSource() == target && e.getTarget() == source)) {
-                return e.getWeight();
-            }
-        }
-
-        return Double.POSITIVE_INFINITY;
-
     }
 
     public uwGraph getGraph() {
