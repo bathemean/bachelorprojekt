@@ -1,8 +1,11 @@
 package main.graph;
 
+import main.DijkstraShortestPaths;
+import main.Edge;
 import org.jgrapht.graph.DefaultWeightedEdge;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 import java.util.Set;
 
@@ -12,23 +15,54 @@ public class GraphFactory {
 
     public GraphFactory() {
     }
+    private boolean isNotCoherent(uwGraph graph) throws Exception {
+        // We know v0 always exists, since it creates nodes iteratively
+        DijkstraShortestPaths sPaths = new DijkstraShortestPaths(graph, "v0");
+        ArrayList<Edge> es = sPaths.getShortestPaths();
+
+        // We assume the edges with the largest weight (untouched/unreachable) are located in the end
+        // and we want to find these ASAP
+        Collections.reverse(es);
+
+        boolean coherence = false;
+        for(Edge e : es){
+            coherence = (e.getWeight() == Double.POSITIVE_INFINITY);
+
+            // If an unreachable vertex is found, we want to stop looping.
+            if (coherence){
+                break;
+            }
+        }
+
+        return coherence;
+    }
+
+    public uwGraph coherentGraph(int vertices, double density, boolean isWeighted) throws Exception {
+        uwGraph graph;
+        // Create a graph and check whether or not it is coherent and generate new one if not
+        do {
+            graph = this.genGraphFromData(vertices, density, isWeighted);
+        } while (isNotCoherent(graph));
+
+        return graph;
+    }
 
     public uwGraph wieghtedCompleteDenseGraph(int vertices) throws Exception {
         double density = (double) vertices - 1;
-        return this.genGraphFromData(vertices, density, true);
+        return this.coherentGraph(vertices, density, true);
     }
 
     public uwGraph wieghtedDenseGraph(int vertices, double density) throws Exception {
-        return this.genGraphFromData(vertices, density, true);
+        return this.coherentGraph(vertices, density, true);
     }
 
     public uwGraph unweightedCompleteDenseGraph(int vertices) throws Exception {
         double density = (double) vertices - 1;
-        return this.genGraphFromData(vertices, density, false);
+        return this.coherentGraph(vertices, density, false);
     }
 
     public uwGraph unwieghtedDenseGraph(int vertices, double density) throws Exception {
-        return this.genGraphFromData(vertices, density, false);
+        return this.coherentGraph(vertices, density, false);
     }
 
     private uwGraph genGraphFromData(int vertices, double density, boolean isWeighted) throws Exception {
