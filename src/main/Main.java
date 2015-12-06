@@ -2,6 +2,7 @@ package main;
 
 import main.graph.GraphFactory;
 import main.graph.uwGraph;
+import main.spanner.ThorupZwickSpanner;
 
 public class Main {
 
@@ -16,9 +17,10 @@ public class Main {
         GraphFactory factory = new GraphFactory();
 
         //GreedySpanner greedy = new GreedySpanner();
-    //    ThorupZwickSpanner thorupzwick = new ThorupZwickSpanner();
 
-//        uwGraph stringGraph = factory.createStringGraph();
+        ThorupZwickSpanner thorupzwick = new ThorupZwickSpanner();
+
+        uwGraph stringGraph = factory.createStringGraph();
   //      uwGraph bigStrGraph = factory.createBiggerStringGraph();
 
 
@@ -32,7 +34,6 @@ public class Main {
         uwGraph spannerOne = greedy.makeSpanner(stringGraph, 2);
         System.out.println("GreedySpanner:  " + spannerOne.toString());
         */
-        //uwGraph spannerOne = thorupzwick.makeSpanner(stringGraph, 2);
 //        System.out.println("GreedySpanner:  " + spannerOne.toString());
 
 //        System.out.println(spannerOne.getMetricsAsString());
@@ -42,11 +43,11 @@ public class Main {
         //DijkstraShortestPaths dijkstra = new DijkstraShortestPaths(stringGraph, "v1", false);
         //System.out.println(dijkstra.getShortestPaths());
 
-     //   uwGraph spannerTwo = thorupzwick.makeSpanner(stringGraph, 2);
-      //  System.out.println("ThorupZwick: " + spannerTwo.toString());
+        uwGraph spannerTwo = thorupzwick.makeSpanner(stringGraph, 2);
+        System.out.println("ThorupZwick: " + spannerTwo.toString());
 
 
-        uwGraph generatedGraph = factory.wieghtedDenseGraph(200, 4.0);
+        //uwGraph generatedGraph = factory.wieghtedDenseGraph(200, 4.0);
 //        uwGraph derp = factory.unwieghtedDenseGraph(20, 4.0);
   //       uwGraph derp2 = factory.wieghtedCompleteDenseGraph(5);
     //    uwGraph gderp= factory.unweightedCompleteDenseGraph(5);

@@ -3,6 +3,7 @@ package main;
 import main.graph.uwGraph;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Set;
 
 public class DijkstraShortestPaths {
@@ -11,7 +12,7 @@ public class DijkstraShortestPaths {
     private uwGraph graph;
     private String source;
     private ArrayList<Edge> shortestPath;
-    private Double limit;
+    private HashMap<String, Double> deltas;
 
     /**
      * Dijkstra's algorithm for finding shortests paths. Based on the algorithm in Cormen et al. 3. ed., page 658.
@@ -29,7 +30,7 @@ public class DijkstraShortestPaths {
         this.shortestPath = new ArrayList<Edge>();
         this.setShortestPaths();
 
-        this.limit = null;
+        this.deltas = null;
 
     }
 
@@ -37,15 +38,15 @@ public class DijkstraShortestPaths {
      * Modified Dijkstra algorithm from Approximate Distance Oracles.
      * @param graph The graph to find paths in.
      * @param source The source of the path.
-     * @param limit The limit where we no longer perform the relax step.
+     * @param deltas The distances from partition to vertex.
      * @throws Exception
      */
-    public DijkstraShortestPaths(uwGraph graph, String source, Double limit) throws Exception {
+    public DijkstraShortestPaths(uwGraph graph, String source, HashMap<String, Double> deltas) throws Exception {
         // Clone the graph, so that we don't modify the existing one.
         this.graph = graph.cloneGraph();
         this.source = source;
 
-        this.limit = limit;
+        this.deltas = deltas;
 
         this.heap = this.initialize();
         this.shortestPath = new ArrayList<Edge>();
@@ -104,7 +105,15 @@ public class DijkstraShortestPaths {
 
             // Decrease key for all the adjacent vertices.
             for(Edge e : adj) {
-                if(this.limit == null || (u.getWeight() + e.getWeight()) < this.limit) {
+
+                Double limit = Double.POSITIVE_INFINITY;
+                if(this.deltas != null) {
+                    if (this.deltas.containsKey(e.getTarget())) {
+                        limit = this.deltas.get(e.getTarget());
+                    }
+                }
+
+                if(this.deltas == null || (u.getWeight() + e.getWeight()) < limit) {
                     this.heap.decreaseKey(u, e.getWeight(), e.getTarget());
                 }
             }

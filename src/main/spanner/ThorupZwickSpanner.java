@@ -211,6 +211,7 @@ public class ThorupZwickSpanner {
     private void distances(HashMap<Integer, ArrayList<String>> partitions) throws Exception {
 
         for (int i = k-1; i >= 0; i--) {
+            System.out.println("=== i: " + i + " ===");
             uwGraph tmpGraph = this.graph.cloneGraph();
 
             ArrayList<String> ai = partitions.get(i);
@@ -236,16 +237,17 @@ public class ThorupZwickSpanner {
             // Compute the distances (deltas) from all the vertices in the graph, to the partition.
             // Store them in a HashMap formatted (vertex, weight).
             HashMap<String, Double> deltas = new HashMap<String, Double>();
+
             for(Edge e : path) {
 
                 // Don't include source vertices.
                 if(!e.getSource().equals("source") && !e.getTarget().equals("source")) {
-                    Pair<String, Double> pathWeight = new Pair<String, Double>(e.getTarget(), e.getWeight());
-                    deltas.put(pathWeight.getKey(), pathWeight.getValue());
+                    String vertex = e.getTarget();
+                    Double weight = e.getWeight();
+                    deltas.put(vertex, weight);
                 }
 
             }
-
             // Calculate the subset of A(i) - A(i+1).
             ArrayList<String> ai1 = partitions.get(i + 1);
             // If i == k-1, k+1 is null, thus A(i) - A(i+1) == A(i).
@@ -256,8 +258,8 @@ public class ThorupZwickSpanner {
             System.out.println("subs: " + ai);
 System.out.println(deltas);
             // Grow a shortest paths tree from the vertices in the subset A(i) - A(i+1).
-            for(String v : ai) {
-                DijkstraShortestPaths dijk = new DijkstraShortestPaths(this.graph, v, deltas.get(v));
+            for(String w : ai) {
+                DijkstraShortestPaths dijk = new DijkstraShortestPaths(this.graph, w, deltas);
                 ArrayList<Edge> p = dijk.getShortestPaths();
 
                 this.distances.addAll(p);
