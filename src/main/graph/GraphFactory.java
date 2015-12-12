@@ -1,5 +1,6 @@
 package main.graph;
 
+import javafx.util.Pair;
 import main.DijkstraShortestPaths;
 import main.Edge;
 import org.jgrapht.graph.DefaultWeightedEdge;
@@ -30,6 +31,7 @@ public class GraphFactory {
 
             // If an unreachable vertex is found, we want to stop looping.
             if (coherence){
+                System.out.println("Generate graph not coherent, generating again.");
                 break;
             }
         }
@@ -41,6 +43,7 @@ public class GraphFactory {
         uwGraph graph;
         // Create a graph and check whether or not it is coherent and generate new one if not
         do {
+            System.out.println(("Generating test graph with vertices: " + vertices + ", density: " + density + " and is weighted: " + isWeighted));
             graph = this.genGraphFromData(vertices, density, isWeighted);
         } while (isNotCoherent(graph));
 
@@ -65,14 +68,23 @@ public class GraphFactory {
         return this.coherentGraph(vertices, density, false);
     }
 
+    /**
+     * Generate graph, given amount of vertices, density in decimals, 1 being a complete graph and whether it's weighted or not
+     * @param vertices
+     * @param density
+     * @param isWeighted
+     * @return
+     * @throws Exception
+     */
     private uwGraph genGraphFromData(int vertices, double density, boolean isWeighted) throws Exception {
-        if (density < 0.0) {
-            throw new Exception("Density too low, all vertices cannot be connected\n");
+        System.out.println(density * ((double) (vertices*(vertices - 1))/(2.0)) / (double) vertices);
+        if (density < ((double) vertices - 1.0)/((double) (vertices*(vertices - 1))/(2.0))) {
+            throw new Exception("Density too low, must not be below minimum: " + ((double) vertices - 1.0)/((double) (vertices*(vertices - 1))/(2.0)) + ", all vertices cannot be connected\n");
         } else if (vertices < 2) {
             throw new Exception("Not enough vertices given, need atleast 2\n");
-        } else if (density > ((vertices - 1)/2)) {
+        } else if (density > 1.0) {
             // If density is above the maximum density, we set it to the maximum density
-            density = (((double) vertices - 1.0)/2.0);
+            density = 1.0;
         }
 
         // Instantiate graph
@@ -81,41 +93,45 @@ public class GraphFactory {
 
         // Insert vertices intro graph and arraylist
         for (int i = 0; i < vertices; i++) {
-            g.addVertex(("v" + i));
-            vList.add(("v" + i));
+            String v = ("v" + i);
+            g.addVertex(v);
+            vList.add(v);
         }
 
-        // Amount of edges to be inserted into the graph
-        // This should always give a round number, since it is based on edges/vertices
-        // If the amount of edges has some decimals, we will add an ekstra edge.
-        double edges = (double) (vertices) * density;
-
-        Random gen = new Random();
-        String prev = vList.get(gen.nextInt(vList.size()));
-
+        // Generate all possible edges for graph
+        ArrayList<Pair<String, String>> edges = generateEdges(vList);
+        // Sleep for half a second, to insure a new seed is available.
+        Thread.sleep(500);
+        Random rndGen = new Random(System.nanoTime());
+        double margin = density * ((double) Integer.MAX_VALUE);
+        System.out.print(margin);
         // Keep iterating until we've depleted the edge pool
-        while (edges > 0.0) {
-
-            // Fetch a random vertices within range
-            String next = vList.get(gen.nextInt(vList.size()));
-
-            // Skip if get the same node or edge already exists
-            if (prev.equals(next) || g.containsEdge(prev, next) || g.containsEdge(next, prev)) {
-                // If we don't do this, we might end up on a vertex that already leads to all and we then loop forever.
-                prev = next;
-                continue;
+        for (Pair<String, String> p : edges){
+            if (rndGen.nextInt(Integer.MAX_VALUE) < margin){
+                g.addEdge(p.getKey(), p.getValue());
+                double weight = (isWeighted ? ((double) rndGen.nextInt(1000)) : 1.0);
+                g.setEdgeWeight(g.getEdge(p.getKey(), p.getValue()), weight);
             }
-
-            // Add to graph
-            g.addEdge(prev, next);
-            double weight = (isWeighted ? ((double) gen.nextInt(1000)) : 1.0);
-            g.setEdgeWeight(g.getEdge(prev, next), weight);
-            prev = next;
-            edges--;
         }
 
         return g;
     }
+
+    private ArrayList<Pair<String, String>> generateEdges(ArrayList<String> vList) {
+        ArrayList<Pair<String, String>> edges = new ArrayList<Pair<String, String>>();
+        ArrayList<String> tmpVList = new ArrayList<String>();
+        for(String v : vList){
+            for(String u : tmpVList){
+                if (!u.isEmpty()){
+                    edges.add(new Pair<String, String>(u, v));
+                }
+            }
+            tmpVList.add(v);
+        }
+
+        return edges;
+    }
+
 
     /**
      * Creates a dummy graph.

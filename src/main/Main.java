@@ -43,23 +43,22 @@ public class Main {
         //DijkstraShortestPaths dijkstra = new DijkstraShortestPaths(stringGraph, "v1", false);
         //System.out.println(dijkstra.getShortestPaths());
 
-        uwGraph spannerTwo = thorupzwick.makeSpanner(stringGraph, 2);
-        System.out.println("ThorupZwick: " + spannerTwo.toString());
+//        System.out.println("ThorupZwick: " + spannerTwo.toString());
 
 
-        //uwGraph generatedGraph = factory.wieghtedDenseGraph(200, 4.0);
+        uwGraph generatedGraph = factory.wieghtedDenseGraph(2000, 1);
 //        uwGraph derp = factory.unwieghtedDenseGraph(20, 4.0);
   //       uwGraph derp2 = factory.wieghtedCompleteDenseGraph(5);
     //    uwGraph gderp= factory.unweightedCompleteDenseGraph(5);
         //System.out.println(generatedGraph);
 
     //    System.out.println("==== Big String graph: ====");
-        /*
-        System.out.println("Original: " + bigStrGraph.toString());
-        Spanner spannerThree = greedy.makeSpanner(bigStrGraph, 2);
-        System.out.println("GreedySpanner:  " + spannerThree.toString());
-        */
-//        uwGraph spannerFour = thorupzwick.makeSpanner(bigStrGraph, 2);
+
+        //System.out.println("Original: " + bigStrGraph.toString());
+        uwGraph spannerThree = thorupzwick.makeSpanner(generatedGraph, 5);
+        System.out.println(spannerThree.getMetricsAsString());
+        //System.out.println("GreedySpanner:  " + spannerThree.toString());
+//          uwGraph spannerFour = thorupzwick.makeSpanner(bigStrGraph, 2);
   //      System.out.println("ThorupZwick: " + spannerFour.toString());
 
         //Spanner bspanner = greedy.makeSpanner(bigStrGraph, 2);

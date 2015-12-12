@@ -1,14 +1,13 @@
 package main.spanner;
 
-import javafx.util.Pair;
 import main.DijkstraShortestPaths;
-import main.Distance;
 import main.Edge;
 import main.graph.uwGraph;
-import org.jgrapht.alg.DijkstraShortestPath;
-import org.jgrapht.graph.DefaultWeightedEdge;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Random;
+import java.util.Set;
 
 public class ThorupZwickSpanner {
 
@@ -256,7 +255,7 @@ public class ThorupZwickSpanner {
             }
 
             System.out.println("subs: " + ai);
-System.out.println(deltas);
+            System.out.println(deltas);
             // Grow a shortest paths tree from the vertices in the subset A(i) - A(i+1).
             for(String w : ai) {
                 DijkstraShortestPaths dijk = new DijkstraShortestPaths(this.graph, w, deltas);

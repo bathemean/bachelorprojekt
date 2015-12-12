@@ -2,7 +2,6 @@ package main.graph;
 
 import javafx.util.Pair;
 import main.Edge;
-import main.VertexElement;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.ListenableUndirectedWeightedGraph;
 
@@ -113,20 +112,20 @@ public class uwGraph extends ListenableUndirectedWeightedGraph<String, DefaultWe
         return super.toString();
     }
 
+    // kør dijk for spanner og graf og divider de to afstande fra u til v.
+    // Vælg den største brøk.
     public void getStretch() {
 
         Object[] vertices = this.vertexSet().toArray();
         Object[] edges = this.edgeSet().toArray();
-
-        // GI MIG DIJKSTRA!
     }
 
     public double getDensity() {
 
         double numVertices = this.vertexSet().size();
         double numEdges = this.edgeSet().size();
-        double result = numEdges / numVertices;
-
+        double result = (2 * numEdges) / (numVertices * (numVertices -1));
+        System.out.println(numEdges);
         return result;
     }
 
