@@ -91,32 +91,34 @@ public class GraphFactory {
         uwGraph g = new uwGraph(DefaultWeightedEdge.class);
         ArrayList<String> vList = new ArrayList<String>();
 
-        // Insert vertices intro graph and arraylist
-        for (int i = 0; i < vertices; i++) {
-            String v = ("v" + i);
-            g.addVertex(v);
-            vList.add(v);
-        }
-
         // Generate all possible edges for graph
         ArrayList<Pair<String, String>> edges = generateEdges(vList);
-        // Sleep for half a second, to insure a new seed is available.
+
+        // Sleep for half a second, to insure a new seed is created.
         Thread.sleep(500);
         Random rndGen = new Random(System.nanoTime());
         double margin = density * ((double) Integer.MAX_VALUE);
         System.out.print(margin);
-        // Keep iterating until we've depleted the edge pool
-        for (Pair<String, String> p : edges){
-            if (rndGen.nextInt(Integer.MAX_VALUE) < margin){
-                g.addEdge(p.getKey(), p.getValue());
-                double weight = (isWeighted ? ((double) rndGen.nextInt(1000)) : 1.0);
-                g.setEdgeWeight(g.getEdge(p.getKey(), p.getValue()), weight);
+
+        // Insert vertices intro graph and arraylist
+        for (int i = 0; i < vertices; i++) {
+            String v = ("v" + i);
+            g.addVertex(v);
+            for (String w : vList){
+                if (rndGen.nextInt(Integer.MAX_VALUE) < margin){
+                    g.addEdge(w, v);
+                    double weight = (isWeighted ? ((double) rndGen.nextInt(1000)) : 1.0);
+                    g.setEdgeWeight(g.getEdge(w, v), weight);
+                }
             }
+            vList.add(v);
         }
+
 
         return g;
     }
 
+/** Deprecated */
     private ArrayList<Pair<String, String>> generateEdges(ArrayList<String> vList) {
         ArrayList<Pair<String, String>> edges = new ArrayList<Pair<String, String>>();
         ArrayList<String> tmpVList = new ArrayList<String>();

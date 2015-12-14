@@ -46,7 +46,8 @@ public class Main {
 //        System.out.println("ThorupZwick: " + spannerTwo.toString());
 
 
-        uwGraph generatedGraph = factory.wieghtedDenseGraph(2000, 1);
+        uwGraph generatedGraph = factory.wieghtedDenseGraph(200, 1);
+        System.out.println(generatedGraph.getMetricsAsString());
 //        uwGraph derp = factory.unwieghtedDenseGraph(20, 4.0);
   //       uwGraph derp2 = factory.wieghtedCompleteDenseGraph(5);
     //    uwGraph gderp= factory.unweightedCompleteDenseGraph(5);
@@ -55,8 +56,8 @@ public class Main {
     //    System.out.println("==== Big String graph: ====");
 
         //System.out.println("Original: " + bigStrGraph.toString());
-        uwGraph spannerThree = thorupzwick.makeSpanner(generatedGraph, 5);
-        System.out.println(spannerThree.getMetricsAsString());
+//        uwGraph spannerThree = thorupzwick.makeSpanner(generatedGraph, 5);
+  //      System.out.println(spannerThree.getMetricsAsString());
         //System.out.println("GreedySpanner:  " + spannerThree.toString());
 //          uwGraph spannerFour = thorupzwick.makeSpanner(bigStrGraph, 2);
   //      System.out.println("ThorupZwick: " + spannerFour.toString());
