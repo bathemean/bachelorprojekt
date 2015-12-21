@@ -169,4 +169,8 @@ public class uwGraph extends ListenableUndirectedWeightedGraph<String, DefaultWe
 
         return str;
     }
+
+    public String getMetricsAsCSV() {
+        return this.getTotalWeight() + "," + this.getDensity() + "," + this.getHighestDegree() + "," + this.getRuntime();
+    }
 }
