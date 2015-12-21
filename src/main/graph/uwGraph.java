@@ -124,9 +124,7 @@ public class uwGraph extends ListenableUndirectedWeightedGraph<String, DefaultWe
 
         double numVertices = this.vertexSet().size();
         double numEdges = this.edgeSet().size();
-        double result = (2 * numEdges) / (numVertices * (numVertices -1));
-        System.out.println(numEdges);
-        return result;
+        return (2 * numEdges) / (numVertices * (numVertices -1));
     }
 
     public int getTotalWeight() {

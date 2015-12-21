@@ -19,10 +19,7 @@ public class GreedySpanner extends Spanner {
      * @return a spanner with multiplication degree r.
      */
     public uwGraph makeSpanner(uwGraph g, Integer r) throws Exception {
-        super.startTiming();
-
-        Object[] vertices = g.vertexSet().toArray();
-        Object[] edges = g.edgeSet().toArray();
+        this.startTiming();
 
         uwGraph gPling = g.copyGraphNoEdges();
 
@@ -46,8 +43,8 @@ public class GreedySpanner extends Spanner {
             }
         }
 
-        super.endTiming();
-        gPling.setRuntime(super.getRuntime());
+        this.endTiming();
+        gPling.setRuntime(this.getRuntime());
 
         return gPling;
 

@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Random;
 import java.util.Set;
 
-public class ThorupZwickSpanner {
+public class ThorupZwickSpanner extends Spanner{
 
     private int k;
     private uwGraph graph;
@@ -32,7 +32,7 @@ public class ThorupZwickSpanner {
      * @return A spanner of the graph g, with multiplication factor k.
      */
     public uwGraph makeSpanner(uwGraph g, int k) {
-
+        this.startTiming();
         this.k = k;
         this.graph = g;
 
@@ -50,6 +50,8 @@ public class ThorupZwickSpanner {
 
         // Create the spanner.
         this.spanner = this.union();
+        this.endTiming();
+        this.spanner.setRuntime(this.getRuntime());
         return this.spanner;
 
     }
@@ -117,8 +119,8 @@ public class ThorupZwickSpanner {
         ps.add(p2);
 
         for(HashMap<Integer, ArrayList<String>> p : ps) {
-            System.out.println("_____________________________");
-            System.out.println(p);
+//            System.out.println("_____________________________");
+//            System.out.println(p);
 
             // Compute distance between A_k and every vertex v.
             try {
@@ -127,7 +129,7 @@ public class ThorupZwickSpanner {
                 e.printStackTrace();
             }
 
-            System.out.println("ds: " + this.distances);
+//            System.out.println("ds: " + this.distances);
 
             this.spanner = this.union();
             //return this.spanner;
@@ -210,7 +212,7 @@ public class ThorupZwickSpanner {
     private void distances(HashMap<Integer, ArrayList<String>> partitions) throws Exception {
 
         for (int i = k-1; i >= 0; i--) {
-            System.out.println("=== i: " + i + " ===");
+//            System.out.println("=== i: " + i + " ===");
             uwGraph tmpGraph = this.graph.cloneGraph();
 
             ArrayList<String> ai = partitions.get(i);
@@ -230,8 +232,8 @@ public class ThorupZwickSpanner {
             DijkstraShortestPaths dijkstra = new DijkstraShortestPaths(tmpGraph, source);
             ArrayList<Edge> path = dijkstra.getShortestPaths();
 
-            System.out.println("Ai: " + ai);
-            System.out.println("Path: " + path);
+//            System.out.println("Ai: " + ai);
+//            System.out.println("Path: " + path);
 
             // Compute the distances (deltas) from all the vertices in the graph, to the partition.
             // Store them in a HashMap formatted (vertex, weight).
@@ -254,8 +256,8 @@ public class ThorupZwickSpanner {
                 ai.removeAll(ai1);
             }
 
-            System.out.println("subs: " + ai);
-            System.out.println(deltas);
+//            System.out.println("subs: " + ai);
+//            System.out.println(deltas);
             // Grow a shortest paths tree from the vertices in the subset A(i) - A(i+1).
             for(String w : ai) {
                 DijkstraShortestPaths dijk = new DijkstraShortestPaths(this.graph, w, deltas);

@@ -77,7 +77,7 @@ public class GraphFactory {
      * @throws Exception
      */
     private uwGraph genGraphFromData(int vertices, double density, boolean isWeighted) throws Exception {
-        System.out.println(density * ((double) (vertices*(vertices - 1))/(2.0)) / (double) vertices);
+        //System.out.println(density * ((double) (vertices*(vertices - 1))/(2.0)) / (double) vertices);
         if (density < ((double) vertices - 1.0)/((double) (vertices*(vertices - 1))/(2.0))) {
             throw new Exception("Density too low, must not be below minimum: " + ((double) vertices - 1.0)/((double) (vertices*(vertices - 1))/(2.0)) + ", all vertices cannot be connected\n");
         } else if (vertices < 2) {
@@ -98,7 +98,6 @@ public class GraphFactory {
         Thread.sleep(500);
         Random rndGen = new Random(System.nanoTime());
         double margin = density * ((double) Integer.MAX_VALUE);
-        System.out.print(margin);
 
         // Insert vertices intro graph and arraylist
         for (int i = 0; i < vertices; i++) {

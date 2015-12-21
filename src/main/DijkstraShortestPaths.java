@@ -52,6 +52,7 @@ public class DijkstraShortestPaths {
 
         this.heap = this.initialize();
         this.shortestPath = new ArrayList<Edge>();
+        this.shortestPathLazy = new HashMap<String, Edge>();
         this.setShortestPaths();
 
 
