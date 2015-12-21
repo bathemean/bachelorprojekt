@@ -2,6 +2,7 @@ package main;
 
 import main.graph.GraphFactory;
 import main.graph.uwGraph;
+import main.spanner.GreedySpanner;
 import main.spanner.ThorupZwickSpanner;
 
 public class Main {
@@ -16,11 +17,13 @@ public class Main {
 
         GraphFactory factory = new GraphFactory();
 
-        //GreedySpanner greedy = new GreedySpanner();
+        GreedySpanner greedy = new GreedySpanner();
 
         ThorupZwickSpanner thorupzwick = new ThorupZwickSpanner();
 
-        uwGraph stringGraph = factory.createStringGraph();
+//        uwGraph stringGraph = factory.createStringGraph();
+//        uwGraph greedyspan = greedy.makeSpanner(stringGraph, 1);
+//        System.out.println(greedyspan);
   //      uwGraph bigStrGraph = factory.createBiggerStringGraph();
 
 
@@ -47,6 +50,9 @@ public class Main {
 
 
         uwGraph generatedGraph = factory.wieghtedDenseGraph(200, 1);
+        uwGraph greedyspan = greedy.makeSpanner(generatedGraph, 5);
+        System.out.println(greedyspan);
+
         System.out.println(generatedGraph.getMetricsAsString());
 //        uwGraph derp = factory.unwieghtedDenseGraph(20, 4.0);
   //       uwGraph derp2 = factory.wieghtedCompleteDenseGraph(5);

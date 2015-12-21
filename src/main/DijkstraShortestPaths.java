@@ -8,10 +8,11 @@ import java.util.Set;
 
 public class DijkstraShortestPaths {
 
-    private MinHeap heap;
+    public MinHeap heap;
     private uwGraph graph;
     private String source;
     private ArrayList<Edge> shortestPath;
+    private HashMap<String, Edge> shortestPathLazy;
     private HashMap<String, Double> deltas;
 
     /**
@@ -28,6 +29,7 @@ public class DijkstraShortestPaths {
 
         this.heap = this.initialize();
         this.shortestPath = new ArrayList<Edge>();
+        this.shortestPathLazy = new HashMap<String, Edge>();
         this.setShortestPaths();
 
         this.deltas = null;
@@ -100,6 +102,7 @@ public class DijkstraShortestPaths {
 
             // Add the minimal vertex to our shortest path.
             this.shortestPath.add(u);
+            this.shortestPathLazy.put(u.getSource(), u);
 
             Edge[] adj = this.graph.getAdjecentVertices(u.getSource());
 
@@ -122,7 +125,8 @@ public class DijkstraShortestPaths {
 
         // Extract the remaining vertex and add it to our path.
         Edge u = this.heap.extractMin();
-        shortestPath.add(u);
+        this.shortestPath.add(u);
+        this.shortestPathLazy.put(u.getSource(), u);
         //System.out.println("Dijkstra: " + shortestPath);
 
     }
@@ -136,8 +140,8 @@ public class DijkstraShortestPaths {
      * @param u Some vertex.
      * @return The weight of the vertex in the shortest path.
      */
-    public double getPathWeight(String u) {
-        return this.heap.getVertex(u).getValue().getWeight();
+    public double getPathWeight(String u) throws Exception {
+        return this.shortestPathLazy.get(u).getWeight();
     }
 
     public uwGraph getGraph() {
