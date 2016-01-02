@@ -1,0 +1,49 @@
+300 knuder, densitet 1.0
+Greedy:
+Total Weight: 1466775. Density: 0.12178372352285395. Highest degree: 85. Runtime: 482770 ms.
+
+ThorupZwick:
+Total Weight: 590391. Density: 0.1395540691192865. Highest degree: 141. Runtime: 51687 ms.
+
+
+------------------------
+200 knuder, densitet 1.0
+
+Greedy:
+Total Weight: 528994. Density: 0.11190954773869347. Highest degree: 41. Runtime: 74036 ms.
+Total Weight: 485944. Density: 0.10532663316582914. Highest degree: 43. Runtime: 71643 ms.
+Total Weight: 455343. Density: 0.10467336683417086. Highest degree: 47. Runtime: 70527 ms.
+
+Tz:
+Total Weight: 386842. Density: 0.16889447236180904. Highest degree: 112. Runtime: 13460 ms.
+Total Weight: 385894. Density: 0.16462311557788945. Highest degree: 103. Runtime: 12513 ms.
+Total Weight: 393099. Density: 0.16909547738693467. Highest degree: 111. Runtime: 12500 ms.
+
+------------------------
+
+200 knuder, densitet 0.8
+
+Greedy:
+Total Weight: 507581. Density: 0.1014572864321608. Highest degree: 48. Runtime: 50324 ms.
+Total Weight: 496821. Density: 0.10105527638190955. Highest degree: 46. Runtime: 53296 ms.
+Total Weight: 554774. Density: 0.10296482412060301. Highest degree: 42. Runtime: 46175 ms.
+
+Tz:
+Total Weight: 461148. Density: 0.16522613065326633. Highest degree: 110. Runtime: 8047 ms.
+Total Weight: 532735. Density: 0.17542713567839197. Highest degree: 111. Runtime: 8880 ms.
+Total Weight: 521884. Density: 0.17462311557788945. Highest degree: 116. Runtime: 9775 ms.
+
+
+
+
+-------------------------
+
+Greedy:
+Total Weight: 34924. Density: 0.017989949748743718. Highest degree: 8. Runtime: 15064 ms.
+Total Weight: 199128. Density: 0.04879396984924623. Highest degree: 19. Runtime: 29304 ms.
+Total Weight: 30244. Density: 0.018693467336683416. Highest degree: 8. Runtime: 17489 ms.
+
+TZ:
+Total Weight: 661753. Density: 0.19035175879396984. Highest degree: 132. Runtime: 10060 ms.
+Total Weight: 703874. Density: 0.20120603015075378. Highest degree: 124. Runtime: 10600 ms.
+Total Weight: 603213. Density: 0.18603015075376883. Highest degree: 113. Runtime: 10189 ms.

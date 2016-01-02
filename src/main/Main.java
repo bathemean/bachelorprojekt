@@ -5,11 +5,10 @@ import main.graph.uwGraph;
 import main.spanner.GreedySpanner;
 import main.spanner.ThorupZwickSpanner;
 
-import java.io.*;
-import java.nio.file.FileAlreadyExistsException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 public class Main {
@@ -30,27 +29,33 @@ public class Main {
         kValues.add(5);
 
         GraphFactory factory = new GraphFactory();
-        GreedySpanner greedy = new GreedySpanner();
-
 
         // for k = 2, 3, 5.
-        for(int k : kValues) {
+        for(int k = 1; k < 10; k++) {
             // for vertice counts {25, 50, ..., 400}.
             for (int v = 25; v < 400; v += 25) {
                 // for densities d = {0.5, 0.6, ..., 1.0}.
-                for (double d = 0.5; d <= 1.0; v += 0.1) {
-                    System.out.printf("== Creating spanners with parameters: k = %d, #vertices = %d, density = %f == \n", k, v, d);
-                    uwGraph generatedGraph = factory.wieghtedDenseGraph(v, d);
+                for (double d = 0.8; d <= 1.0; d += 0.1) {
+                    String filename = "density" + d + "_vertices" + v + "_k" + k + ".txt";
+                    PrintWriter writerGreedy = new PrintWriter("Greedy_" + filename, "UTF-8");
+                    PrintWriter writerTZ = new PrintWriter("TZ_" + filename, "UTF-8");
 
-                    uwGraph greedyspan = greedy.makeSpanner(generatedGraph, k);
-                    System.out.println("Greedy: " + greedyspan.getMetricsAsString());
-                    ThorupZwickSpanner thorupzwick = new ThorupZwickSpanner();
-                    uwGraph tzspan = thorupzwick.makeSpanner(generatedGraph, k);
-                    System.out.println("ThoZwi: " + tzspan.getMetricsAsString());
+                    // We want to get a few datapoints to even out any factors
+                    for (int i = 0; i < 10; i++) {
+                        GreedySpanner greedy = new GreedySpanner();
+                        ThorupZwickSpanner thorupzwick = new ThorupZwickSpanner();
 
-                    printToResults(k, v, d, greedyspan.getMetricsAsCSV(), tzspan.getMetricsAsCSV());
+                        uwGraph generatedGraph = factory.wieghtedDenseGraph(v, d);
 
+                        uwGraph greedyspan = greedy.makeSpanner(generatedGraph, 2 * k - 1);
+                        writerGreedy.print(greedyspan.getMetricsAsString());
 
+                        uwGraph tzspan = thorupzwick.makeSpanner(generatedGraph, k);
+                        writerTZ.print(tzspan.getMetricsAsString());
+
+                    }
+                    writerGreedy.close();
+                    writerTZ.close();
                 }
             }
         }
@@ -68,6 +73,5 @@ public class Main {
         } catch (IOException e) {
             //exception handling left as an exercise for the reader
         }
-
     }
 }

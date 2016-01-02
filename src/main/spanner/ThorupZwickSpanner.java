@@ -288,6 +288,8 @@ public class ThorupZwickSpanner extends Spanner{
 
         // Add all the edges with their weights in spannerList to the spanner.
         for(Edge e : spannerList) {
+            System.out.println(this.graph.getEdge(e.getSource(), e.getTarget()));
+            System.out.println(e);
             Double weight = this.graph.getEdgeWeight( this.graph.getEdge(e.getSource(), e.getTarget()) );
             spanner.addEdge(e.getSource(), e.getTarget());
             spanner.setEdgeWeight( spanner.getEdge(e.getSource(), e.getTarget()), weight );
