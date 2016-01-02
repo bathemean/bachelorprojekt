@@ -40,11 +40,11 @@ public class Main {
                     String descriptionHeaders = "weight,density,highest degree,runtime\n";
                     String filename = "density" + d + "_vertices" + v + "_k" + k + ".csv";
 
-                    PrintWriter writerGreedy = new PrintWriter("/datapoints/Greedy_" + filename, "UTF-8");
-                    PrintWriter writerTZ = new PrintWriter("/datapoints/TZ_" + filename, "UTF-8");
+                    PrintWriter writerGreedy = new PrintWriter("datapoints/Greedy_" + filename, "UTF-8");
+                    PrintWriter writerTZ = new PrintWriter("datapoints/TZ_" + filename, "UTF-8");
 
-                    writerGreedy.print(descriptionHeaders);
-                    writerTZ.print(descriptionHeaders);
+                    writerGreedy.write(descriptionHeaders);
+                    writerTZ.write(descriptionHeaders);
 
 
                     uwGraph generatedGraph = factory.wieghtedDenseGraph(v, d);
