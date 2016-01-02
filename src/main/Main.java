@@ -31,7 +31,7 @@ public class Main {
 
         GraphFactory factory = new GraphFactory();
         GreedySpanner greedy = new GreedySpanner();
-        ThorupZwickSpanner thorupzwick = new ThorupZwickSpanner();
+
 
         // for k = 2, 3, 5.
         for(int k : kValues) {
@@ -39,16 +39,17 @@ public class Main {
             for (int v = 25; v < 400; v += 25) {
                 // for densities d = {0.5, 0.6, ..., 1.0}.
                 for (double d = 0.5; d <= 1.0; v += 0.1) {
-                    System.out.printf("== Creating spanners with parameters: k = %d, #vertices = %d, density = %f \n", k, v, d);
+                    System.out.printf("== Creating spanners with parameters: k = %d, #vertices = %d, density = %f == \n", k, v, d);
                     uwGraph generatedGraph = factory.wieghtedDenseGraph(v, d);
 
                     uwGraph greedyspan = greedy.makeSpanner(generatedGraph, k);
-                    System.out.println(greedyspan.getMetricsAsString());
-
+                    System.out.println("Greedy: " + greedyspan.getMetricsAsString());
+                    ThorupZwickSpanner thorupzwick = new ThorupZwickSpanner();
                     uwGraph tzspan = thorupzwick.makeSpanner(generatedGraph, k);
-                    System.out.println(tzspan.getMetricsAsString());
+                    System.out.println("ThoZwi: " + tzspan.getMetricsAsString());
 
                     printToResults(k, v, d, greedyspan.getMetricsAsCSV(), tzspan.getMetricsAsCSV());
+
 
                 }
             }
