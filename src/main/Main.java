@@ -34,9 +34,9 @@ public class Main {
         for(int k = 1; k < 10; k++) {
             // for vertice counts {25, 50, ..., 400}.
             System.out.println(k);
-            for (int v = 25; v < 400; v += 25) {
+            for (int v = 25; v < 200; v += 25) {
                 // for densities d = {0.5, 0.6, ..., 1.0}.
-                for (double d = 0.8; d <= 1.0; d += 0.1) {
+                for (double d = 0.7; d <= 1.0; d += 0.1) {
                     String descriptionHeaders = "weight,density,highest degree,runtime\n";
                     String filename = "density" + d + "_vertices" + v + "_k" + k + ".csv";
 
@@ -47,14 +47,14 @@ public class Main {
                     writerTZ.write(descriptionHeaders);
 
 
-                    uwGraph generatedGraph = factory.wieghtedDenseGraph(v, d);
-
-                    GreedySpanner greedy = new GreedySpanner();
-                    uwGraph greedyspan = greedy.makeSpanner(generatedGraph, 2 * k - 1);
-                    writerGreedy.print(greedyspan.getMetricsAsCSV());
-
                     // We want to get a few datapoints to even out any factors
                     for (int i = 0; i < 10; i++) {
+                        uwGraph generatedGraph = factory.wieghtedDenseGraph(v, d);
+
+                        GreedySpanner greedy = new GreedySpanner();
+                        uwGraph greedyspan = greedy.makeSpanner(generatedGraph, 2 * k - 1);
+                        writerGreedy.print(greedyspan.getMetricsAsCSV());
+
                         ThorupZwickSpanner thorupzwick = new ThorupZwickSpanner();
                         uwGraph tzspan = thorupzwick.makeSpanner(generatedGraph, k);
                         writerTZ.print(tzspan.getMetricsAsCSV());

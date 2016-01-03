@@ -46,7 +46,6 @@ public class GraphFactory {
             System.out.println(("Generating test graph with vertices: " + vertices + ", density: " + density + " and is weighted: " + isWeighted));
             graph = this.genGraphFromData(vertices, density, isWeighted);
         } while (isNotCoherent(graph));
-        System.out.println("Is coherent");
 
         return graph;
     }
