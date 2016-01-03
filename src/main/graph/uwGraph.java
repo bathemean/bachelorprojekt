@@ -7,6 +7,7 @@ import org.jgrapht.graph.ListenableUndirectedWeightedGraph;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Set;
 
 public class uwGraph extends ListenableUndirectedWeightedGraph<String, DefaultWeightedEdge> {
 
@@ -114,11 +115,7 @@ public class uwGraph extends ListenableUndirectedWeightedGraph<String, DefaultWe
 
     // kør dijk for spanner og graf og divider de to afstande fra u til v.
     // Vælg den største brøk.
-    public void getStretch() {
 
-        Object[] vertices = this.vertexSet().toArray();
-        Object[] edges = this.edgeSet().toArray();
-    }
 
     public double getDensity() {
 
@@ -171,6 +168,13 @@ public class uwGraph extends ListenableUndirectedWeightedGraph<String, DefaultWe
     }
 
     public String getMetricsAsCSV() {
-        return this.getTotalWeight() + "," + this.getDensity() + "," + this.getHighestDegree() + "," + this.getRuntime() + "\n";
+        return this.getTotalWeight() + "," + this.getDensity() + "," + this.getHighestDegree() + "," + this.getRuntime();
+    }
+
+    public void setAllEdgesToOne(){
+        Set<DefaultWeightedEdge> edges = this.edgeSet();
+        for(DefaultWeightedEdge e : edges) {
+            this.setEdgeWeight(e, 1.0);
+        }
     }
 }

@@ -45,10 +45,34 @@ public class GreedySpanner extends Spanner {
 
         this.endTiming();
         gPling.setRuntime(this.getRuntime());
+        this.setStretch(g, gPling);
 
         return gPling;
 
     }
+
+    public double setStretch(uwGraph g, uwGraph spanner) throws Exception {
+
+        HashMap<String, Integer> alreadyIterated = new HashMap<String, Integer>();
+
+        double currentStretch = 0.0;
+        for (String v : g.vertexSet()) {
+            DijkstraShortestPaths graphDijk = new DijkstraShortestPaths(g, v);
+            DijkstraShortestPaths spannerDijk = new DijkstraShortestPaths(spanner, v);
+            for (String u : g.vertexSet()) {
+                if (!alreadyIterated.containsKey(u)) {
+                    double stretch = spannerDijk.getPathWeight(u) / graphDijk.getPathWeight(u);
+                    if (stretch > currentStretch) {
+                        currentStretch = stretch;
+                    }
+                }
+            }
+            alreadyIterated.put(v, 1);
+        }
+
+        return currentStretch;
+    }
+
 
     /**
      * From StackOverflow:
