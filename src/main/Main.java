@@ -27,11 +27,11 @@ public class Main {
 
         GraphFactory factory = new GraphFactory();
 
-        // for k = 2, 3, 5.
-        for(int k = 1; k < 10; k++) {
-            // for vertice counts {25, 50, ..., 400}.
-            System.out.println(k);
-            for (int v = 25; v < 400; v += 25) {
+        // for vertice counts {25, 50, ..., 400}.
+        for (int v = 25; v < 400; v += 25) {
+            // for k = 2, 3, 5.
+            for(int k = 1; k < 10; k++) {
+                System.out.println(k);
                 // for densities d = {0.5, 0.6, ..., 1.0}.
                 for (double d = 0.7; d <= 1.0; d += 0.1) {
                     String descriptionHeaders = "weight,density,highest degree,runtime,stretch,jumpstretch\n";
