@@ -1,19 +1,20 @@
 import pprint, os.path
 import numpy as np
-#import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 
 pp = pprint.PrettyPrinter(depth=6)
 
 ks = range(1, 10)
-vertices = range(25, 400, 25)
-densities = [0.7, 0.8, 0.9, 1.0]
+vertices = range(25, 250, 25)
+densities = [0.7, 0.7999999999999999, 0.8999999999999999, 0.9999999999999999]
 
-filepath = 'olddata/'
+filepath = 'datapoints/'
 filetypes = ['TZ', 'Greedy']
 filemetas = ['_density', '_vertices', '_k']
-filename = 'olddata/TZ_density1.0_vertices200_k1.csv'
+#ilename = 'datapoints/TZ_density1.0_vertices200_k1.csv'
 
-measurements = ['weight', 'density', 'highest degree', 'runtime']
+#measurements = ['density', 'weight', 'highest degree', 'runtime']
+measurements = ['weight','density','highest degree','runtime','stretch','jumpstretch']
 
 def generate_filenames(meta):
     density = meta['density']
@@ -40,7 +41,6 @@ def load_data_from_files(filenames):
 
 
 def load_data_from_file(filename):
-    print(filename)
 
     datafile = open(filename, 'r')
 
@@ -158,6 +158,40 @@ def insert_into_dicts(meta, data):
             for t in filetypes:
                 d[m][t] = data[t][m]
 
+def plot_points():
+    params = ['k', 'vertices']
+
+    for p in params:
+        data = select_dicts_by_metaword(p)
+        for m in measurements:
+            greedy = []
+            tz = []
+
+            for d in data:
+                greedy.append(d[m]['Greedy'])
+                tz.append(d[m]['TZ'])
+
+            plt.clf()
+
+            plt.title(m)
+            plt.xlabel(p)
+            plt.ylabel(m)
+            
+            if p == 'k':
+                x = ks
+            elif p == 'vertices':
+                x = vertices
+            else:
+                x = densities
+
+            g = plt.plot(x, greedy, label='Greedy')
+            t = plt.plot(x, tz, label='TZ')
+
+            plt.legend()
+
+
+            plt.savefig("plots/" + p + "_"+ m)
+
 if __name__ == '__main__':
 
     initialize_results_dicts()
@@ -185,4 +219,6 @@ if __name__ == '__main__':
     '''
 
     ds = select_dicts_by_metaword('vertices')
-    pp.pprint(ds)
+    plot_points()
+    #pp.pprint(dicts)
+    #pp.pprint(ds[1]['density']['Greedy'])
