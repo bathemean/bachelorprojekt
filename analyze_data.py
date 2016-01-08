@@ -14,7 +14,7 @@ filemetas = ['_density', '_vertices', '_k']
 #ilename = 'datapoints/TZ_density1.0_vertices200_k1.csv'
 
 #measurements = ['density', 'weight', 'highest degree', 'runtime']
-measurements = ['weight','density','highest degree','runtime','stretch','jumpstretch']
+measurements = ['weight','mdensity','highest degree','runtime','stretch','jumpstretch']
 
 def generate_filenames(meta):
     density = meta['density']
@@ -60,7 +60,10 @@ def load_data_from_file(filename):
     data = {}
 
     for i in range(0, len(headers)):
-        data[headers[i]] = mean[i]
+        h = headers[i]
+        if h == 'density':
+            h = 'mdensity'
+        data[h] = mean[i]
 
     return data
 
@@ -159,7 +162,7 @@ def insert_into_dicts(meta, data):
                 d[m][t] = data[t][m]
 
 def plot_points():
-    params = ['k', 'vertices']
+    params = ['k', 'vertices', 'density']
 
     for p in params:
         data = select_dicts_by_metaword(p)
@@ -173,10 +176,10 @@ def plot_points():
 
             plt.clf()
 
-            plt.title(m)
+            plt.title(m + " som funktion af " + p)
             plt.xlabel(p)
             plt.ylabel(m)
-            
+
             if p == 'k':
                 x = ks
             elif p == 'vertices':
@@ -218,7 +221,8 @@ if __name__ == '__main__':
     insert_into_dicts(meta2, data2)
     '''
 
-    ds = select_dicts_by_metaword('vertices')
+    ds = select_dicts_by_metaword('density')
     plot_points()
-    #pp.pprint(dicts)
-    #pp.pprint(ds[1]['density']['Greedy'])
+    #pp.pprint(ds)
+
+    pp.pprint(len(ds))
