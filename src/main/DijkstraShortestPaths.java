@@ -97,29 +97,29 @@ public class DijkstraShortestPaths {
      */
     protected void setShortestPaths() throws Exception {
 
-        System.out.println("\nNew Dijk");
+        //System.out.println("\nNew Dijk");
         if (this.heap.size() > 0) {
             do {
 
-                System.out.println(this.heap.getHeap());
-                System.out.println(this.heap.mapping);
+                //System.out.println(this.heap.getHeap());
+                //System.out.println(this.heap.mapping);
                 Edge u = this.heap.extractMin();
-                System.out.println("\nNew vertice: " + u.getSource());
-                System.out.println(this.heap.getHeap());
-                System.out.println(this.heap.mapping);
+                //System.out.println("\nNew vertice: " + u.getSource());
+                //System.out.println(this.heap.getHeap());
+                //System.out.println(this.heap.mapping);
                 // Add the minimal vertex to our shortest path.
                 this.shortestPath.add(u);
                 this.shortestPathLazy.put(u.getSource(), u);
 
                 // We only want to check the vertex, if it has already been relaxed i.e. u.weight < infinity
                 if (u.getWeight() < Double.POSITIVE_INFINITY) {
-                    System.out.println("Vertice: " + u.getSource() + " weight; " + u.getWeight());
+                    //System.out.println("Vertice: " + u.getSource() + " weight; " + u.getWeight());
                     Edge[] adj = this.graph.getAdjecentVertices(u.getSource());
                     // Decrease key for all the adjacent vertices.
                     for (Edge e : adj) {
                         // Only try to relax if the source vertex has not yet been evaluated
                         if (!this.shortestPathLazy.containsKey(e.getTarget())) {
-                            System.out.println(e);
+                            //System.out.println(e);
                             Double limit = Double.POSITIVE_INFINITY;
                             if (this.deltas != null) {
                                 if (this.deltas.containsKey(e.getTarget())) {
@@ -128,9 +128,9 @@ public class DijkstraShortestPaths {
                             }
 
                             if (this.deltas == null || (u.getWeight() + e.getWeight()) < limit) {
-                                System.out.println(e.getTarget() + " " + u.getSource());
+                                //System.out.println(e.getTarget() + " " + u.getSource());
                                 this.heap.decreaseKey(e, u);
-                                System.out.println("Current heap: " + this.heap.getHeap());
+                                //System.out.println("Current heap: " + this.heap.getHeap());
                             }
                         }
                     }

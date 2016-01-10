@@ -62,9 +62,9 @@ public class MinHeap {
         if (left < this.heap.size() && this.heap.get(index).getWeight() > this.heap.get(left).getWeight()){
             smallest = left;
         }
-        System.out.println(index);
-        System.out.println(left);
-        System.out.println(right);
+        //System.out.println(index);
+        //System.out.println(left);
+        //System.out.println(right);
         if (right < this.heap.size() && this.heap.get(smallest).getWeight() > this.heap.get(right).getWeight()){
             smallest = right;
         }

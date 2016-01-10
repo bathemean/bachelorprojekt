@@ -1,11 +1,1 @@
-weight,density,highest degree,runtime,stretch,jumpstretch
-33358,0.023982102908277406,8,7080,Infinity,Infinity
-31764,0.02371364653243848,7,6255,Infinity,Infinity
-30890,0.024161073825503355,9,6857,Infinity,Infinity
-33292,0.02371364653243848,7,6903,Infinity,Infinity
-36198,0.02407158836689038,7,7008,Infinity,Infinity
-29816,0.02371364653243848,8,6930,Infinity,Infinity
-25791,0.022818791946308724,8,6267,Infinity,Infinity
-31559,0.023803131991051454,8,6609,Infinity,Infinity
-24840,0.02272930648769575,7,7355,Infinity,Infinity
-32628,0.02371364653243848,10,7140,Infinity,Infinity
+weight,density,highest degree,runtime,stretch

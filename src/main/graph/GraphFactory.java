@@ -31,7 +31,7 @@ public class GraphFactory {
 
             // If an unreachable vertex is found, we want to stop looping.
             if (coherence){
-                System.out.println("Generate graph not coherent, generating again.");
+                //System.out.println("Generate graph not coherent, generating again.");
                 break;
             }
         }
@@ -43,7 +43,7 @@ public class GraphFactory {
         uwGraph graph;
         // Create a graph and check whether or not it is coherent and generate new one if not
         do {
-            System.out.println(("Generating test graph with vertices: " + vertices + ", density: " + density + " and is weighted: " + isWeighted));
+            //System.out.println(("Generating test graph with vertices: " + vertices + ", density: " + density + " and is weighted: " + isWeighted));
             graph = this.genGraphFromData(vertices, density, isWeighted);
         } while (isNotCoherent(graph));
 

@@ -3,6 +3,10 @@ package main;
 import main.graph.GraphFactory;
 import main.graph.uwGraph;
 import main.spanner.GreedySpanner;
+import main.spanner.ThorupZwickSpanner;
+
+import java.io.PrintWriter;
+import java.util.ArrayList;
 
 public class Main {
 
@@ -15,6 +19,8 @@ public class Main {
      * @throws Exception
      */
     public static void main(String args[]) throws Exception {
+/**
+ *
         GreedySpanner greedy = new GreedySpanner();
         uwGraph stringGraph = new GraphFactory().wieghtedDenseGraph(50, 1.0);
         uwGraph spannerG = greedy.makeSpanner(stringGraph, 2*3-1); // 5
@@ -23,7 +29,7 @@ public class Main {
         System.out.println(greedy.setStretch(stringGraph, spannerG));
         System.out.println(spannerG);
     }
-/**
+ */
         ArrayList<Integer> kValues = new ArrayList<Integer>();
         kValues.add(2);
         kValues.add(3);
@@ -38,7 +44,7 @@ public class Main {
                 System.out.println(k);
                 // for densities d = {0.5, 0.6, ..., 1.0}.
                 for (double d = 0.7; d <= 1.0; d += 0.1) {
-                    String descriptionHeaders = "weight,density,highest degree,runtime,stretch,jumpstretch\n";
+                    String descriptionHeaders = "weight,density,highest degree,runtime,stretch\n";
                     String filename = "density" + d + "_vertices" + v + "_k" + k + ".csv";
 
                     PrintWriter writerGreedy = new PrintWriter("datapoints/Greedy_" + filename, "UTF-8");
@@ -66,17 +72,18 @@ public class Main {
                         double tzStretch = thorupzwick.setStretch(generatedGraph, tzspan);
 
                         // Set all edge weights to 1.0
-                        generatedGraph.setAllEdgesToOne();
-                        greedyspan.setAllEdgesToOne();
-                        tzspan.setAllEdgesToOne();
+//                        generatedGraph.setAllEdgesToOne();
+//                        greedyspan.setAllEdgesToOne();
+//                        tzspan.setAllEdgesToOne();
 
                         // Get stretch for edge-jumps
-                        double greedyJumpStretch = greedy.setStretch(generatedGraph, greedyspan);
-                        double tzJumpStretch = thorupzwick.setStretch(generatedGraph, tzspan);
+//                        double greedyJumpStretch = greedy.setStretch(generatedGraph, greedyspan);
+//                        double tzJumpStretch = thorupzwick.setStretch(generatedGraph, tzspan);
 
-                        writerGreedy.print(greedyData + "," + greedyStretch + "," + greedyJumpStretch + "\n");
-                        writerTZ.print(tzData + "," + tzStretch + "," + tzJumpStretch + "\n");
+                        writerGreedy.print(greedyData + "," + greedyStretch +  "\n");
+                        writerTZ.print(tzData + "," + tzStretch + "\n");
                     }
+                    System.out.println("Vertices: " + v + " density: " + d + "k: " + k);
                     writerGreedy.close();
                     writerTZ.close();
                 }
@@ -84,6 +91,4 @@ public class Main {
         }
 
     }
- **/
-
  }
