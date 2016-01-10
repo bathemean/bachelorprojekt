@@ -30,6 +30,7 @@ public class GreedySpanner extends Spanner {
 
         // Iterate over all the edges.
         for (Map.Entry<DefaultWeightedEdge, Integer> entry : edgesSorted.entrySet()) {
+            System.out.println(entry + "Greedy");
             DefaultWeightedEdge entryEdge = entry.getKey();
             String v, u;
             v = g.getEdgeSource(entryEdge);
@@ -37,10 +38,13 @@ public class GreedySpanner extends Spanner {
 
             DijkstraShortestPaths dijkstraShortestPath = new DijkstraShortestPaths(gPling, v);
 
+            System.out.println("Dijk for " + v + " in spanner:");
+            System.out.println(dijkstraShortestPath.getShortestPaths());
             if ((r * entry.getValue()) < dijkstraShortestPath.getPathWeight(u)) {
                 gPling.addEdge(v, u);
                 gPling.setEdgeWeight(gPling.getEdge(v, u), entry.getValue());
             }
+            System.out.print(gPling + "\n");
         }
 
         this.endTiming();

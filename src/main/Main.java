@@ -3,10 +3,6 @@ package main;
 import main.graph.GraphFactory;
 import main.graph.uwGraph;
 import main.spanner.GreedySpanner;
-import main.spanner.ThorupZwickSpanner;
-
-import java.io.PrintWriter;
-import java.util.ArrayList;
 
 public class Main {
 
@@ -19,7 +15,15 @@ public class Main {
      * @throws Exception
      */
     public static void main(String args[]) throws Exception {
+        GreedySpanner greedy = new GreedySpanner();
+        uwGraph stringGraph = new GraphFactory().wieghtedDenseGraph(50, 1.0);
+        uwGraph spannerG = greedy.makeSpanner(stringGraph, 2*3-1); // 5
+        greedy.setStretch(stringGraph, spannerG);
 
+        System.out.println(greedy.setStretch(stringGraph, spannerG));
+        System.out.println(spannerG);
+    }
+/**
         ArrayList<Integer> kValues = new ArrayList<Integer>();
         kValues.add(2);
         kValues.add(3);
@@ -80,4 +84,6 @@ public class Main {
         }
 
     }
-}
+ **/
+
+ }

@@ -155,18 +155,36 @@ public class GraphFactory {
 
         // add edges to create a circuit
         g.addEdge(v1, v2);
-        g.setEdgeWeight(g.getEdge("v1", "v2"), 10.0);
+        g.setEdgeWeight(g.getEdge("v1", "v2"), 410.0);
         g.addEdge(v2, v3);
-        g.setEdgeWeight(g.getEdge("v2", "v3"), 30.0);
+        g.setEdgeWeight(g.getEdge("v2", "v3"), 337.0);
         g.addEdge(v3, v4);
-        g.setEdgeWeight(g.getEdge("v3", "v4"), 20.0);
+        g.setEdgeWeight(g.getEdge("v3", "v4"), 733.0);
         g.addEdge(v4, v1);
-        g.setEdgeWeight(g.getEdge("v4", "v1"), 45.0);
+        g.setEdgeWeight(g.getEdge("v4", "v1"), 321.0);
         g.addEdge(v2, v4);
-        g.setEdgeWeight(g.getEdge("v2", "v4"), 50.0);
+        g.setEdgeWeight(g.getEdge("v2", "v4"), 125.0);
         g.addEdge(v3, v1);
-        g.setEdgeWeight(g.getEdge("v3", "v1"), 15.0);
+        g.setEdgeWeight(g.getEdge("v3", "v1"), 81.0);
 
+/**
+        Random gen = new Random();
+
+        // Assign edges between all vertices, and assign a random weight.
+        for(String v : g.vertexSet()) {
+            for(String u : g.vertexSet()) {
+                if(v != u) {
+                    g.setEdgeWeight(g.getEdge(v, u), gen.nextInt(1000));
+                }
+            }
+        }
+
+        for (DefaultWeightedEdge e : g.edgeSet()) {
+            System.out.println(g.getEdgeWeight(e));
+            System.out.println(e.toString());
+
+        }
+**/
         return g;
     }
 

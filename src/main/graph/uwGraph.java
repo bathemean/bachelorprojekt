@@ -78,8 +78,8 @@ public class uwGraph extends ListenableUndirectedWeightedGraph<String, DefaultWe
     }
 
     public Edge[] getAdjecentVertices(String v) {
-
-        Object[] edges = this.edgesOf(v).toArray();
+        Set<DefaultWeightedEdge> setEdges= this.edgesOf(v);
+        Object[] edges = setEdges.toArray();
         Edge[] adjacent = new Edge[edges.length];
 
         int i = 0;
@@ -99,7 +99,7 @@ public class uwGraph extends ListenableUndirectedWeightedGraph<String, DefaultWe
             Edge ele = new Edge(null, insert, w);
             adjacent[i] = ele;
             i++;
-            this.removeEdge((DefaultWeightedEdge) e);
+//             this.removeEdge((DefaultWeightedEdge) e);
         }
 
         return adjacent;
@@ -175,6 +175,18 @@ public class uwGraph extends ListenableUndirectedWeightedGraph<String, DefaultWe
         Set<DefaultWeightedEdge> edges = this.edgeSet();
         for(DefaultWeightedEdge e : edges) {
             this.setEdgeWeight(e, 1.0);
+        }
+    }
+
+    private void addSetOfEdges(Set<DefaultWeightedEdge> set) {
+        for (DefaultWeightedEdge e : set) {
+            String source, target;
+            double weight = this.getEdgeWeight(e);
+            String[] eParts = e.toString().split(":");
+            source = eParts[0].replace("(", "").replace(" ", "").replace(")", "");
+            target = eParts[1].replace("(", "").replace(" ", "").replace(")", "");
+            this.addEdge(source, target, e);
+            this.setEdgeWeight(this.getEdge(source, target), weight);
         }
     }
 }

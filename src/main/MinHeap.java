@@ -47,7 +47,31 @@ public class MinHeap {
         String source = this.mapping.remove(0);
         Edge element = new Edge(source, predecessor.getTarget(), predecessor.getWeight());
 
+        this.minHeapify(0);
         return element;
+    }
+
+    /**
+     * Min-Heapify from Cormen et. Al.
+     * @param index
+     */
+    private void minHeapify(Integer index) {
+        Integer left = this.getLeftChild(index);
+        Integer right = this.getRightChild(index);
+        Integer smallest = index;
+        if (left < this.heap.size() && this.heap.get(index).getWeight() > this.heap.get(left).getWeight()){
+            smallest = left;
+        }
+        System.out.println(index);
+        System.out.println(left);
+        System.out.println(right);
+        if (right < this.heap.size() && this.heap.get(smallest).getWeight() > this.heap.get(right).getWeight()){
+            smallest = right;
+        }
+        if (smallest != index) {
+            this.swap(smallest, index);
+            this.minHeapify(smallest);
+        }
     }
 
     /**
@@ -57,7 +81,10 @@ public class MinHeap {
      * @param v Some vertex adjacent to pred.
      * @throws Exception
      */
-    public void decreaseKey(Edge pred, Double key, String v) throws Exception {
+    public void decreaseKey(Edge vertex, Edge pred) throws Exception {
+
+        Double key = vertex.getWeight();
+        String v = vertex.getTarget();
 
         // Fetch adjacent vertex data
         Pair<Integer, Edge> adjacentVertex = this.getVertex(v);
@@ -77,7 +104,6 @@ public class MinHeap {
         while (i > 0 && parentWeight > adjV.getWeight() ) {
             i = swap(i, this.getParent(i));
         }
-
     }
 
     /**
@@ -129,9 +155,9 @@ public class MinHeap {
 
     public int getParent(int i) { return (i - 1) / 2; }
 
-    public int getLeftChild(int i) { return (i - 1) * 2; }
+    public int getLeftChild(int i) { return (i  * 2 + 1); }
 
-    public int getRightChild(int i) { return (i - 1) * 2 + 1; }
+    public int getRightChild(int i) { return (i * 2 + 2); }
 
     public int size() { return this.heap.size(); }
 

@@ -12,7 +12,7 @@ public class DijkstraShortestPaths {
     private uwGraph graph;
     private String source;
     private ArrayList<Edge> shortestPath;
-    private HashMap<String, Edge> shortestPathLazy;
+    public HashMap<String, Edge> shortestPathLazy;
     private HashMap<String, Double> deltas;
 
     /**
@@ -97,37 +97,52 @@ public class DijkstraShortestPaths {
      */
     protected void setShortestPaths() throws Exception {
 
-        while(this.heap.size() > 1) {
+        System.out.println("\nNew Dijk");
+        if (this.heap.size() > 0) {
+            do {
 
-            Edge u = this.heap.extractMin();
+                System.out.println(this.heap.getHeap());
+                System.out.println(this.heap.mapping);
+                Edge u = this.heap.extractMin();
+                System.out.println("\nNew vertice: " + u.getSource());
+                System.out.println(this.heap.getHeap());
+                System.out.println(this.heap.mapping);
+                // Add the minimal vertex to our shortest path.
+                this.shortestPath.add(u);
+                this.shortestPathLazy.put(u.getSource(), u);
 
-            // Add the minimal vertex to our shortest path.
-            this.shortestPath.add(u);
-            this.shortestPathLazy.put(u.getSource(), u);
+                // We only want to check the vertex, if it has already been relaxed i.e. u.weight < infinity
+                if (u.getWeight() < Double.POSITIVE_INFINITY) {
+                    System.out.println("Vertice: " + u.getSource() + " weight; " + u.getWeight());
+                    Edge[] adj = this.graph.getAdjecentVertices(u.getSource());
+                    // Decrease key for all the adjacent vertices.
+                    for (Edge e : adj) {
+                        // Only try to relax if the source vertex has not yet been evaluated
+                        if (!this.shortestPathLazy.containsKey(e.getTarget())) {
+                            System.out.println(e);
+                            Double limit = Double.POSITIVE_INFINITY;
+                            if (this.deltas != null) {
+                                if (this.deltas.containsKey(e.getTarget())) {
+                                    limit = this.deltas.get(e.getTarget());
+                                }
+                            }
 
-            Edge[] adj = this.graph.getAdjecentVertices(u.getSource());
-
-            // Decrease key for all the adjacent vertices.
-            for(Edge e : adj) {
-
-                Double limit = Double.POSITIVE_INFINITY;
-                if(this.deltas != null) {
-                    if (this.deltas.containsKey(e.getTarget())) {
-                        limit = this.deltas.get(e.getTarget());
+                            if (this.deltas == null || (u.getWeight() + e.getWeight()) < limit) {
+                                System.out.println(e.getTarget() + " " + u.getSource());
+                                this.heap.decreaseKey(e, u);
+                                System.out.println("Current heap: " + this.heap.getHeap());
+                            }
+                        }
                     }
                 }
 
-                if(this.deltas == null || (u.getWeight() + e.getWeight()) < limit) {
-                    this.heap.decreaseKey(u, e.getWeight(), e.getTarget());
-                }
-            }
-
+            } while (this.heap.size() > 0);
         }
 
         // Extract the remaining vertex and add it to our path.
-        Edge u = this.heap.extractMin();
-        this.shortestPath.add(u);
-        this.shortestPathLazy.put(u.getSource(), u);
+//        Edge u = this.heap.extractMin();
+//        this.shortestPath.add(u);
+//        this.shortestPathLazy.put(u.getSource(), u);
         //System.out.println("Dijkstra: " + shortestPath);
 
     }
