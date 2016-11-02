@@ -19,6 +19,7 @@ public class Main {
      * @throws Exception
      */
     public static void main(String args[]) throws Exception {
+
 /**
  *
         GreedySpanner greedy = new GreedySpanner();
@@ -29,8 +30,7 @@ public class Main {
         System.out.println(greedy.setStretch(stringGraph, spannerG));
         System.out.println(spannerG);
     }
- */
-        ArrayList<Integer> kValues = new ArrayList<Integer>();
+*/        ArrayList<Integer> kValues = new ArrayList<Integer>();
         kValues.add(2);
         kValues.add(3);
         kValues.add(5);
@@ -38,12 +38,12 @@ public class Main {
         GraphFactory factory = new GraphFactory();
 
         // for vertice counts {25, 50, ..., 400}.
-        for (int v = 25; v < 400; v += 25) {
+        for (int v = 5; v < 400; v += 5) {
             // for k = 2, 3, 5.
-            for(int k = 1; k < 10; k++) {
+            for(int k = 3; k < 6; k++) {
                 System.out.println(k);
                 // for densities d = {0.5, 0.6, ..., 1.0}.
-                for (double d = 0.7; d <= 1.0; d += 0.1) {
+                for (double d = 1.0; d <= 1.0; d += 0.1) {
                     String descriptionHeaders = "weight,density,highest degree,runtime,stretch\n";
                     String filename = "density" + d + "_vertices" + v + "_k" + k + ".csv";
 
@@ -56,7 +56,7 @@ public class Main {
 
                     // We want to get a few datapoints to even out any factors
                     for (int i = 0; i < 10; i++) {
-                        uwGraph generatedGraph = factory.wieghtedDenseGraph(v, d);
+                        uwGraph generatedGraph = factory.coherentGraph(v, d, true);
 
                         GreedySpanner greedy = new GreedySpanner();
                         uwGraph greedyspan = greedy.makeSpanner(generatedGraph, 2 * k - 1);
@@ -70,7 +70,12 @@ public class Main {
                         // Get stretch for weights
                         double greedyStretch = greedy.setStretch(generatedGraph, greedyspan);
                         double tzStretch = thorupzwick.setStretch(generatedGraph, tzspan);
-
+                        System.out.println("Greedy: " + greedyStretch + " & TZ: " + tzStretch);
+                        if (greedyStretch > 2*k-1) {
+                            System.out.println(greedyspan);
+                        } else if (tzStretch > 2*k-1) {
+                            System.out.println(tzspan);
+                        }
                         // Set all edge weights to 1.0
 //                        generatedGraph.setAllEdgesToOne();
 //                        greedyspan.setAllEdgesToOne();
@@ -80,7 +85,7 @@ public class Main {
 //                        double greedyJumpStretch = greedy.setStretch(generatedGraph, greedyspan);
 //                        double tzJumpStretch = thorupzwick.setStretch(generatedGraph, tzspan);
 
-                        writerGreedy.print(greedyData + "," + greedyStretch +  "\n");
+                        writerGreedy.print(greedyData + "," + greedyStretch + "\n");
                         writerTZ.print(tzData + "," + tzStretch + "\n");
                     }
                     System.out.println("Vertices: " + v + " density: " + d + "k: " + k);

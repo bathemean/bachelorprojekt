@@ -106,7 +106,7 @@ public class GraphFactory {
             for (String w : vList){
                 if (rndGen.nextInt(Integer.MAX_VALUE) < margin){
                     g.addEdge(w, v);
-                    double weight = (isWeighted ? ((double) rndGen.nextInt(1000)) : 1.0);
+                    double weight = (isWeighted ? ((double) rndGen.nextInt(1000)+1) : 1.0);
                     g.setEdgeWeight(g.getEdge(w, v), weight);
                 }
             }
